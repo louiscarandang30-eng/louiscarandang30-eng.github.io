@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vladimir Louis R. Carandang — Senior Operations & Data Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0f1f3d;
+    --navy-mid: #1b3260;
+    --gold: #b8963e;
+    --gold-light: #d4ae62;
+    --cream: #f7f4ef;
+    --warm-white: #fdfcfa;
+    --text: #1a1a1a;
+    --text-muted: #6b6b6b;
+    --text-light: #9a9a9a;
+    --border: #e0dbd2;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--warm-white);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 60px;
+    background: rgba(253,252,250,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 600; letter-spacing: 0.5px;
+    color: var(--navy);
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 13px; font-weight: 400; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--text-muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--navy); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 120px 60px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 48%; height: 100%;
+    background: var(--cream);
+    z-index: 0;
+  }
+  .hero-text { position: relative; z-index: 1; padding-right: 60px; }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 500; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--gold);
+  }
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5vw, 68px);
+    font-weight: 300; line-height: 1.1;
+    color: var(--navy); margin-bottom: 10px;
+  }
+  h1 em { font-style: italic; color: var(--navy-mid); }
+  .hero-title {
+    font-size: 14px; font-weight: 400; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+  .hero-summary {
+    font-size: 16px; line-height: 1.8; color: var(--text-muted);
+    max-width: 480px; margin-bottom: 44px;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--navy); color: white;
+    padding: 14px 28px; font-size: 13px;
+    font-weight: 500; letter-spacing: 0.5px;
+    text-decoration: none; border: none; cursor: pointer;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: var(--navy);
+    padding: 14px 28px; font-size: 13px;
+    font-weight: 500; letter-spacing: 0.5px;
+    text-decoration: none; border: 1px solid var(--navy);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--navy); color: white; }
+
+  .hero-visual {
+    position: relative; z-index: 1;
+    display: flex; justify-content: center; align-items: center;
+    padding: 40px;
+  }
+  .hero-card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 40px;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: 0 20px 60px rgba(15,31,61,0.08);
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .stat-item { padding: 20px 0; border-bottom: 1px solid var(--border); }
+  .stat-item:nth-last-child(-n+2) { border-bottom: none; }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px; font-weight: 300; line-height: 1;
+    color: var(--navy); margin-bottom: 6px;
+  }
+  .stat-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--text-light);
+  }
+  .stat-accent { color: var(--gold); }
+
+  /* SECTION BASE */
+  section { padding: 100px 60px; }
+  .section-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 24px; height: 1px; background: var(--gold);
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 3.5vw, 48px);
+    font-weight: 300; color: var(--navy); line-height: 1.2;
+    margin-bottom: 48px;
+  }
+
+  /* EXPERIENCE */
+  .experience { background: var(--cream); }
+  .experience-grid { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 40px; padding: 44px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .exp-item:first-child { border-top: 1px solid var(--border); }
+  .exp-meta {}
+  .exp-dates {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .exp-company {
+    font-size: 13px; font-weight: 500; color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .exp-badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 500; letter-spacing: 1px;
+    text-transform: uppercase; color: #2e7d32;
+    background: #e8f5e9; padding: 3px 8px;
+    margin-top: 8px;
+  }
+  .exp-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px; font-weight: 400;
+    color: var(--navy); margin-bottom: 16px;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .exp-bullets li {
+    font-size: 14px; line-height: 1.7; color: var(--text-muted);
+    padding-left: 16px; position: relative;
+  }
+  .exp-bullets li::before {
+    content: '';
+    position: absolute; left: 0; top: 10px;
+    width: 4px; height: 4px; border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .skill-block {
+    background: white; padding: 36px 32px;
+  }
+  .skill-icon {
+    width: 36px; height: 36px; margin-bottom: 20px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .skill-icon svg { width: 28px; height: 28px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+  .skill-category {
+    font-size: 11px; font-weight: 500; letter-spacing: 1.8px;
+    text-transform: uppercase; color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .skill-list {
+    font-size: 13px; line-height: 1.9; color: var(--text-muted);
+  }
+
+  /* METRICS BAND */
+  .metrics {
+    background: var(--navy); padding: 80px 60px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+  .metric-item { text-align: center; }
+  .metric-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; font-weight: 300; line-height: 1;
+    color: var(--gold-light); margin-bottom: 10px;
+  }
+  .metric-desc {
+    font-size: 12px; font-weight: 400; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  /* CONTACT */
+  .contact { background: var(--warm-white); }
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: start;
+  }
+  .contact-text h2 { margin-bottom: 20px; }
+  .contact-desc {
+    font-size: 15px; line-height: 1.8; color: var(--text-muted);
+    margin-bottom: 40px;
+  }
+  .contact-links { display: flex; flex-direction: column; gap: 14px; }
+  .contact-link {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 14px; color: var(--text-muted);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .contact-link:hover { color: var(--navy); }
+  .contact-link-icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .contact-link-icon svg { width: 16px; height: 16px; stroke: var(--gold); fill: none; stroke-width: 1.5; }
+  .contact-card {
+    background: var(--cream); padding: 48px;
+    border: 1px solid var(--border);
+  }
+  .contact-card-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .contact-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 300; line-height: 1.6;
+    color: var(--navy); margin-bottom: 32px;
+  }
+  .avail-row {
+    display: flex; justify-content: space-between;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .avail-row:last-child { border-bottom: none; }
+  .avail-label { color: var(--text-light); font-weight: 400; }
+  .avail-value { color: var(--navy); font-weight: 500; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy); padding: 40px 60px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400; color: rgba(255,255,255,0.6);
+  }
+  .footer-note {
+    font-size: 12px; color: rgba(255,255,255,0.3);
+    letter-spacing: 0.5px;
+  }
+
+  /* ANIMATIONS */
+  .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 900px) {
+    nav { padding: 18px 24px; }
+    .hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+    .hero::before { display: none; }
+    .hero-text { padding-right: 0; }
+    .hero-visual { display: none; }
+    section { padding: 70px 24px; }
+    .exp-item { grid-template-columns: 1fr; gap: 12px; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: repeat(2,1fr); padding: 60px 24px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">VL Carandang</a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text fade-in">
+    <div class="hero-eyebrow">Available for Hire</div>
+    <h1>Vladimir Louis<br><em>R. Carandang</em></h1>
+    <p class="hero-title">Senior Operations &amp; Data Manager</p>
+    <p class="hero-summary">Operations and data leader with 4+ years building reporting infrastructure, workflow automation, and governance systems across multi-client, high-volume environments. Consistently delivering 30 to 70% efficiency gains through process redesign and automation.</p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get in Touch</a>
+      <a href="#experience" class="btn-secondary">View Experience</a>
+    </div>
+  </div>
+  <div class="hero-visual fade-in">
+    <div class="hero-card">
+      <div class="stat-grid">
+        <div class="stat-item">
+          <div class="stat-number">4<span class="stat-accent">+</span></div>
+          <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">8<span class="stat-accent">+</span></div>
+          <div class="stat-label">Clients Managed</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">70<span class="stat-accent">%</span></div>
+          <div class="stat-label">Efficiency Gains</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">50<span class="stat-accent">k</span></div>
+          <div class="stat-label">Records Standardized</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS BAND -->
+<div class="metrics">
+  <div class="metric-item fade-in">
+    <div class="metric-number">0</div>
+    <div class="metric-desc">Data Discrepancies Across 10 Months</div>
+  </div>
+  <div class="metric-item fade-in">
+    <div class="metric-number">96%</div>
+    <div class="metric-desc">In-Stock Rate Maintained Across 50+ SKUs</div>
+  </div>
+  <div class="metric-item fade-in">
+    <div class="metric-number">40%</div>
+    <div class="metric-desc">Reduction in Reporting Turnaround</div>
+  </div>
+  <div class="metric-item fade-in">
+    <div class="metric-number">15h</div>
+    <div class="metric-desc">Weekly Hours Recovered via Automation</div>
+  </div>
+</div>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="section-label">Career History</div>
+  <h2>Work Experience</h2>
+  <div class="experience-grid">
+
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-dates">Apr 2025 – Feb 2026</div>
+        <div class="exp-company">Firebelly Marketing</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Marketing Analytics &amp; Reporting Manager</div>
+        <ul class="exp-bullets">
+          <li>Held sole accountability for reporting accuracy across 8+ simultaneous client accounts, sustaining a zero-discrepancy record for 10 consecutive months with no missed deliverables.</li>
+          <li>Rebuilt client reporting infrastructure from the ground up, cutting delivery turnaround by 40% and transforming a reactive process into a reliable system that became the team standard.</li>
+          <li>Served as the escalation point for all data integrity issues, resolving discrepancies before they reached clients and establishing quality benchmarks adopted across the analyst team.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-dates">Mar 2024 – Feb 2025</div>
+        <div class="exp-company">FS2 Agency LLC</div>
+        <div class="exp-badge">Promoted</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Operations Manager</div>
+        <ul class="exp-bullets">
+          <li>Eliminated 70% of manual reporting workload (15+ hours per week) by engineering end-to-end automation via Google Apps Script and Looker Studio.</li>
+          <li>Consolidated fragmented data from Shopify, Meta Ads, Klaviyo, and payment processors into a unified intelligence layer, while building forecasting models used directly in quarterly planning.</li>
+          <li>Oversaw daily operations across multiple client accounts, coordinating cross-functional workflows between data, creative, and account teams to ensure consistent, on-time delivery.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-dates">Apr 2023 – Feb 2024</div>
+        <div class="exp-company">FS2 Agency LLC</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Operations &amp; Inventory Analyst</div>
+        <ul class="exp-bullets">
+          <li>Managed end-to-end inventory operations across 50+ SKUs, holding a 96%+ in-stock rate by architecting a replenishment model that flagged risk scenarios before they materialized.</li>
+          <li>Intercepted supplier and logistics failures at the source, preventing an estimated 40% of potential customer-facing disruptions while building infrastructure that cut restocking decision time by 2 days.</li>
+          <li>Designed and documented all operational SOPs for inventory tracking and exception handling, creating a repeatable framework that allowed the team to scale without adding headcount.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-dates">Mar 2022 – Mar 2023</div>
+        <div class="exp-company">SolarCEOs</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">CRM &amp; Pipeline Data Analyst</div>
+        <ul class="exp-bullets">
+          <li>Standardized 50,000+ prospect records across paid and organic channels into a single trusted pipeline source, becoming the foundation the entire sales organization ran on.</li>
+          <li>Engineered automated dashboards that halved reporting turnaround and delivered live visibility into CPL, conversion rates, and ROI across 3+ active campaigns simultaneously.</li>
+          <li>Owned the full data quality lifecycle from ingestion to reporting, setting capture standards and cleaning protocols enforced across all active campaigns without exception.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item fade-in">
+      <div class="exp-meta">
+        <div class="exp-dates">Oct 2021 – Feb 2022</div>
+        <div class="exp-company">Sweet Group Realty</div>
+      </div>
+      <div class="exp-content">
+        <div class="exp-role">Real Estate Data Management</div>
+        <ul class="exp-bullets">
+          <li>Maintained 100% cross-platform listing alignment across AppFolio, CRM, and spreadsheets while reducing portfolio-wide reporting discrepancies by 30%.</li>
+          <li>Designed and implemented SOPs for listing updates, data entry, and tracking workflows, building the operational foundation that supported team scaling beyond the engagement.</li>
+          <li>Acted as the single point of contact for all data integrity matters, personally overseeing every cross-system reconciliation and eliminating conflicts before they affected client reporting.</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" style="background: var(--warm-white);">
+  <div class="section-label">Capabilities</div>
+  <h2>Technical Skills</h2>
+  <div class="skills-grid">
+    <div class="skill-block fade-in">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg>
+      </div>
+      <div class="skill-category">Reporting &amp; BI</div>
+      <div class="skill-list">Looker Studio<br>Power BI<br>Agency Analytics<br>Advanced Google Sheets<br>Advanced Excel</div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
+      </div>
+      <div class="skill-category">Automation</div>
+      <div class="skill-list">Google Apps Script<br>Make (Integromat)<br>N8N<br>Workflow Design<br>SOP Development</div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+      </div>
+      <div class="skill-category">Data &amp; Databases</div>
+      <div class="skill-list">Google BigQuery<br>SQL<br>Data Modeling<br>Pipeline Management<br>Data Governance</div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="skill-category">CRM &amp; Platforms</div>
+      <div class="skill-list">Go High Level<br>AppFolio<br>Airtable<br>TradeGecko<br>Salesforce (Basic)</div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="skill-category">Operations</div>
+      <div class="skill-list">Multi-Client Management<br>Process Optimization<br>Compliance Workflows<br>Document Management<br>Team Leadership</div>
+    </div>
+    <div class="skill-block fade-in">
+      <div class="skill-icon">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      </div>
+      <div class="skill-category">Microsoft Office</div>
+      <div class="skill-list">Microsoft Excel<br>Microsoft Word<br>Microsoft Outlook<br>Google Workspace<br>SharePoint</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="contact-text fade-in">
+      <div class="section-label">Get in Touch</div>
+      <h2>Open to New Opportunities</h2>
+      <p class="contact-desc">Available for full-time remote roles in operations management, data analytics, and mortgage support. Currently accepting opportunities aligned with AEST business hours.</p>
+      <div class="contact-links">
+        <a href="mailto:louiscarandang30@gmail.com" class="contact-link">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          louiscarandang30@gmail.com
+        </a>
+        <a href="tel:+639566653486" class="contact-link">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
+          </div>
+          +63 956 665 3486
+        </a>
+        <a href="https://www.linkedin.com/in/vladimir-louis-c-6b97133b4" target="_blank" class="contact-link">
+          <div class="contact-link-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </div>
+          linkedin.com/in/vladimir-louis-c-6b97133b4
+        </a>
+      </div>
+    </div>
+    <div class="contact-card fade-in">
+      <div class="contact-card-label">Availability</div>
+      <p>"I am available immediately and open to discussing how my background fits your team's needs."</p>
+      <div class="avail-row">
+        <span class="avail-label">Status</span>
+        <span class="avail-value">Open to Opportunities</span>
+      </div>
+      <div class="avail-row">
+        <span class="avail-label">Work Type</span>
+        <span class="avail-value">Full-Time Remote</span>
+      </div>
+      <div class="avail-row">
+        <span class="avail-label">Time Zone</span>
+        <span class="avail-value">PHT (UTC+8) / AEST Aligned</span>
+      </div>
+      <div class="avail-row">
+        <span class="avail-label">Location</span>
+        <span class="avail-value">Davao, Philippines</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-name">Vladimir Louis R. Carandang</div>
+  <div class="footer-note">Senior Operations &amp; Data Manager &nbsp;·&nbsp; Davao, Philippines</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
