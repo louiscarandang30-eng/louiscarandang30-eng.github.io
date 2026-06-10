@@ -3,1091 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vladimir Louis R. Carandang</title>
+<title>Case Study — Revenue Operations Dashboard | Vladimir Carandang</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Barlow+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --white: #ffffff;
-  --off: #f9f9f7;
-  --bg2: #f3f2ef;
-  --ink: #111110;
-  --ink2: #6b6b67;
-  --ink3: #aeaea8;
-  --border: #e5e4e0;
-  --accent: #1a3a6b;
-}
-
+:root { --white:#fff; --off:#f9f9f7; --bg2:#f3f2ef; --ink:#111110; --ink2:#6b6b67; --ink3:#aeaea8; --border:#e5e4e0; --accent:#1a3a6b; }
 html { scroll-behavior: smooth; }
-body {
-  font-family: 'Barlow', sans-serif;
-  background: var(--white);
-  color: var(--ink);
-  line-height: 1.6;
-  overflow-x: hidden;
-  font-weight: 300;
-}
-::-webkit-scrollbar { width: 2px; }
-::-webkit-scrollbar-thumb { background: var(--border); }
+body { font-family:'Barlow',sans-serif; background:var(--white); color:var(--ink); line-height:1.7; font-weight:300; }
+::-webkit-scrollbar { width:2px; } ::-webkit-scrollbar-thumb { background:var(--border); }
 
-/* ── NAV ── */
-nav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 0 64px; height: 60px;
-  background: rgba(255,255,255,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-.nav-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 13px; font-weight: 500; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--ink);
-  text-decoration: none;
-}
-.nav-links { display: flex; gap: 40px; list-style: none; }
-.nav-links a {
-  font-size: 11px; font-weight: 400; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--ink3);
-  text-decoration: none; transition: color 0.2s;
-}
-.nav-links a:hover { color: var(--ink); }
+nav { position:fixed; top:0; left:0; right:0; z-index:200; display:flex; justify-content:space-between; align-items:center; padding:0 64px; height:60px; background:rgba(255,255,255,0.95); backdrop-filter:blur(12px); border-bottom:1px solid var(--border); }
+.nav-name { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:500; letter-spacing:3px; text-transform:uppercase; color:var(--ink); text-decoration:none; }
+.nav-back { font-size:11px; font-weight:400; letter-spacing:2px; text-transform:uppercase; color:var(--ink3); text-decoration:none; transition:color 0.2s; }
+.nav-back:hover { color:var(--ink); }
 
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  justify-content: center; align-items: center;
-  text-align: center;
-  padding: 120px 64px 80px;
-  position: relative;
-}
-.hero-status {
-  font-size: 10px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--ink3);
-  margin-bottom: 48px;
-  display: flex; align-items: center; gap: 10px;
-  justify-content: center;
-}
-.hero-status-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: #5cb85c;
-  animation: blink 2.5s ease-in-out infinite;
-}
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-h1 {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(52px, 8vw, 110px);
-  font-weight: 300; line-height: 0.95;
-  color: var(--ink); letter-spacing: -1px;
-  margin-bottom: 24px;
-}
-h1 strong { font-weight: 600; }
-.hero-role {
-  font-size: 11px; font-weight: 400; letter-spacing: 4px;
-  text-transform: uppercase; color: var(--ink3);
-  margin-bottom: 64px;
-}
-.hero-desc {
-  font-size: 16px; line-height: 1.9; color: var(--ink2);
-  max-width: 520px; font-weight: 300; margin-bottom: 56px;
-}
-.hero-links {
-  display: flex; gap: 40px; justify-content: center;
-  font-size: 11px; font-weight: 400; letter-spacing: 2px;
-  text-transform: uppercase;
-}
-.hero-links a {
-  color: var(--ink2); text-decoration: none;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 3px; transition: all 0.2s;
-}
-.hero-links a:hover { color: var(--ink); border-color: var(--ink); }
-.hero-links a.primary { color: var(--accent); border-color: var(--accent); }
-.scroll-hint {
-  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
-  font-size: 9px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--ink3);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-}
-.scroll-arrow {
-  width: 1px; height: 32px; background: var(--border);
-  animation: scrollpulse 2s ease-in-out infinite;
-}
-@keyframes scrollpulse {
-  0%,100%{transform:scaleY(1);opacity:0.4} 50%{transform:scaleY(0.5);opacity:1}
-}
+.hero { padding:140px 64px 70px; max-width:1100px; margin:0 auto; }
+.hero-tag { font-size:10px; font-weight:400; letter-spacing:3px; text-transform:uppercase; color:var(--accent); margin-bottom:24px; }
+h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(40px,6vw,76px); font-weight:300; line-height:1; letter-spacing:-1px; margin-bottom:24px; }
+h1 strong { font-weight:600; }
+.hero-sub { font-size:17px; line-height:1.9; color:var(--ink2); max-width:640px; }
 
-/* ── NUMBERS STRIP ── */
-.strip {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-.strip-block {
-  padding: 56px 48px;
-  border-right: 1px solid var(--border);
-}
-.strip-block:last-child { border-right: none; }
-.strip-num {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 56px; font-weight: 300; line-height: 1;
-  color: var(--ink); margin-bottom: 10px; letter-spacing: -1px;
-}
-.strip-num span { font-size: 28px; color: var(--ink3); }
-.strip-label {
-  font-size: 11px; font-weight: 400; letter-spacing: 1px;
-  color: var(--ink3); line-height: 1.6;
-}
+.meta-strip { display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--border); border-bottom:1px solid var(--border); max-width:1100px; margin:0 auto; }
+.meta-block { padding:32px 36px; border-right:1px solid var(--border); }
+.meta-block:last-child { border-right:none; }
+.meta-k { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--ink3); margin-bottom:8px; }
+.meta-v { font-size:14px; color:var(--ink); font-weight:400; }
 
-/* ── SECTION SHELL ── */
-.section { padding: 112px 64px; }
-.section.alt { background: var(--off); }
-.s-header {
-  display: grid; grid-template-columns: 160px 1fr;
-  gap: 48px; align-items: baseline;
-  margin-bottom: 72px;
-}
-.s-num {
-  font-size: 10px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--ink3);
-  padding-top: 6px;
-}
-h2 {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: clamp(36px, 5vw, 60px);
-  font-weight: 300; color: var(--ink);
-  letter-spacing: -0.5px; line-height: 1.05;
-}
-h2 em { font-style: italic; color: var(--ink3); font-weight: 300; }
+.section { padding:80px 64px; max-width:1100px; margin:0 auto; }
+.s-tag { font-size:10px; font-weight:400; letter-spacing:3px; text-transform:uppercase; color:var(--ink3); margin-bottom:16px; }
+h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(28px,4vw,44px); font-weight:300; letter-spacing:-0.5px; line-height:1.1; margin-bottom:28px; }
+h2 em { font-style:italic; color:var(--ink3); }
+.body-text { font-size:16px; line-height:1.9; color:var(--ink2); margin-bottom:20px; max-width:760px; }
+.body-text strong { color:var(--ink); font-weight:500; }
 
-/* ── WORK GRID ── */
-.work-grid {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 2px; background: var(--border);
-  border: 1px solid var(--border);
-}
-.work-card {
-  background: var(--white); padding: 0;
-  display: flex; flex-direction: column;
-  transition: background 0.2s; cursor: default;
-  overflow: hidden;
-}
-.work-card:hover { background: var(--off); }
-.work-preview {
-  width: 100%; aspect-ratio: 16/9;
-  background: var(--bg2);
-  overflow: hidden; position: relative;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-.work-preview svg { width: 100%; height: 100%; display: block; }
-.work-body { padding: 28px 32px 32px; flex: 1; display: flex; flex-direction: column; }
-.work-idx {
-  font-size: 10px; font-weight: 400; letter-spacing: 2px;
-  color: var(--ink3); margin-bottom: 12px;
-  text-transform: uppercase;
-}
-.work-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 20px; font-weight: 500; letter-spacing: 0.2px;
-  color: var(--ink); margin-bottom: 4px; line-height: 1.2;
-}
-.work-org {
-  font-size: 10px; font-weight: 400; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--ink3);
-  margin-bottom: 16px;
-}
-.work-line { width: 24px; height: 1px; background: var(--border); margin-bottom: 16px; }
-.work-desc {
-  font-size: 13px; line-height: 1.8; color: var(--ink2);
-  font-weight: 300; flex: 1; margin-bottom: 20px;
-}
-.work-stat {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 10px 14px; background: var(--off);
-  border: 1px solid var(--border);
-}
-.work-stat-label { font-size: 10px; color: var(--ink3); letter-spacing: 0.5px; }
-.work-stat-val {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 18px; font-weight: 500; color: var(--accent);
-  letter-spacing: 0.3px;
-}
+.dash { background:#1a1a1a; border:1px solid #2a2a2a; margin:40px 0; }
+.dash svg { width:100%; display:block; }
+.caption { font-size:12px; color:var(--ink3); letter-spacing:0.5px; margin-top:-24px; margin-bottom:40px; font-style:italic; }
 
-/* ── EXPERIENCE ── */
-.exp-item {
-  display: grid; grid-template-columns: 200px 1fr;
-  border-top: 1px solid var(--border);
-}
-.exp-item:last-child { border-bottom: 1px solid var(--border); }
-.exp-l {
-  padding: 40px 32px 40px 0;
-  border-right: 1px solid var(--border);
-}
-.exp-date {
-  font-size: 10px; font-weight: 400; letter-spacing: 1.5px;
-  text-transform: uppercase; color: var(--ink3); margin-bottom: 8px;
-}
-.exp-co {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px; font-weight: 500; letter-spacing: 0.5px;
-  color: var(--accent); margin-bottom: 8px;
-}
-.exp-promoted {
-  font-size: 9px; font-weight: 500; letter-spacing: 1.5px;
-  text-transform: uppercase; color: #3a7d44;
-  background: #eef6f0; border: 1px solid #c3e0ca;
-  padding: 3px 8px; display: inline-block;
-}
-.exp-r { padding: 40px 0 40px 48px; }
-.exp-title {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 22px; font-weight: 500; letter-spacing: 0.2px;
-  color: var(--ink); margin-bottom: 20px; line-height: 1.2;
-}
-.exp-list { list-style: none; display: flex; flex-direction: column; gap: 11px; }
-.exp-list li {
-  font-size: 14px; line-height: 1.8; color: var(--ink2);
-  padding-left: 20px; position: relative; font-weight: 300;
-}
-.exp-list li::before {
-  content: '';
-  position: absolute; left: 0; top: 13px;
-  width: 8px; height: 1px; background: var(--ink3);
-}
+.split { display:grid; grid-template-columns:1fr 1fr; gap:2px; background:var(--border); border:1px solid var(--border); margin:36px 0; }
+.split-cell { background:var(--white); padding:36px; }
+.split-cell h3 { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:16px; }
+.split-cell p { font-size:14px; line-height:1.8; color:var(--ink2); }
+.split-cell.dark { background:var(--ink); }
+.split-cell.dark h3 { color:#6b8cc4; }
+.split-cell.dark p { color:rgba(255,255,255,0.6); }
 
-/* ── SKILLS ── */
-.skills-grid {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 2px; background: var(--border); border: 1px solid var(--border);
-}
-.skill-col { background: var(--white); padding: 40px 36px; }
-.skill-col-name {
-  font-size: 10px; font-weight: 500; letter-spacing: 2.5px;
-  text-transform: uppercase; color: var(--ink3);
-  margin-bottom: 32px; padding-bottom: 16px;
-  border-bottom: 1px solid var(--border);
-}
-.skill-rows { display: flex; flex-direction: column; gap: 18px; }
-.sk { display: flex; flex-direction: column; gap: 7px; }
-.sk-top { display: flex; justify-content: space-between; }
-.sk-name { font-size: 13px; color: var(--ink); font-weight: 400; }
-.sk-pct { font-size: 11px; color: var(--ink3); font-weight: 300; }
-.sk-bar { height: 1px; background: var(--border); position: relative; overflow: visible; }
-.sk-fill {
-  position: absolute; top: -0.5px; left: 0; height: 2px;
-  background: var(--ink); transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
-}
-.sk-fill.blue { background: var(--accent); }
-.sk-fill.start { width: 0 !important; }
+.results { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; background:var(--border); border:1px solid var(--border); margin:36px 0; }
+.result-cell { background:var(--off); padding:36px 28px; }
+.result-num { font-family:'Barlow Condensed',sans-serif; font-size:42px; font-weight:300; color:var(--accent); line-height:1; margin-bottom:10px; }
+.result-label { font-size:12px; color:var(--ink2); line-height:1.5; }
 
-/* ── AI ── */
-.ai-row {
-  display: grid; grid-template-columns: repeat(4,1fr);
-  gap: 2px; background: var(--border); border: 1px solid var(--border);
-}
-.ai-cell { background: var(--off); padding: 40px 32px; transition: background 0.2s; }
-.ai-cell:hover { background: var(--white); }
-.ai-abbr {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 11px; font-weight: 600; letter-spacing: 3px;
-  text-transform: uppercase; color: var(--ink3);
-  margin-bottom: 20px;
-}
-.ai-name {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 17px; font-weight: 500; letter-spacing: 0.3px;
-  color: var(--ink); margin-bottom: 10px;
-}
-.ai-desc {
-  font-size: 13px; line-height: 1.75; color: var(--ink2); font-weight: 300;
-}
+.stack-list { list-style:none; display:flex; flex-wrap:wrap; gap:10px; margin:24px 0; }
+.stack-list li { font-size:12px; font-weight:400; letter-spacing:0.5px; color:var(--ink2); border:1px solid var(--border); padding:8px 16px; }
 
-/* ── CONTACT ── */
-.contact-wrap {
-  background: var(--ink); padding: 112px 64px;
-}
-.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 96px; align-items: start; }
-.c-tag {
-  font-size: 10px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color: rgba(255,255,255,0.3);
-  margin-bottom: 24px;
-}
-.contact-wrap h2 { color: var(--white); margin-bottom: 20px; }
-.contact-wrap h2 em { color: rgba(255,255,255,0.3); }
-.c-desc {
-  font-size: 15px; line-height: 1.9; color: rgba(255,255,255,0.4);
-  font-weight: 300; margin-bottom: 44px;
-}
-.c-links { display: flex; flex-direction: column; gap: 2px; }
-.c-link {
-  display: flex; align-items: center; gap: 16px;
-  padding: 15px 18px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
-  text-decoration: none; transition: all 0.2s;
-}
-.c-link:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); }
-.c-link svg { width: 14px; height: 14px; stroke: rgba(255,255,255,0.3); fill: none; stroke-width: 1.5; flex-shrink:0; }
-.c-link span { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 300; }
-.avail-box {
-  border: 1px solid rgba(255,255,255,0.1);
-  padding: 44px; background: rgba(255,255,255,0.03);
-}
-.avail-live {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 400; letter-spacing: 3px;
-  text-transform: uppercase; color: rgba(255,255,255,0.3);
-  margin-bottom: 28px;
-}
-.avail-live-dot {
-  width: 5px; height: 5px; border-radius: 50%;
-  background: #5cb85c; box-shadow: 0 0 6px rgba(92,184,92,0.7);
-  animation: blink 2s infinite;
-}
-.avail-q {
-  font-size: 17px; font-weight: 300; line-height: 1.65;
-  font-style: italic; color: rgba(255,255,255,0.65);
-  margin-bottom: 40px;
-}
-.avail-rows {}
-.avail-row {
-  display: flex; justify-content: space-between;
-  padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
-  font-size: 12px;
-}
-.avail-row:last-child { border-bottom: none; }
-.avail-k { color: rgba(255,255,255,0.25); font-weight: 300; letter-spacing: 0.3px; }
-.avail-v { color: rgba(255,255,255,0.6); font-weight: 400; }
-.avail-v.on { color: #5cb85c; }
+.cta-band { background:var(--ink); padding:80px 64px; text-align:center; }
+.cta-band h2 { color:var(--white); margin-bottom:20px; }
+.cta-band h2 em { color:rgba(255,255,255,0.4); }
+.cta-band p { font-size:15px; color:rgba(255,255,255,0.5); margin-bottom:36px; max-width:520px; margin-left:auto; margin-right:auto; }
+.cta-btn { display:inline-flex; gap:8px; font-size:11px; font-weight:500; letter-spacing:2px; text-transform:uppercase; color:var(--white); text-decoration:none; border:1px solid rgba(255,255,255,0.2); padding:14px 32px; transition:all 0.2s; }
+.cta-btn:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.4); }
 
-/* ── FOOTER ── */
-footer {
-  background: #0c0c0b; padding: 24px 64px;
-  display: flex; justify-content: space-between;
-  font-size: 10px; color: rgba(255,255,255,0.2);
-  letter-spacing: 1px; text-transform: uppercase;
-  align-items: center;
-}
+.disclaimer { max-width:1100px; margin:0 auto; padding:0 64px 60px; }
+.disclaimer p { font-size:12px; color:var(--ink3); line-height:1.7; font-style:italic; border-top:1px solid var(--border); padding-top:24px; }
 
-/* ── REVEAL ── */
-.reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.65s ease, transform 0.65s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+footer { background:var(--ink); padding:28px 64px; display:flex; justify-content:space-between; font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:1px; text-transform:uppercase; align-items:center; }
 
-@media (max-width: 960px) {
-  nav { padding: 0 24px; }
-  .hero { padding: 100px 24px 80px; }
-  .strip { grid-template-columns: repeat(2,1fr); }
-  .strip-block { border-bottom: 1px solid var(--border); }
-  .section { padding: 72px 24px; }
-  .s-header { grid-template-columns: 1fr; gap: 12px; }
-  .work-grid { grid-template-columns: 1fr; }
-  .exp-item { grid-template-columns: 1fr; }
-  .exp-l { padding: 28px 0 16px; border-right: none; border-bottom: 1px solid var(--border); }
-  .exp-r { padding: 20px 0 32px; }
-  .skills-grid { grid-template-columns: repeat(2,1fr); }
-  .ai-row { grid-template-columns: repeat(2,1fr); }
-  .contact-wrap { padding: 72px 24px; }
-  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-  footer { padding: 20px 24px; flex-direction: column; gap: 8px; }
+.reveal { opacity:0; transform:translateY(16px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+
+@media (max-width:900px) {
+  nav { padding:0 24px; } .hero { padding:110px 24px 50px; } .section { padding:56px 24px; }
+  .meta-strip { grid-template-columns:repeat(2,1fr); } .meta-block:nth-child(-n+2){border-bottom:1px solid var(--border);}
+  .split { grid-template-columns:1fr; } .results { grid-template-columns:repeat(2,1fr); }
+  .cta-band { padding:56px 24px; } .disclaimer { padding:0 24px 40px; } footer { padding:20px 24px; flex-direction:column; gap:8px; }
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#" class="nav-name">Vladimir Carandang</a>
-  <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
+  <a href="index.html" class="nav-name">Vladimir Carandang</a>
+  <a href="index.html" class="nav-back">← Back to Portfolio</a>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-status reveal">
-    <span class="hero-status-dot"></span>
-    Available for opportunities
-  </div>
-  <h1 class="reveal"><strong>Vladimir</strong><br>Carandang</h1>
-  <p class="hero-role reveal">Senior Operations &amp; Data Manager</p>
-  <p class="hero-desc reveal">I build the systems that organizations depend on — automated reporting pipelines, data governance, AI-assisted workflows, and the operational infrastructure that turns complexity into clarity.</p>
-  <div class="hero-links reveal">
-    <a href="#work">View Work</a>
-    <a href="#experience">Experience</a>
-    <a href="#contact" class="primary">Hire Me</a>
-  </div>
-  <div class="scroll-hint">
-    <span>Scroll</span>
-    <div class="scroll-arrow"></div>
-  </div>
+  <div class="hero-tag reveal">Featured Case Study</div>
+  <h1 class="reveal"><strong>Revenue Operations</strong><br>Dashboard System</h1>
+  <p class="hero-sub reveal">A consolidated reporting layer that brings revenue, pipeline, and spend data into one automated source of truth, designed so leadership can read the health of the business at a glance and act on it the same day.</p>
 </section>
 
-<!-- STRIP -->
-<div class="strip">
-  <div class="strip-block reveal">
-    <div class="strip-num">4<span>+ yrs</span></div>
-    <div class="strip-label">Managing multi-client remote operations</div>
-  </div>
-  <div class="strip-block reveal">
-    <div class="strip-num">70<span>%</span></div>
-    <div class="strip-label">Manual workload eliminated via automation</div>
-  </div>
-  <div class="strip-block reveal">
-    <div class="strip-num">50<span>k</span></div>
-    <div class="strip-label">Records standardized into one pipeline</div>
-  </div>
-  <div class="strip-block reveal">
-    <div class="strip-num">0</div>
-    <div class="strip-label">Data discrepancies across 8+ accounts, 10 months</div>
-  </div>
+<div class="meta-strip">
+  <div class="meta-block reveal"><div class="meta-k">Discipline</div><div class="meta-v">Revenue Operations</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Tools</div><div class="meta-v">Looker Studio, Power BI</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Data Sources</div><div class="meta-v">CRM, Ads, Payments</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Refresh</div><div class="meta-v">Automated, Scheduled</div></div>
 </div>
 
-<!-- WORK -->
-<section class="section" id="work">
-  <div class="s-header reveal">
-    <div class="s-num">01 — Work</div>
-    <h2>Selected <em>Projects</em></h2>
-  </div>
-  <div class="work-grid">
-
-    <!-- Card 1: Reporting Dashboard Mockup -->
-    <div class="work-card reveal">
-      <div class="work-preview">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="background:#1e2433">
-          <!-- Header bar -->
-          <rect x="0" y="0" width="480" height="36" fill="#252d3f"/>
-          <text x="16" y="23" fill="#8892a4" font-size="9" font-family="sans-serif" letter-spacing="1.5">CLIENT REPORTING DASHBOARD</text>
-          <circle cx="452" cy="18" r="5" fill="#5cb85c" opacity="0.8"/>
-          <circle cx="464" cy="18" r="5" fill="#f5a623" opacity="0.8"/>
-          <!-- KPI row -->
-          <rect x="12" y="46" width="103" height="56" rx="2" fill="#252d3f"/>
-          <text x="20" y="63" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">ACCOUNTS</text>
-          <text x="20" y="85" fill="#ffffff" font-size="22" font-family="sans-serif" font-weight="300">8+</text>
-          <rect x="123" y="46" width="103" height="56" rx="2" fill="#252d3f"/>
-          <text x="131" y="63" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">DISCREPANCIES</text>
-          <text x="131" y="85" fill="#5cb85c" font-size="22" font-family="sans-serif" font-weight="300">0</text>
-          <rect x="234" y="46" width="103" height="56" rx="2" fill="#252d3f"/>
-          <text x="242" y="63" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">TURNAROUND</text>
-          <text x="242" y="85" fill="#ffffff" font-size="22" font-family="sans-serif" font-weight="300">–40<tspan font-size="12">%</tspan></text>
-          <rect x="345" y="46" width="123" height="56" rx="2" fill="#252d3f"/>
-          <text x="353" y="63" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">DELIVERIES</text>
-          <text x="353" y="85" fill="#ffffff" font-size="22" font-family="sans-serif" font-weight="300">100<tspan font-size="12">%</tspan></text>
-          <!-- Chart area -->
-          <rect x="12" y="112" width="290" height="148" rx="2" fill="#252d3f"/>
-          <text x="22" y="128" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">WEEKLY DELIVERY PERFORMANCE</text>
-          <!-- bars -->
-          <rect x="32" y="212" width="18" height="28" fill="#2a4a7f" opacity="0.5" rx="1"/>
-          <rect x="32" y="196" width="18" height="44" fill="#2a4a7f" opacity="0.8" rx="1"/>
-          <rect x="60" y="188" width="18" height="52" fill="#2a4a7f" rx="1"/>
-          <rect x="88" y="200" width="18" height="40" fill="#2a4a7f" opacity="0.7" rx="1"/>
-          <rect x="116" y="183" width="18" height="57" fill="#2a4a7f" rx="1"/>
-          <rect x="144" y="175" width="18" height="65" fill="#2a4a7f" rx="1"/>
-          <rect x="172" y="168" width="18" height="72" fill="#2a4a7f" rx="1"/>
-          <rect x="200" y="162" width="18" height="78" fill="#3d6bc4" rx="1"/>
-          <rect x="228" y="156" width="18" height="84" fill="#3d6bc4" rx="1"/>
-          <rect x="256" y="148" width="18" height="92" fill="#3d6bc4" rx="1"/>
-          <!-- trend line -->
-          <polyline points="41,208 69,190 97,196 125,183 153,175 181,168 209,162 237,155 265,147" fill="none" stroke="#5cb85c" stroke-width="1.5" opacity="0.6"/>
-          <!-- sidebar -->
-          <rect x="310" y="112" width="158" height="148" rx="2" fill="#252d3f"/>
-          <text x="320" y="128" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">BY PLATFORM</text>
-          <text x="320" y="150" fill="#8892a4" font-size="9" font-family="sans-serif">Looker Studio</text>
-          <rect x="320" y="156" width="120" height="3" rx="1" fill="#1a1a2e"/>
-          <rect x="320" y="156" width="88" height="3" rx="1" fill="#3d6bc4"/>
-          <text x="320" y="178" fill="#8892a4" font-size="9" font-family="sans-serif">Sprout Social</text>
-          <rect x="320" y="184" width="120" height="3" rx="1" fill="#1a1a2e"/>
-          <rect x="320" y="184" width="68" height="3" rx="1" fill="#3d6bc4" opacity="0.7"/>
-          <text x="320" y="206" fill="#8892a4" font-size="9" font-family="sans-serif">Google Sheets</text>
-          <rect x="320" y="212" width="120" height="3" rx="1" fill="#1a1a2e"/>
-          <rect x="320" y="212" width="102" height="3" rx="1" fill="#3d6bc4" opacity="0.5"/>
-          <text x="320" y="234" fill="#8892a4" font-size="9" font-family="sans-serif">Custom Dashboards</text>
-          <rect x="320" y="240" width="120" height="3" rx="1" fill="#1a1a2e"/>
-          <rect x="320" y="240" width="56" height="3" rx="1" fill="#3d6bc4" opacity="0.4"/>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-idx">01 — Firebelly Marketing</div>
-        <div class="work-title">Multi-Client Reporting Infrastructure</div>
-        <div class="work-org">Analytics & Reporting</div>
-        <div class="work-line"></div>
-        <div class="work-desc">Rebuilt the entire client reporting stack across 8+ simultaneous accounts. Standardized data flows from Sprout, Looker Studio, and custom dashboards into a single delivery system. Sustained zero discrepancies over 10 months.</div>
-        <div class="work-stat">
-          <span class="work-stat-label">Turnaround reduced</span>
-          <span class="work-stat-val">40%</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 2: Operations Automation Mockup -->
-    <div class="work-card reveal">
-      <div class="work-preview">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f7">
-          <!-- Automation flow diagram -->
-          <rect x="0" y="0" width="480" height="36" fill="#f0efe9"/>
-          <text x="16" y="23" fill="#9a9a92" font-size="9" font-family="sans-serif" letter-spacing="1.5">WORKFLOW AUTOMATION MAP — FS2 AGENCY</text>
-          <!-- source nodes -->
-          <rect x="16" y="52" width="72" height="32" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="52" y="70" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Shopify</text>
-          <rect x="16" y="96" width="72" height="32" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="52" y="114" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Meta Ads</text>
-          <rect x="16" y="140" width="72" height="32" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="52" y="158" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Klaviyo</text>
-          <rect x="16" y="184" width="72" height="32" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="52" y="202" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Payments</text>
-          <!-- arrows -->
-          <line x1="88" y1="68" x2="148" y2="120" stroke="#e5e4e0" stroke-width="1" stroke-dasharray="3,3"/>
-          <line x1="88" y1="112" x2="148" y2="125" stroke="#e5e4e0" stroke-width="1" stroke-dasharray="3,3"/>
-          <line x1="88" y1="156" x2="148" y2="135" stroke="#e5e4e0" stroke-width="1" stroke-dasharray="3,3"/>
-          <line x1="88" y1="200" x2="148" y2="142" stroke="#e5e4e0" stroke-width="1" stroke-dasharray="3,3"/>
-          <!-- automation node -->
-          <rect x="148" y="104" width="96" height="52" rx="3" fill="#1a3a6b"/>
-          <text x="196" y="126" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">APPS SCRIPT</text>
-          <text x="196" y="142" fill="rgba(255,255,255,0.5)" font-size="7" font-family="sans-serif" text-anchor="middle">+ Looker Studio</text>
-          <!-- arrows out -->
-          <line x1="244" y1="118" x2="300" y2="80" stroke="#1a3a6b" stroke-width="1.5"/>
-          <line x1="244" y1="130" x2="300" y2="130" stroke="#1a3a6b" stroke-width="1.5"/>
-          <line x1="244" y1="142" x2="300" y2="186" stroke="#1a3a6b" stroke-width="1.5"/>
-          <!-- output nodes -->
-          <rect x="300" y="56" width="100" height="44" rx="2" fill="#fff" stroke="#1a3a6b" stroke-width="1"/>
-          <text x="350" y="74" fill="#1a3a6b" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="500">Revenue</text>
-          <text x="350" y="88" fill="#9a9a92" font-size="7" font-family="sans-serif" text-anchor="middle">Forecasting Model</text>
-          <rect x="300" y="108" width="100" height="44" rx="2" fill="#fff" stroke="#1a3a6b" stroke-width="1"/>
-          <text x="350" y="126" fill="#1a3a6b" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="500">Unified Dashboard</text>
-          <text x="350" y="140" fill="#9a9a92" font-size="7" font-family="sans-serif" text-anchor="middle">Real-time KPIs</text>
-          <rect x="300" y="164" width="100" height="44" rx="2" fill="#fff" stroke="#1a3a6b" stroke-width="1"/>
-          <text x="350" y="182" fill="#1a3a6b" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="500">Spend Alerts</text>
-          <text x="350" y="196" fill="#9a9a92" font-size="7" font-family="sans-serif" text-anchor="middle">Automated Triggers</text>
-          <!-- result badge -->
-          <rect x="300" y="222" width="164" height="34" rx="2" fill="#eef3ee"/>
-          <text x="382" y="240" fill="#3a7d44" font-size="9" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">15h+ / week recovered</text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-idx">02 — FS2 Agency LLC</div>
-        <div class="work-title">End-to-End Operations Automation</div>
-        <div class="work-org">Workflow Engineering</div>
-        <div class="work-line"></div>
-        <div class="work-desc">Designed automated financial and marketing workflows via Apps Script and Looker Studio. Unified Shopify, Meta Ads, Klaviyo, and payment data into one layer with revenue forecasting models used directly in quarterly planning.</div>
-        <div class="work-stat">
-          <span class="work-stat-label">Manual hours recovered weekly</span>
-          <span class="work-stat-val">15h+</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 3: Inventory Model -->
-    <div class="work-card reveal">
-      <div class="work-preview">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f7">
-          <rect x="0" y="0" width="480" height="36" fill="#f0efe9"/>
-          <text x="16" y="23" fill="#9a9a92" font-size="9" font-family="sans-serif" letter-spacing="1.5">INVENTORY RISK MODEL — FS2 AGENCY</text>
-          <!-- Table header -->
-          <rect x="12" y="44" width="456" height="22" fill="#1a3a6b"/>
-          <text x="20" y="58" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif" letter-spacing="0.5">SKU</text>
-          <text x="100" y="58" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif" letter-spacing="0.5">STOCK</text>
-          <text x="170" y="58" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif" letter-spacing="0.5">VELOCITY</text>
-          <text x="250" y="58" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif" letter-spacing="0.5">DAYS LEFT</text>
-          <text x="330" y="58" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif" letter-spacing="0.5">STATUS</text>
-          <text x="400" y="58" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif" letter-spacing="0.5">ACTION</text>
-          <!-- rows -->
-          <rect x="12" y="66" width="456" height="20" fill="#ffffff"/>
-          <text x="20" y="79" fill="#111110" font-size="8" font-family="sans-serif">PROD-001-A</text>
-          <text x="100" y="79" fill="#111110" font-size="8" font-family="sans-serif">342</text>
-          <text x="170" y="79" fill="#111110" font-size="8" font-family="sans-serif">28/day</text>
-          <text x="250" y="79" fill="#111110" font-size="8" font-family="sans-serif">12.2</text>
-          <rect x="328" y="69" width="46" height="12" rx="2" fill="#eef6f0"/>
-          <text x="351" y="79" fill="#3a7d44" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">OK</text>
-          <text x="400" y="79" fill="#9a9a92" font-size="8" font-family="sans-serif">Monitor</text>
-          <rect x="12" y="86" width="456" height="20" fill="#f9f9f7"/>
-          <text x="20" y="99" fill="#111110" font-size="8" font-family="sans-serif">PROD-002-B</text>
-          <text x="100" y="99" fill="#111110" font-size="8" font-family="sans-serif">54</text>
-          <text x="170" y="99" fill="#111110" font-size="8" font-family="sans-serif">18/day</text>
-          <text x="250" y="99" fill="#d4380d" font-size="8" font-family="sans-serif" font-weight="500">3.0</text>
-          <rect x="328" y="89" width="46" height="12" rx="2" fill="#fff1f0"/>
-          <text x="351" y="99" fill="#d4380d" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">URGENT</text>
-          <text x="400" y="99" fill="#d4380d" font-size="8" font-family="sans-serif">Reorder Now</text>
-          <rect x="12" y="106" width="456" height="20" fill="#ffffff"/>
-          <text x="20" y="119" fill="#111110" font-size="8" font-family="sans-serif">PROD-003-C</text>
-          <text x="100" y="119" fill="#111110" font-size="8" font-family="sans-serif">891</text>
-          <text x="170" y="119" fill="#111110" font-size="8" font-family="sans-serif">12/day</text>
-          <text x="250" y="119" fill="#f5a623" font-size="8" font-family="sans-serif" font-weight="500">74.3</text>
-          <rect x="328" y="109" width="46" height="12" rx="2" fill="#fffbe6"/>
-          <text x="351" y="119" fill="#d48806" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">EXCESS</text>
-          <text x="400" y="119" fill="#d48806" font-size="8" font-family="sans-serif">Hold Orders</text>
-          <rect x="12" y="126" width="456" height="20" fill="#f9f9f7"/>
-          <text x="20" y="139" fill="#111110" font-size="8" font-family="sans-serif">PROD-004-A</text>
-          <text x="100" y="139" fill="#111110" font-size="8" font-family="sans-serif">218</text>
-          <text x="170" y="139" fill="#111110" font-size="8" font-family="sans-serif">22/day</text>
-          <text x="250" y="139" fill="#111110" font-size="8" font-family="sans-serif">9.9</text>
-          <rect x="328" y="129" width="46" height="12" rx="2" fill="#eef6f0"/>
-          <text x="351" y="139" fill="#3a7d44" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">OK</text>
-          <text x="400" y="139" fill="#9a9a92" font-size="8" font-family="sans-serif">Monitor</text>
-          <rect x="12" y="146" width="456" height="20" fill="#ffffff"/>
-          <text x="20" y="159" fill="#111110" font-size="8" font-family="sans-serif">PROD-005-D</text>
-          <text x="100" y="159" fill="#111110" font-size="8" font-family="sans-serif">31</text>
-          <text x="170" y="159" fill="#111110" font-size="8" font-family="sans-serif">15/day</text>
-          <text x="250" y="159" fill="#f5a623" font-size="8" font-family="sans-serif" font-weight="500">2.1</text>
-          <rect x="328" y="149" width="46" height="12" rx="2" fill="#fff1f0"/>
-          <text x="351" y="159" fill="#d4380d" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">LOW</text>
-          <text x="400" y="159" fill="#d4380d" font-size="8" font-family="sans-serif">Expedite</text>
-          <!-- In-stock rate gauge area -->
-          <rect x="12" y="180" width="220" height="78" rx="2" fill="#ffffff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="22" y="196" fill="#9a9a92" font-size="7" font-family="sans-serif" letter-spacing="1">OVERALL IN-STOCK RATE</text>
-          <text x="22" y="232" fill="#1a3a6b" font-size="36" font-family="sans-serif" font-weight="300">96<tspan font-size="16">%</tspan></text>
-          <text x="22" y="250" fill="#9a9a92" font-size="7" font-family="sans-serif">Across 50+ active SKUs</text>
-          <!-- bar -->
-          <rect x="248" y="180" width="220" height="78" rx="2" fill="#ffffff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="258" y="196" fill="#9a9a92" font-size="7" font-family="sans-serif" letter-spacing="1">FULFILLMENT DISRUPTIONS PREVENTED</text>
-          <text x="258" y="232" fill="#3a7d44" font-size="36" font-family="sans-serif" font-weight="300">40<tspan font-size="16">%</tspan></text>
-          <text x="258" y="250" fill="#9a9a92" font-size="7" font-family="sans-serif">Customer-facing issues intercepted</text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-idx">03 — FS2 Agency LLC</div>
-        <div class="work-title">Inventory Risk & Replenishment Model</div>
-        <div class="work-org">Operations & Data</div>
-        <div class="work-line"></div>
-        <div class="work-desc">Built the full inventory visibility infrastructure in Google Sheets and Airtable. Architected a replenishment and risk model that flagged overstock and shortage scenarios before they materialized across 50+ active SKUs.</div>
-        <div class="work-stat">
-          <span class="work-stat-label">In-stock rate maintained</span>
-          <span class="work-stat-val">96%+</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 4: Pipeline Standardization -->
-    <div class="work-card reveal">
-      <div class="work-preview">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="background:#1e2433">
-          <rect x="0" y="0" width="480" height="36" fill="#252d3f"/>
-          <text x="16" y="23" fill="#8892a4" font-size="9" font-family="sans-serif" letter-spacing="1.5">PIPELINE DASHBOARD — SOLARCEOS</text>
-          <!-- Funnel stages -->
-          <text x="16" y="56" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">LEAD FUNNEL</text>
-          <rect x="16" y="64" width="200" height="18" rx="1" fill="#2a4a7f"/>
-          <text x="24" y="77" fill="rgba(255,255,255,0.8)" font-size="8" font-family="sans-serif">Leads Captured</text>
-          <text x="196" y="77" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="end">50,247</text>
-          <rect x="16" y="88" width="168" height="18" rx="1" fill="#2a4a7f" opacity="0.8"/>
-          <text x="24" y="101" fill="rgba(255,255,255,0.7)" font-size="8" font-family="sans-serif">Contacted</text>
-          <text x="196" y="101" fill="rgba(255,255,255,0.8)" font-size="8" font-family="sans-serif" text-anchor="end">38,940</text>
-          <rect x="16" y="112" width="130" height="18" rx="1" fill="#2a4a7f" opacity="0.6"/>
-          <text x="24" y="125" fill="rgba(255,255,255,0.6)" font-size="8" font-family="sans-serif">Qualified</text>
-          <text x="196" y="125" fill="rgba(255,255,255,0.6)" font-size="8" font-family="sans-serif" text-anchor="end">18,210</text>
-          <rect x="16" y="136" width="88" height="18" rx="1" fill="#3d6bc4" opacity="0.7"/>
-          <text x="24" y="149" fill="rgba(255,255,255,0.6)" font-size="8" font-family="sans-serif">Proposal</text>
-          <text x="196" y="149" fill="rgba(255,255,255,0.5)" font-size="8" font-family="sans-serif" text-anchor="end">6,480</text>
-          <rect x="16" y="160" width="52" height="18" rx="1" fill="#5cb85c" opacity="0.7"/>
-          <text x="24" y="173" fill="rgba(255,255,255,0.6)" font-size="8" font-family="sans-serif">Closed</text>
-          <text x="196" y="173" fill="#5cb85c" font-size="8" font-family="sans-serif" text-anchor="end">2,940</text>
-          <!-- Right panel -->
-          <rect x="228" y="46" width="240" height="56" rx="2" fill="#252d3f"/>
-          <text x="238" y="63" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">CAMPAIGN PERFORMANCE</text>
-          <text x="238" y="82" fill="#8892a4" font-size="9" font-family="sans-serif">Paid Search</text>
-          <rect x="238" y="88" width="180" height="3" rx="1" fill="#1a1a2e"/>
-          <rect x="238" y="88" width="138" height="3" rx="1" fill="#3d6bc4"/>
-          <text x="422" y="91" fill="#8892a4" font-size="7" font-family="sans-serif">76%</text>
-          <text x="238" y="104" fill="#8892a4" font-size="9" font-family="sans-serif">Organic</text>
-          <rect x="238" y="110" width="180" height="3" rx="1" fill="#1a1a2e"/>
-          <rect x="238" y="110" width="96" height="3" rx="1" fill="#3d6bc4" opacity="0.6"/>
-          <text x="422" y="113" fill="#8892a4" font-size="7" font-family="sans-serif">53%</text>
-          <!-- CPL / CVR tiles -->
-          <rect x="228" y="112" width="116" height="52" rx="2" fill="#252d3f"/>
-          <text x="238" y="128" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">AVG CPL</text>
-          <text x="238" y="150" fill="#ffffff" font-size="22" font-family="sans-serif" font-weight="300">$18<tspan font-size="11">.40</tspan></text>
-          <rect x="352" y="112" width="116" height="52" rx="2" fill="#252d3f"/>
-          <text x="362" y="128" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">CONV. RATE</text>
-          <text x="362" y="150" fill="#5cb85c" font-size="22" font-family="sans-serif" font-weight="300">5.8<tspan font-size="11">%</tspan></text>
-          <!-- Data quality panel -->
-          <rect x="228" y="174" width="240" height="56" rx="2" fill="#252d3f"/>
-          <text x="238" y="190" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">DATA QUALITY</text>
-          <text x="238" y="210" fill="#8892a4" font-size="9" font-family="sans-serif">Records Standardized</text>
-          <text x="460" y="210" fill="#5cb85c" font-size="9" font-family="sans-serif" text-anchor="end">50,247 / 50,247</text>
-          <text x="238" y="226" fill="#8892a4" font-size="9" font-family="sans-serif">Duplicates Removed</text>
-          <text x="460" y="226" fill="#ffffff" font-size="9" font-family="sans-serif" text-anchor="end">3,812</text>
-          <!-- bottom turnaround -->
-          <rect x="16" y="196" width="200" height="34" rx="2" fill="#252d3f"/>
-          <text x="26" y="211" fill="#5a6478" font-size="7" font-family="sans-serif" letter-spacing="1">REPORTING TURNAROUND</text>
-          <text x="26" y="225" fill="#ffffff" font-size="13" font-family="sans-serif" font-weight="300">–50% faster <tspan fill="#5cb85c" font-size="9">vs. manual</tspan></text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-idx">04 — SolarCEOs</div>
-        <div class="work-title">Pipeline Data Standardization</div>
-        <div class="work-org">CRM & Analytics</div>
-        <div class="work-line"></div>
-        <div class="work-desc">Standardized 50,000+ prospect records into a single source of truth and engineered automated dashboards delivering live CPL, conversion, and ROI visibility across 3+ active campaigns simultaneously.</div>
-        <div class="work-stat">
-          <span class="work-stat-label">Reporting turnaround cut</span>
-          <span class="work-stat-val">50%</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 5: Real Estate SOPs -->
-    <div class="work-card reveal">
-      <div class="work-preview">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f7">
-          <rect x="0" y="0" width="480" height="36" fill="#f0efe9"/>
-          <text x="16" y="23" fill="#9a9a92" font-size="9" font-family="sans-serif" letter-spacing="1.5">LISTING DATA SOP — SWEET GROUP REALTY</text>
-          <!-- SOP flow -->
-          <rect x="16" y="48" width="100" height="44" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="66" y="66" fill="#6b6b67" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">NEW LISTING</text>
-          <text x="66" y="80" fill="#aeaea8" font-size="7" font-family="sans-serif" text-anchor="middle">Intake Form</text>
-          <line x1="116" y1="70" x2="144" y2="70" stroke="#aeaea8" stroke-width="1"/>
-          <rect x="144" y="48" width="100" height="44" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="194" y="66" fill="#6b6b67" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">DATA ENTRY</text>
-          <text x="194" y="80" fill="#aeaea8" font-size="7" font-family="sans-serif" text-anchor="middle">AppFolio + CRM</text>
-          <line x1="244" y1="70" x2="272" y2="70" stroke="#aeaea8" stroke-width="1"/>
-          <rect x="272" y="48" width="100" height="44" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="322" y="66" fill="#6b6b67" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">VALIDATION</text>
-          <text x="322" y="80" fill="#aeaea8" font-size="7" font-family="sans-serif" text-anchor="middle">Cross-check 3 systems</text>
-          <line x1="372" y1="70" x2="400" y2="70" stroke="#aeaea8" stroke-width="1"/>
-          <rect x="400" y="48" width="68" height="44" rx="2" fill="#1a3a6b"/>
-          <text x="434" y="66" fill="rgba(255,255,255,0.9)" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="0.5">PUBLISH</text>
-          <text x="434" y="80" fill="rgba(255,255,255,0.5)" font-size="7" font-family="sans-serif" text-anchor="middle">Live</text>
-          <!-- Platform status table -->
-          <rect x="16" y="108" width="456" height="22" fill="#1a3a6b"/>
-          <text x="24" y="122" fill="rgba(255,255,255,0.6)" font-size="7" font-family="sans-serif" letter-spacing="1">PLATFORM</text>
-          <text x="160" y="122" fill="rgba(255,255,255,0.6)" font-size="7" font-family="sans-serif" letter-spacing="1">LISTINGS</text>
-          <text x="240" y="122" fill="rgba(255,255,255,0.6)" font-size="7" font-family="sans-serif" letter-spacing="1">LAST SYNC</text>
-          <text x="340" y="122" fill="rgba(255,255,255,0.6)" font-size="7" font-family="sans-serif" letter-spacing="1">STATUS</text>
-          <text x="420" y="122" fill="rgba(255,255,255,0.6)" font-size="7" font-family="sans-serif" letter-spacing="1">MATCH</text>
-          <rect x="16" y="130" width="456" height="20" fill="#fff"/>
-          <text x="24" y="143" fill="#111110" font-size="8" font-family="sans-serif">AppFolio</text>
-          <text x="160" y="143" fill="#111110" font-size="8" font-family="sans-serif">148</text>
-          <text x="240" y="143" fill="#6b6b67" font-size="8" font-family="sans-serif">Today 09:14</text>
-          <rect x="338" y="133" width="46" height="12" rx="2" fill="#eef6f0"/>
-          <text x="361" y="143" fill="#3a7d44" font-size="7" font-family="sans-serif" text-anchor="middle">Synced</text>
-          <text x="420" y="143" fill="#3a7d44" font-size="8" font-family="sans-serif">100%</text>
-          <rect x="16" y="150" width="456" height="20" fill="#f9f9f7"/>
-          <text x="24" y="163" fill="#111110" font-size="8" font-family="sans-serif">CRM</text>
-          <text x="160" y="163" fill="#111110" font-size="8" font-family="sans-serif">148</text>
-          <text x="240" y="163" fill="#6b6b67" font-size="8" font-family="sans-serif">Today 09:14</text>
-          <rect x="338" y="153" width="46" height="12" rx="2" fill="#eef6f0"/>
-          <text x="361" y="163" fill="#3a7d44" font-size="7" font-family="sans-serif" text-anchor="middle">Synced</text>
-          <text x="420" y="163" fill="#3a7d44" font-size="8" font-family="sans-serif">100%</text>
-          <rect x="16" y="170" width="456" height="20" fill="#fff"/>
-          <text x="24" y="183" fill="#111110" font-size="8" font-family="sans-serif">Spreadsheet</text>
-          <text x="160" y="183" fill="#111110" font-size="8" font-family="sans-serif">148</text>
-          <text x="240" y="183" fill="#6b6b67" font-size="8" font-family="sans-serif">Today 09:14</text>
-          <rect x="338" y="173" width="46" height="12" rx="2" fill="#eef6f0"/>
-          <text x="361" y="183" fill="#3a7d44" font-size="7" font-family="sans-serif" text-anchor="middle">Synced</text>
-          <text x="420" y="183" fill="#3a7d44" font-size="8" font-family="sans-serif">100%</text>
-          <!-- bottom stats -->
-          <rect x="16" y="204" width="140" height="54" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="26" y="220" fill="#9a9a92" font-size="7" font-family="sans-serif" letter-spacing="1">DISCREPANCIES</text>
-          <text x="26" y="248" fill="#1a3a6b" font-size="34" font-family="sans-serif" font-weight="300">–30<tspan font-size="14">%</tspan></text>
-          <rect x="168" y="204" width="140" height="54" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="178" y="220" fill="#9a9a92" font-size="7" font-family="sans-serif" letter-spacing="1">ALIGNMENT</text>
-          <text x="178" y="248" fill="#3a7d44" font-size="34" font-family="sans-serif" font-weight="300">100<tspan font-size="14">%</tspan></text>
-          <rect x="320" y="204" width="152" height="54" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="330" y="220" fill="#9a9a92" font-size="7" font-family="sans-serif" letter-spacing="1">SOPs BUILT</text>
-          <text x="330" y="248" fill="#111110" font-size="34" font-family="sans-serif" font-weight="300">4</text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-idx">05 — Sweet Group Realty</div>
-        <div class="work-title">Real Estate Data Governance & SOPs</div>
-        <div class="work-org">Data Management</div>
-        <div class="work-line"></div>
-        <div class="work-desc">Took full data integrity ownership across AppFolio, CRM, and spreadsheets. Designed SOPs for listing updates and tracking workflows that reduced discrepancies by 30% and remained the operational standard beyond the engagement.</div>
-        <div class="work-stat">
-          <span class="work-stat-label">Cross-platform alignment</span>
-          <span class="work-stat-val">100%</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Card 6: AI Workflow -->
-    <div class="work-card reveal">
-      <div class="work-preview">
-        <svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" style="background:#f9f9f7">
-          <rect x="0" y="0" width="480" height="36" fill="#f0efe9"/>
-          <text x="16" y="23" fill="#9a9a92" font-size="9" font-family="sans-serif" letter-spacing="1.5">AI WORKFLOW INTEGRATION — MULTI-CLIENT</text>
-          <!-- N8N flow style nodes -->
-          <!-- Input triggers -->
-          <rect x="16" y="52" width="80" height="28" rx="14" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="56" y="70" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Schedule</text>
-          <rect x="16" y="92" width="80" height="28" rx="14" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="56" y="110" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Webhook</text>
-          <rect x="16" y="132" width="80" height="28" rx="14" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="56" y="150" fill="#6b6b67" font-size="8" font-family="sans-serif" text-anchor="middle">Form Input</text>
-          <!-- connecting lines -->
-          <line x1="96" y1="66" x2="144" y2="100" stroke="#e5e4e0" stroke-width="1"/>
-          <line x1="96" y1="106" x2="144" y2="106" stroke="#e5e4e0" stroke-width="1"/>
-          <line x1="96" y1="146" x2="144" y2="112" stroke="#e5e4e0" stroke-width="1"/>
-          <!-- AI node -->
-          <rect x="144" y="80" width="96" height="48" rx="4" fill="#1a3a6b"/>
-          <text x="192" y="100" fill="#ffffff" font-size="8" font-family="sans-serif" text-anchor="middle" font-weight="500">CLAUDE / GPT</text>
-          <text x="192" y="115" fill="rgba(255,255,255,0.5)" font-size="7" font-family="sans-serif" text-anchor="middle">Process + Generate</text>
-          <!-- out lines -->
-          <line x1="240" y1="96" x2="284" y2="72" stroke="#1a3a6b" stroke-width="1.5"/>
-          <line x1="240" y1="104" x2="284" y2="104" stroke="#1a3a6b" stroke-width="1.5"/>
-          <line x1="240" y1="112" x2="284" y2="136" stroke="#1a3a6b" stroke-width="1.5"/>
-          <!-- outputs -->
-          <rect x="284" y="54" width="90" height="28" rx="14" fill="#eef6f0" stroke="#c3e0ca" stroke-width="1"/>
-          <text x="329" y="72" fill="#3a7d44" font-size="8" font-family="sans-serif" text-anchor="middle">SOP Draft</text>
-          <rect x="284" y="90" width="90" height="28" rx="14" fill="#eef6f0" stroke="#c3e0ca" stroke-width="1"/>
-          <text x="329" y="108" fill="#3a7d44" font-size="8" font-family="sans-serif" text-anchor="middle">Report Summary</text>
-          <rect x="284" y="126" width="90" height="28" rx="14" fill="#eef6f0" stroke="#c3e0ca" stroke-width="1"/>
-          <text x="329" y="144" fill="#3a7d44" font-size="8" font-family="sans-serif" text-anchor="middle">Client Email</text>
-          <!-- N8N + Make logos -->
-          <rect x="16" y="176" width="130" height="84" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="81" y="194" fill="#9a9a92" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="1">PLATFORMS USED</text>
-          <text x="28" y="218" fill="#1a3a6b" font-size="13" font-family="sans-serif" font-weight="500">N8N</text>
-          <text x="28" y="235" fill="#aeaea8" font-size="7" font-family="sans-serif">Workflow automation</text>
-          <text x="28" y="252" fill="#1a3a6b" font-size="13" font-family="sans-serif" font-weight="500">Make</text>
-          <rect x="156" y="176" width="312" height="84" rx="2" fill="#fff" stroke="#e5e4e0" stroke-width="1"/>
-          <text x="312" y="194" fill="#9a9a92" font-size="7" font-family="sans-serif" text-anchor="middle" letter-spacing="1">TIME SAVINGS BY TASK TYPE</text>
-          <text x="166" y="214" fill="#6b6b67" font-size="8" font-family="sans-serif">Report Drafting</text>
-          <rect x="166" y="220" width="150" height="3" rx="1" fill="#f0efe9"/>
-          <rect x="166" y="220" width="120" height="3" rx="1" fill="#1a3a6b"/>
-          <text x="320" y="223" fill="#9a9a92" font-size="7" font-family="sans-serif">80%</text>
-          <text x="166" y="238" fill="#6b6b67" font-size="8" font-family="sans-serif">SOP Documentation</text>
-          <rect x="166" y="244" width="150" height="3" rx="1" fill="#f0efe9"/>
-          <rect x="166" y="244" width="108" height="3" rx="1" fill="#1a3a6b" opacity="0.7"/>
-          <text x="320" y="247" fill="#9a9a92" font-size="7" font-family="sans-serif">72%</text>
-          <text x="340" y="214" fill="#6b6b67" font-size="8" font-family="sans-serif">Client Comms</text>
-          <rect x="340" y="220" width="118" height="3" rx="1" fill="#f0efe9"/>
-          <rect x="340" y="220" width="82" height="3" rx="1" fill="#1a3a6b" opacity="0.6"/>
-          <text x="462" y="223" fill="#9a9a92" font-size="7" font-family="sans-serif">69%</text>
-          <text x="340" y="238" fill="#6b6b67" font-size="8" font-family="sans-serif">Data Summaries</text>
-          <rect x="340" y="244" width="118" height="3" rx="1" fill="#f0efe9"/>
-          <rect x="340" y="244" width="100" height="3" rx="1" fill="#1a3a6b" opacity="0.5"/>
-          <text x="462" y="247" fill="#9a9a92" font-size="7" font-family="sans-serif">85%</text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-idx">06 — Multiple Engagements</div>
-        <div class="work-title">AI-Assisted Workflow Integration</div>
-        <div class="work-org">Automation & AI</div>
-        <div class="work-line"></div>
-        <div class="work-desc">Integrated Claude, ChatGPT, N8N, and Make into live operational workflows. Applied AI-assisted drafting, data summarization, and automated documentation to reduce manual cognitive load across reporting, SOPs, and client communications.</div>
-        <div class="work-stat">
-          <span class="work-stat-label">Core tools</span>
-          <span class="work-stat-val" style="font-size:14px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;">N8N · Make · Claude</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
+<section class="section">
+  <div class="s-tag reveal">01 — The Problem</div>
+  <h2 class="reveal">Scattered data, <em>slow decisions</em></h2>
+  <p class="body-text reveal">In most growing businesses, the numbers that matter live in separate places. Revenue sits in the payment processor, pipeline lives in the CRM, ad spend is split across platforms, and someone spends hours every week stitching it together by hand into a report that is already out of date by the time it is read.</p>
+  <p class="body-text reveal">The goal of this build was to remove that manual layer entirely: <strong>one dashboard, always current, that answers the questions leadership actually asks</strong> — how much are we making, what is it costing us to acquire customers, where is revenue coming from, and what does the pipeline look like heading into next month.</p>
 </section>
 
-<!-- EXPERIENCE -->
-<section class="section alt" id="experience">
-  <div class="s-header reveal">
-    <div class="s-num">02 — Experience</div>
-    <h2>Work <em>History</em></h2>
+<section class="section" style="padding-top:0;">
+  <div class="s-tag reveal">02 — The Build</div>
+  <h2 class="reveal">Executive <em>overview</em></h2>
+  <div class="dash reveal">
+    <svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="1000" height="56" fill="#1f1f1f"/>
+      <text x="32" y="34" fill="#999" font-size="13" font-family="sans-serif" letter-spacing="2">REVENUE OPERATIONS — EXECUTIVE DASHBOARD</text>
+      <circle cx="950" cy="28" r="6" fill="#5cb85c"/><text x="910" y="32" fill="#5cb85c" font-size="10" font-family="sans-serif" text-anchor="end">LIVE</text>
+      <!-- KPI row -->
+      <rect x="24" y="76" width="226" height="92" rx="4" fill="#1f1f1f"/><text x="44" y="102" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">MONTHLY RECURRING REVENUE</text><text x="44" y="142" fill="#fff" font-size="34" font-family="sans-serif" font-weight="300">$248,400</text><text x="220" y="142" fill="#5cb85c" font-size="13" font-family="sans-serif" text-anchor="end">▲ 12%</text>
+      <rect x="258" y="76" width="226" height="92" rx="4" fill="#1f1f1f"/><text x="278" y="102" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">CUSTOMER ACQUISITION COST</text><text x="278" y="142" fill="#fff" font-size="34" font-family="sans-serif" font-weight="300">$312</text><text x="454" y="142" fill="#5cb85c" font-size="13" font-family="sans-serif" text-anchor="end">▼ 8%</text>
+      <rect x="492" y="76" width="226" height="92" rx="4" fill="#1f1f1f"/><text x="512" y="102" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">LTV : CAC RATIO</text><text x="512" y="142" fill="#fff" font-size="34" font-family="sans-serif" font-weight="300">4.6x</text><text x="688" y="142" fill="#5cb85c" font-size="13" font-family="sans-serif" text-anchor="end">healthy</text>
+      <rect x="726" y="76" width="250" height="92" rx="4" fill="#1f1f1f"/><text x="746" y="102" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">MONTHLY CHURN</text><text x="746" y="142" fill="#f5a623" font-size="34" font-family="sans-serif" font-weight="300">2.1%</text><text x="956" y="142" fill="#f5a623" font-size="13" font-family="sans-serif" text-anchor="end">watch</text>
+      <!-- MRR chart -->
+      <rect x="24" y="180" width="600" height="220" rx="4" fill="#1f1f1f"/><text x="44" y="206" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">MONTHLY RECURRING REVENUE — TRAILING 12 MONTHS</text>
+      <line x1="44" y1="360" x2="600" y2="360" stroke="#2a2a2a"/><line x1="44" y1="310" x2="600" y2="310" stroke="#2a2a2a"/><line x1="44" y1="260" x2="600" y2="260" stroke="#2a2a2a"/>
+      <path d="M60,350 110,340 160,344 210,322 260,326 310,300 360,306 410,278 460,282 510,256 560,248 600,228 L600,372 L60,372 Z" fill="#3d6bc4" opacity="0.12"/>
+      <polyline points="60,350 110,340 160,344 210,322 260,326 310,300 360,306 410,278 460,282 510,256 560,248 600,228" fill="none" stroke="#3d6bc4" stroke-width="2.5"/>
+      <circle cx="600" cy="228" r="4" fill="#5cb85c"/>
+      <!-- Revenue by channel -->
+      <rect x="632" y="180" width="344" height="220" rx="4" fill="#1f1f1f"/><text x="652" y="206" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">REVENUE BY CHANNEL</text>
+      <text x="652" y="240" fill="#999" font-size="12" font-family="sans-serif">Paid Acquisition</text><text x="956" y="240" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="end">48%</text><rect x="652" y="248" width="304" height="8" fill="#2a2a2a"/><rect x="652" y="248" width="146" height="8" fill="#3d6bc4"/>
+      <text x="652" y="280" fill="#999" font-size="12" font-family="sans-serif">Organic / SEO</text><text x="956" y="280" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="end">27%</text><rect x="652" y="288" width="304" height="8" fill="#2a2a2a"/><rect x="652" y="288" width="82" height="8" fill="#3d6bc4" opacity="0.8"/>
+      <text x="652" y="320" fill="#999" font-size="12" font-family="sans-serif">Referral</text><text x="956" y="320" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="end">16%</text><rect x="652" y="328" width="304" height="8" fill="#2a2a2a"/><rect x="652" y="328" width="49" height="8" fill="#3d6bc4" opacity="0.6"/>
+      <text x="652" y="360" fill="#999" font-size="12" font-family="sans-serif">Direct</text><text x="956" y="360" fill="#fff" font-size="12" font-family="sans-serif" text-anchor="end">9%</text><rect x="652" y="368" width="304" height="8" fill="#2a2a2a"/><rect x="652" y="368" width="27" height="8" fill="#3d6bc4" opacity="0.45"/>
+      <!-- Pipeline table -->
+      <rect x="24" y="412" width="952" height="124" rx="4" fill="#1f1f1f"/><text x="44" y="438" fill="#666" font-size="11" font-family="sans-serif" letter-spacing="1.5">PIPELINE HEALTH BY STAGE</text>
+      <text x="44" y="468" fill="#999" font-size="11" font-family="sans-serif">STAGE</text><text x="300" y="468" fill="#999" font-size="11" font-family="sans-serif">DEALS</text><text x="500" y="468" fill="#999" font-size="11" font-family="sans-serif">WEIGHTED VALUE</text><text x="780" y="468" fill="#999" font-size="11" font-family="sans-serif">CONVERSION</text>
+      <line x1="44" y1="478" x2="956" y2="478" stroke="#2a2a2a"/>
+      <text x="44" y="502" fill="#ddd" font-size="12" font-family="sans-serif">Discovery</text><text x="300" y="502" fill="#ddd" font-size="12" font-family="sans-serif">64</text><text x="500" y="502" fill="#ddd" font-size="12" font-family="sans-serif">$420,000</text><text x="780" y="502" fill="#5cb85c" font-size="12" font-family="sans-serif">58%</text>
+      <text x="44" y="524" fill="#ddd" font-size="12" font-family="sans-serif">Proposal</text><text x="300" y="524" fill="#ddd" font-size="12" font-family="sans-serif">42</text><text x="500" y="524" fill="#ddd" font-size="12" font-family="sans-serif">$510,000</text><text x="780" y="524" fill="#5cb85c" font-size="12" font-family="sans-serif">41%</text>
+    </svg>
   </div>
-  <div>
-    <div class="exp-item reveal">
-      <div class="exp-l">
-        <div class="exp-date">Apr 2025 – Feb 2026</div>
-        <div class="exp-co">Firebelly Marketing</div>
-      </div>
-      <div class="exp-r">
-        <div class="exp-title">Marketing Analytics & Reporting Manager</div>
-        <ul class="exp-list">
-          <li>Held sole accountability for reporting accuracy across 8+ simultaneous client accounts, sustaining a zero-discrepancy record for 10 consecutive months with no missed deliverables.</li>
-          <li>Rebuilt client reporting infrastructure from the ground up, cutting delivery turnaround by 40% and transforming a reactive process into a reliable system adopted as team standard.</li>
-          <li>Served as the escalation point for all data integrity issues, resolving discrepancies before they reached clients and establishing quality benchmarks across the analyst team.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-item reveal">
-      <div class="exp-l">
-        <div class="exp-date">Mar 2024 – Feb 2025</div>
-        <div class="exp-co">FS2 Agency LLC</div>
-        <div class="exp-promoted">▲ Promoted</div>
-      </div>
-      <div class="exp-r">
-        <div class="exp-title">Operations Manager</div>
-        <ul class="exp-list">
-          <li>Eliminated 70% of manual reporting workload by engineering end-to-end automation across financial and marketing workflows using Google Apps Script and Looker Studio.</li>
-          <li>Consolidated fragmented data from Shopify, Meta Ads, Klaviyo, and payment processors into a unified intelligence layer while building forecasting models used in quarterly budget planning.</li>
-          <li>Oversaw daily operations across multiple client accounts, coordinating cross-functional workflows between data, creative, and account teams to ensure consistent on-time delivery.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-item reveal">
-      <div class="exp-l">
-        <div class="exp-date">Apr 2023 – Feb 2024</div>
-        <div class="exp-co">FS2 Agency LLC</div>
-      </div>
-      <div class="exp-r">
-        <div class="exp-title">Operations & Inventory Analyst</div>
-        <ul class="exp-list">
-          <li>Managed end-to-end inventory operations across 50+ SKUs, holding a 96%+ in-stock rate by architecting a replenishment model that flagged risk scenarios before they materialized.</li>
-          <li>Intercepted supplier and logistics failures at the source, preventing an estimated 40% of potential customer-facing disruptions while cutting restocking decision time by 2 days.</li>
-          <li>Designed all operational SOPs for inventory tracking and exception handling, creating a repeatable framework that allowed the team to scale without adding headcount.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-item reveal">
-      <div class="exp-l">
-        <div class="exp-date">Mar 2022 – Mar 2023</div>
-        <div class="exp-co">SolarCEOs</div>
-      </div>
-      <div class="exp-r">
-        <div class="exp-title">CRM & Pipeline Data Analyst</div>
-        <ul class="exp-list">
-          <li>Standardized 50,000+ prospect records into a single trusted pipeline source, transforming a fragmented database into the foundation the entire sales organization ran on.</li>
-          <li>Engineered automated dashboards that halved reporting turnaround and delivered live visibility into CPL, conversion rates, and ROI across 3+ active campaigns simultaneously.</li>
-          <li>Owned the full data quality lifecycle from ingestion to reporting, setting capture standards and cleaning protocols enforced across all active campaigns.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="exp-item reveal">
-      <div class="exp-l">
-        <div class="exp-date">Oct 2021 – Feb 2022</div>
-        <div class="exp-co">Sweet Group Realty</div>
-      </div>
-      <div class="exp-r">
-        <div class="exp-title">Real Estate Data Management</div>
-        <ul class="exp-list">
-          <li>Maintained 100% cross-platform listing alignment across AppFolio, CRM, and spreadsheets while reducing portfolio-wide reporting discrepancies by 30%.</li>
-          <li>Designed SOPs for listing updates, data entry, and tracking workflows, building the operational foundation that supported team scaling beyond the engagement.</li>
-          <li>Acted as single point of contact for all data integrity matters, personally overseeing every cross-system reconciliation before it affected client reporting.</li>
-        </ul>
-      </div>
-    </div>
-  </div>
+  <p class="caption reveal">Executive view — headline metrics, MRR trend, channel mix, and pipeline health on a single screen.</p>
+
+  <p class="body-text reveal">The dashboard pulls from three data sources on a scheduled refresh, so nobody has to touch it manually. <strong>Headline metrics sit at the top</strong> for the thirty-second read, with deeper breakdowns below for anyone who wants to dig in. Every number traces back to a validated source, so the reporting can be trusted for real decisions.</p>
 </section>
 
-<!-- SKILLS -->
-<section class="section" id="skills">
-  <div class="s-header reveal">
-    <div class="s-num">03 — Skills</div>
-    <h2>Tools <em>&amp; Capabilities</em></h2>
+<section class="section" style="padding-top:0;">
+  <div class="s-tag reveal">03 — Approach</div>
+  <h2 class="reveal">How it was <em>built</em></h2>
+  <div class="split">
+    <div class="split-cell reveal"><h3>Data Consolidation</h3><p>Connected CRM, advertising platforms, and payment data into a single reporting layer, with cleaning and validation rules applied at ingestion so errors never reach the dashboard.</p></div>
+    <div class="split-cell dark reveal"><h3>Automation</h3><p>Scheduled, self-refreshing data sources replace manual exports. The report is always current, eliminating the weekly hours that used to go into building it by hand.</p></div>
+    <div class="split-cell dark reveal"><h3>Metric Design</h3><p>Built around the metrics that drive decisions — MRR, CAC, LTV:CAC, churn, channel ROI, and weighted pipeline — rather than vanity numbers that look good but say little.</p></div>
+    <div class="split-cell reveal"><h3>Dual Audience</h3><p>Designed for both technical teams who need the detail and executives who need the headline. Layered so each audience finds what they need at the right depth.</p></div>
   </div>
-  <div class="skills-grid">
-    <div class="skill-col reveal">
-      <div class="skill-col-name">Reporting & BI</div>
-      <div class="skill-rows">
-        <div class="sk"><div class="sk-top"><span class="sk-name">Looker Studio</span><span class="sk-pct">95</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:95%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Google Sheets</span><span class="sk-pct">95</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:95%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Excel</span><span class="sk-pct">92</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:92%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Power BI</span><span class="sk-pct">80</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:80%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Agency Analytics</span><span class="sk-pct">78</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:78%"></div></div></div>
-      </div>
-    </div>
-    <div class="skill-col reveal">
-      <div class="skill-col-name">Automation</div>
-      <div class="skill-rows">
-        <div class="sk"><div class="sk-top"><span class="sk-name">Apps Script</span><span class="sk-pct">90</span></div><div class="sk-bar"><div class="sk-fill" style="width:90%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">N8N</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Make</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Go High Level</span><span class="sk-pct">80</span></div><div class="sk-bar"><div class="sk-fill" style="width:80%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Airtable</span><span class="sk-pct">88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%"></div></div></div>
-      </div>
-    </div>
-    <div class="skill-col reveal">
-      <div class="skill-col-name">Data</div>
-      <div class="skill-rows">
-        <div class="sk"><div class="sk-top"><span class="sk-name">Data Governance</span><span class="sk-pct">92</span></div><div class="sk-bar"><div class="sk-fill" style="width:92%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Pipeline Mgmt</span><span class="sk-pct">90</span></div><div class="sk-bar"><div class="sk-fill" style="width:90%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Data Modeling</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">BigQuery</span><span class="sk-pct">65</span></div><div class="sk-bar"><div class="sk-fill" style="width:65%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">SQL</span><span class="sk-pct">60</span></div><div class="sk-bar"><div class="sk-fill" style="width:60%"></div></div></div>
-      </div>
-    </div>
-    <div class="skill-col reveal">
-      <div class="skill-col-name">Operations</div>
-      <div class="skill-rows">
-        <div class="sk"><div class="sk-top"><span class="sk-name">Multi-Client Ops</span><span class="sk-pct">95</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:95%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">SOP Development</span><span class="sk-pct">93</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:93%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Process Optimization</span><span class="sk-pct">92</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:92%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Compliance & QA</span><span class="sk-pct">88</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:88%"></div></div></div>
-        <div class="sk"><div class="sk-top"><span class="sk-name">Team Leadership</span><span class="sk-pct">80</span></div><div class="sk-bar"><div class="sk-fill blue" style="width:80%"></div></div></div>
-      </div>
-    </div>
-  </div>
+  <ul class="stack-list reveal">
+    <li>Looker Studio</li><li>Power BI</li><li>Google Sheets</li><li>BigQuery</li><li>Apps Script</li><li>Make / N8N</li><li>CRM Integrations</li><li>Payment & Ads APIs</li>
+  </ul>
 </section>
 
-<!-- AI -->
-<section class="section alt">
-  <div class="s-header reveal">
-    <div class="s-num">04 — AI</div>
-    <h2>Working with <em>AI Tools</em></h2>
+<section class="section" style="padding-top:0;">
+  <div class="s-tag reveal">04 — Impact</div>
+  <h2 class="reveal">What it <em>delivers</em></h2>
+  <div class="results">
+    <div class="result-cell reveal"><div class="result-num">1</div><div class="result-label">Single source of truth replacing scattered manual reports</div></div>
+    <div class="result-cell reveal"><div class="result-num">Live</div><div class="result-label">Always-current data through scheduled automated refresh</div></div>
+    <div class="result-cell reveal"><div class="result-num">30s</div><div class="result-label">For leadership to read the health of the business</div></div>
+    <div class="result-cell reveal"><div class="result-num">0</div><div class="result-label">Manual hours spent rebuilding the report each week</div></div>
   </div>
-  <div class="ai-row">
-    <div class="ai-cell reveal">
-      <div class="ai-abbr">LLM</div>
-      <div class="ai-name">Claude & ChatGPT</div>
-      <div class="ai-desc">Integrated into daily workflows for drafting, report summarization, and documentation. Used to accelerate output without sacrificing accuracy.</div>
-    </div>
-    <div class="ai-cell reveal">
-      <div class="ai-abbr">AUTO</div>
-      <div class="ai-name">N8N & Make</div>
-      <div class="ai-desc">Built multi-step automation flows connecting CRMs, ad platforms, spreadsheets, and communication tools without engineering support.</div>
-    </div>
-    <div class="ai-cell reveal">
-      <div class="ai-abbr">RPT</div>
-      <div class="ai-name">AI-Assisted Reporting</div>
-      <div class="ai-desc">Used AI to speed up data interpretation, generate narrative summaries from raw metrics, and build smarter dashboards faster.</div>
-    </div>
-    <div class="ai-cell reveal">
-      <div class="ai-abbr">PMT</div>
-      <div class="ai-name">Prompt Engineering</div>
-      <div class="ai-desc">Designed repeatable prompt templates for recurring ops tasks — SOPs, client reports, exception handling, and communications.</div>
-    </div>
-  </div>
+  <p class="body-text reveal">This is the kind of work I do best: taking the messy, scattered reality of a growing business and turning it into <strong>clear, reliable infrastructure that people actually use to make decisions</strong>. It is the same discipline I have applied across pipeline data, marketing reporting, inventory operations, and workforce management throughout my career.</p>
 </section>
 
-<!-- CONTACT -->
-<div class="contact-wrap" id="contact">
-  <div class="contact-grid">
-    <div class="reveal">
-      <div class="c-tag">05 — Contact</div>
-      <h2>Let's Work <em>Together</em></h2>
-      <p class="c-desc">Open to full-time remote opportunities in operations management, data analytics, and mortgage support. Systems thinking, execution discipline, and a track record of measurable results.</p>
-      <div class="c-links">
-        <a href="mailto:louiscarandang30@gmail.com" class="c-link">
-          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          <span>louiscarandang30@gmail.com</span>
-        </a>
-        <a href="tel:+639566653486" class="c-link">
-          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.39 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
-          <span>+63 956 665 3486</span>
-        </a>
-        <a href="https://www.linkedin.com/in/vladimir-louis-c-6b97133b4" target="_blank" class="c-link">
-          <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          <span>linkedin.com/in/vladimir-louis-c-6b97133b4</span>
-        </a>
-      </div>
-    </div>
-    <div class="avail-box reveal">
-      <div class="avail-live"><span class="avail-live-dot"></span>Currently Available</div>
-      <div class="avail-q">"Available immediately and ready to contribute from day one."</div>
-      <div class="avail-rows">
-        <div class="avail-row"><span class="avail-k">Status</span><span class="avail-v on">Open to Opportunities</span></div>
-        <div class="avail-row"><span class="avail-k">Work Type</span><span class="avail-v">Full-Time Remote</span></div>
-        <div class="avail-row"><span class="avail-k">Time Zone</span><span class="avail-v">PHT (UTC+8) / AEST Aligned</span></div>
-        <div class="avail-row"><span class="avail-k">Location</span><span class="avail-v">Davao, Philippines</span></div>
-        <div class="avail-row"><span class="avail-k">Notice Period</span><span class="avail-v">Immediate</span></div>
-      </div>
-    </div>
-  </div>
+<div class="cta-band">
+  <h2>Want this for <em>your business?</em></h2>
+  <p>I build reporting and operations systems like this for remote teams that need clarity without the manual overhead.</p>
+  <a href="index.html#contact" class="cta-btn">Get in Touch →</a>
+</div>
+
+<div class="disclaimer">
+  <p>This case study presents a representative build illustrating my revenue operations and dashboard methodology. Metrics and data shown are illustrative examples used to demonstrate structure and approach, not actual client figures.</p>
 </div>
 
 <footer>
   <span>Vladimir Louis R. Carandang</span>
-  <span>Senior Operations & Data Manager</span>
+  <span>Operations & Data Manager</span>
 </footer>
 
 <script>
   const obs = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.07 });
+    entries.forEach((e, i) => { if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i*50); obs.unobserve(e.target); } });
+  }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 </script>
 </body>
