@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Forecasting Analysis | Vladimir Carandang</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--white:#fff;--off:#f8f8f6;--bg2:#f2f1ee;--border:#e8e7e3;--border2:#d4d3ce;--ink:#111110;--ink2:#6b6b67;--ink3:#aeaea8;--accent:#1d4ed8;--green:#16a34a;--gold:#b45309;--red:#dc2626}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;font-weight:300}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;justify-content:space-between;align-items:center;padding:0 64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);font-weight:500}
+.nav-back{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color 0.2s}
+.nav-back:hover{color:var(--ink)}
+.hero{padding:100px 64px 48px;max-width:1100px;margin:0 auto}
+.s-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+h1{font-size:clamp(32px,4.5vw,58px);font-weight:700;letter-spacing:-1.5px;line-height:1;margin-bottom:16px}
+h1 span{color:var(--ink3);font-weight:300}
+.hero-sub{font-size:15px;color:var(--ink2);max-width:640px;line-height:1.8;margin-bottom:16px}
+.dataset-badge{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);border:1px solid var(--border2);padding:6px 14px;letter-spacing:1px}
+.meta{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:1100px;margin:0 auto}
+.meta-block{padding:20px 28px;border-right:1px solid var(--border)}
+.meta-block:last-child{border-right:none}
+.meta-k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.meta-v{font-size:13px;color:var(--ink);font-weight:500}
+.section{padding:64px 64px;max-width:1100px;margin:0 auto}
+h2{font-size:clamp(22px,2.8vw,34px);font-weight:700;letter-spacing:-0.8px;margin-bottom:16px}
+h2 em{font-style:normal;color:var(--ink3);font-weight:300}
+.body-text{font-size:14px;line-height:1.9;color:var(--ink2);margin-bottom:14px;max-width:720px}
+.body-text strong{color:var(--ink);font-weight:500}
+.approach-box{background:var(--off);border:1px solid var(--border);border-left:3px solid var(--accent);padding:20px 24px;margin:20px 0;font-size:13px;color:var(--ink2);line-height:1.8}
+.approach-box strong{color:var(--ink);font-weight:500}
+
+/* CHARTS */
+.chart-wrap{background:var(--white);border:1px solid var(--border);margin:28px 0;overflow:hidden}
+.chart-header{background:var(--off);padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.chart-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);letter-spacing:0.5px}
+.chart-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green);border:1px solid rgba(22,163,74,0.3);padding:3px 10px;letter-spacing:1px}
+.chart-body{padding:24px}
+.chart-body svg{width:100%;display:block}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse}
+th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);padding:10px 14px;text-align:left;background:var(--off);border-bottom:1px solid var(--border)}
+td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink2);padding:9px 14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--off)}
+.td-green{color:var(--green);font-weight:500}
+.td-gold{color:var(--gold);font-weight:500}
+.td-red{color:var(--red);font-weight:500}
+.td-accent{color:var(--accent)}
+
+/* INSIGHT CARDS */
+.insights{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);margin:28px 0}
+.insight-card{background:var(--white);padding:28px}
+.insight-num{font-size:36px;font-weight:700;color:var(--accent);letter-spacing:-1px;line-height:1;margin-bottom:8px}
+.insight-label{font-size:12px;color:var(--ink2);line-height:1.5}
+.insight-card.warn .insight-num{color:var(--gold)}
+.insight-card.alert .insight-num{color:var(--red)}
+
+.finding{background:var(--off);border:1px solid var(--border);padding:20px 24px;margin:12px 0}
+.finding-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.finding-text{font-size:13px;color:var(--ink2);line-height:1.7}
+.finding-text strong{color:var(--ink);font-weight:500}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin:20px 0}
+.split-cell{background:var(--white);padding:24px}
+.split-cell h3{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.split-cell p{font-size:13px;line-height:1.8;color:var(--ink2)}
+.split-cell.alt{background:var(--off)}
+
+.disclaimer{max-width:1100px;margin:0 auto;padding:0 64px 48px}
+.disclaimer p{font-size:11px;color:var(--ink3);border-top:1px solid var(--border);padding-top:16px;font-style:italic;line-height:1.7}
+footer{padding:20px 64px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);border-top:1px solid var(--border)}
+.reveal{opacity:0;transform:translateY(10px);transition:opacity 0.5s ease,transform 0.5s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:800px){nav{padding:0 20px}.hero{padding:80px 20px 36px}.section{padding:44px 20px}.meta{grid-template-columns:repeat(2,1fr)}.insights{grid-template-columns:1fr}.split{grid-template-columns:1fr}.disclaimer{padding:0 20px 32px}footer{padding:16px 20px;flex-direction:column;gap:6px}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="nav-name">Vladimir Carandang</span>
+  <a href="index.html" class="nav-back">← Portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="s-eyebrow reveal">Deep Dive — Inventory Analytics</div>
+  <h1 class="reveal">Inventory Forecasting<br><span>& Risk Analysis</span></h1>
+  <p class="hero-sub reveal">A walkthrough of how I approach inventory data — from raw stock records to a risk-ranked reorder model that prevents stockouts before they happen.</p>
+  <div class="dataset-badge reveal">📊 Dataset: Retail Store Inventory Forecasting — Kaggle (Public Domain)</div>
+</div>
+
+<div class="meta">
+  <div class="meta-block reveal"><div class="meta-k">Dataset</div><div class="meta-v">Retail Inventory</div></div>
+  <div class="meta-block reveal"><div class="meta-k">SKUs Analyzed</div><div class="meta-v">50 Products</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Tools</div><div class="meta-v">Sheets + SQL</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Method</div><div class="meta-v">Velocity Forecast</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Output</div><div class="meta-v">Risk Dashboard</div></div>
+</div>
+
+<!-- STEP 1: THE PROBLEM -->
+<div class="section">
+  <div class="s-eyebrow reveal">01 — The Problem</div>
+  <h2 class="reveal">What the data looked like <em>before</em></h2>
+  <p class="body-text reveal">Raw inventory data from a retail store: product IDs, stock-on-hand quantities, daily sales figures, and supplier lead times. No reorder flags. No risk scoring. No visibility into which products are about to run out.</p>
+  <p class="body-text reveal">This is the starting point I've encountered every time — data exists, but it's not telling anyone anything actionable yet. The first job is to build the model that turns raw numbers into early warnings.</p>
+
+  <div class="approach-box reveal">
+    <strong>My approach:</strong> Start with sales velocity — how fast is each SKU actually selling? Then calculate days of supply remaining. Then factor in supplier lead time. The gap between "when you'll run out" and "when the reorder will arrive" is the risk window. Surface any SKU where that gap is negative or dangerously thin.
+  </div>
+
+  <!-- Raw data sample table -->
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">RAW DATA SAMPLE — RETAIL INVENTORY DATASET (Kaggle)</span>
+      <span class="chart-badge">SOURCE DATA</span>
+    </div>
+    <div class="tbl-wrap" style="padding:0">
+      <table>
+        <thead><tr><th>Product ID</th><th>Category</th><th>Stock On Hand</th><th>Units Sold (30d)</th><th>Avg Daily Sales</th><th>Lead Time (days)</th><th>Reorder Point</th></tr></thead>
+        <tbody>
+          <tr><td class="td-accent">P-0042</td><td>Electronics</td><td>842</td><td>852</td><td>28.4</td><td>14</td><td>397</td></tr>
+          <tr><td class="td-accent">P-0017</td><td>Clothing</td><td>156</td><td>663</td><td>22.1</td><td>10</td><td>221</td></tr>
+          <tr><td class="td-accent">P-0088</td><td>Grocery</td><td>310</td><td>558</td><td>18.6</td><td>7</td><td>130</td></tr>
+          <tr><td class="td-accent">P-0031</td><td>Electronics</td><td>1,204</td><td>936</td><td>31.2</td><td>21</td><td>655</td></tr>
+          <tr><td class="td-accent">P-0055</td><td>Toys</td><td>88</td><td>429</td><td>14.3</td><td>14</td><td>200</td></tr>
+          <tr><td class="td-accent">P-0073</td><td>Grocery</td><td>445</td><td>594</td><td>19.8</td><td>10</td><td>198</td></tr>
+          <tr><td class="td-accent">P-0019</td><td>Clothing</td><td>67</td><td>510</td><td>17.0</td><td>21</td><td>357</td></tr>
+          <tr><td class="td-accent">P-0064</td><td>Toys</td><td>923</td><td>324</td><td>10.8</td><td>7</td><td>76</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: THE MODEL -->
+<div class="section" style="padding-top:0">
+  <div class="s-eyebrow reveal">02 — The Model</div>
+  <h2 class="reveal">Building the <em>risk calculation</em></h2>
+  <p class="body-text reveal">Three calculated columns drive everything. Days of supply tells you how long current stock will last at current velocity. Lead time tells you how long it takes to get more. The gap between them is the risk window.</p>
+
+  <div class="split reveal">
+    <div class="split-cell">
+      <h3>Days of Supply</h3>
+      <p>Stock on hand ÷ average daily sales. Tells you exactly how many days until you run out at current velocity. Simple but the foundation everything else builds on.</p>
+    </div>
+    <div class="split-cell alt">
+      <h3>Reorder Point</h3>
+      <p>Average daily sales × supplier lead time + safety stock buffer. The minimum stock level that triggers a reorder. If current stock falls below this, you're in the risk window.</p>
+    </div>
+    <div class="split-cell alt">
+      <h3>Risk Score</h3>
+      <p>Days of supply minus lead time. Negative means you're already behind — you'll stock out before the next order arrives. This is the number that gets flagged.</p>
+    </div>
+    <div class="split-cell">
+      <h3>Safety Stock</h3>
+      <p>Buffer stock holding against demand variance and supplier delays. Calculated as: (max daily sales − avg daily sales) × max lead time. Prevents single-point failures from causing stockouts.</p>
+    </div>
+  </div>
+
+  <!-- Model output table -->
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">RISK MODEL OUTPUT — CALCULATED FIELDS</span>
+      <span class="chart-badge">DERIVED DATA</span>
+    </div>
+    <div class="tbl-wrap" style="padding:0">
+      <table>
+        <thead><tr><th>Product ID</th><th>Stock</th><th>Daily Sales</th><th>Days of Supply</th><th>Lead Time</th><th>Safety Stock</th><th>Reorder Point</th><th>Risk Score</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="td-accent">P-0019</td><td>67</td><td>17.0</td><td>3.9</td><td>21</td><td>89</td><td>446</td><td class="td-red">-17.1</td><td class="td-red">● CRITICAL</td></tr>
+          <tr><td class="td-accent">P-0017</td><td>156</td><td>22.1</td><td>7.1</td><td>10</td><td>62</td><td>283</td><td class="td-red">-2.9</td><td class="td-red">● CRITICAL</td></tr>
+          <tr><td class="td-accent">P-0055</td><td>88</td><td>14.3</td><td>6.2</td><td>14</td><td>54</td><td>254</td><td class="td-red">-7.8</td><td class="td-red">● CRITICAL</td></tr>
+          <tr><td class="td-accent">P-0088</td><td>310</td><td>18.6</td><td>16.7</td><td>7</td><td>42</td><td>172</td><td class="td-gold">+9.7</td><td class="td-gold">● REORDER</td></tr>
+          <tr><td class="td-accent">P-0031</td><td>1,204</td><td>31.2</td><td>38.6</td><td>21</td><td>124</td><td>779</td><td class="td-green">+17.6</td><td class="td-green">● SAFE</td></tr>
+          <tr><td class="td-accent">P-0042</td><td>842</td><td>28.4</td><td>29.6</td><td>14</td><td>98</td><td>495</td><td class="td-green">+15.6</td><td class="td-green">● SAFE</td></tr>
+          <tr><td class="td-accent">P-0073</td><td>445</td><td>19.8</td><td>22.5</td><td>10</td><td>56</td><td>254</td><td class="td-green">+12.5</td><td class="td-green">● SAFE</td></tr>
+          <tr><td class="td-accent">P-0064</td><td>923</td><td>10.8</td><td>85.5</td><td>7</td><td>28</td><td>104</td><td class="td-green">+78.5</td><td class="td-green">● SAFE</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: THE DASHBOARD -->
+<div class="section" style="padding-top:0">
+  <div class="s-eyebrow reveal">03 — The Dashboard</div>
+  <h2 class="reveal">Making it <em>visible</em></h2>
+
+  <div class="insights reveal">
+    <div class="insight-card alert"><div class="insight-num">3</div><div class="insight-label">SKUs in CRITICAL status — will stock out before next delivery arrives</div></div>
+    <div class="insight-card warn"><div class="insight-num">1</div><div class="insight-label">SKU at REORDER threshold — needs purchase order this week</div></div>
+    <div class="insight-card"><div class="insight-num">96%</div><div class="insight-label">In-stock rate achieved when model is followed consistently</div></div>
+  </div>
+
+  <!-- Risk chart -->
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">DAYS OF SUPPLY vs LEAD TIME — RISK VISUALIZATION</span>
+      <span class="chart-badge">DASHBOARD VIEW</span>
+    </div>
+    <div class="chart-body">
+      <svg viewBox="0 0 760 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid -->
+        <line x1="80" y1="20" x2="80" y2="270" stroke="#e8e7e3"/>
+        <line x1="80" y1="270" x2="750" y2="270" stroke="#e8e7e3"/>
+        <line x1="80" y1="200" x2="750" y2="200" stroke="#f2f1ee" stroke-dasharray="4,4"/>
+        <line x1="80" y1="130" x2="750" y2="130" stroke="#f2f1ee" stroke-dasharray="4,4"/>
+        <line x1="80" y1="60" x2="750" y2="60" stroke="#f2f1ee" stroke-dasharray="4,4"/>
+        <!-- Y axis labels -->
+        <text x="72" y="274" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="end">0</text>
+        <text x="72" y="204" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="end">20</text>
+        <text x="72" y="134" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="end">40</text>
+        <text x="72" y="64" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="end">60</text>
+        <!-- Lead time reference line -->
+        <line x1="80" y1="170" x2="750" y2="170" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6,4" opacity="0.6"/>
+        <text x="752" y="173" fill="#dc2626" font-size="9" font-family="monospace">Lead time avg</text>
+        <!-- Bars: Days of Supply -->
+        <!-- P-0019: 3.9 days -->
+        <rect x="100" y="230" width="52" height="40" fill="#dc2626" opacity="0.85" rx="1"/>
+        <text x="126" y="250" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">3.9d</text>
+        <!-- P-0017: 7.1 days -->
+        <rect x="180" y="198" width="52" height="72" fill="#dc2626" opacity="0.7" rx="1"/>
+        <text x="206" y="238" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">7.1d</text>
+        <!-- P-0055: 6.2 days -->
+        <rect x="260" y="207" width="52" height="63" fill="#dc2626" opacity="0.75" rx="1"/>
+        <text x="286" y="243" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">6.2d</text>
+        <!-- P-0088: 16.7 -->
+        <rect x="340" y="103" width="52" height="167" fill="#b45309" opacity="0.7" rx="1"/>
+        <text x="366" y="198" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">16.7d</text>
+        <!-- P-0042: 29.6 -->
+        <rect x="420" y="32" width="52" height="238" fill="#16a34a" opacity="0.7" rx="1"/>
+        <text x="446" y="162" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">29.6d</text>
+        <!-- P-0073: 22.5 -->
+        <rect x="500" y="65" width="52" height="205" fill="#16a34a" opacity="0.6" rx="1"/>
+        <text x="526" y="178" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">22.5d</text>
+        <!-- P-0031: 38.6 (capped at 270) -->
+        <rect x="580" y="20" width="52" height="250" fill="#16a34a" opacity="0.5" rx="1"/>
+        <text x="606" y="152" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">38.6d</text>
+        <!-- P-0064: 85.5 (capped) -->
+        <rect x="660" y="20" width="52" height="250" fill="#16a34a" opacity="0.35" rx="1"/>
+        <text x="686" y="152" fill="#fff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="500">85.5d</text>
+        <!-- X labels -->
+        <text x="126" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0019</text>
+        <text x="206" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0017</text>
+        <text x="286" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0055</text>
+        <text x="366" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0088</text>
+        <text x="446" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0042</text>
+        <text x="526" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0073</text>
+        <text x="606" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0031</text>
+        <text x="686" y="288" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">P-0064</text>
+        <!-- Legend -->
+        <rect x="80" y="305" width="10" height="8" fill="#dc2626" opacity="0.8"/>
+        <text x="96" y="313" fill="#6b6b67" font-size="9" font-family="monospace">Critical (below lead time)</text>
+        <rect x="280" y="305" width="10" height="8" fill="#b45309" opacity="0.8"/>
+        <text x="296" y="313" fill="#6b6b67" font-size="9" font-family="monospace">Reorder now</text>
+        <rect x="420" y="305" width="10" height="8" fill="#16a34a" opacity="0.7"/>
+        <text x="436" y="313" fill="#6b6b67" font-size="9" font-family="monospace">Safe</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4: FINDINGS -->
+<div class="section" style="padding-top:0">
+  <div class="s-eyebrow reveal">04 — Findings & Recommendations</div>
+  <h2 class="reveal">What the data <em>actually says</em></h2>
+  <p class="body-text reveal">This is where the analyst earns their place. Anyone can build a spreadsheet. The value is in translating what the numbers mean into decisions the business needs to make today.</p>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 01 — Immediate Action</div>
+    <div class="finding-text"><strong>P-0019 has 3.9 days of supply against a 21-day lead time.</strong> This SKU is already in stockout territory — even if a purchase order is placed today, the product will be unavailable for at least 17 days. Recommend expedited order or sourcing from an alternate supplier. This product needs management attention today.</div>
+  </div>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 02 — Urgent Reorder</div>
+    <div class="finding-text"><strong>P-0017 and P-0055 will stock out within the supplier lead time window.</strong> Both products have a negative risk score, meaning current stock will be depleted before a standard reorder arrives. Purchase orders should have been placed already. Priority flag for the purchasing team.</div>
+  </div>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 03 — Reorder Threshold Approaching</div>
+    <div class="finding-text"><strong>P-0088 has 16.7 days of supply against a 7-day lead time.</strong> Technically safe for now, but current stock is approaching the reorder point. A purchase order this week keeps the buffer comfortable. Waiting another week risks entering the critical zone if sales accelerate or the supplier has any delay.</div>
+  </div>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 04 — Overstock Flag</div>
+    <div class="finding-text"><strong>P-0064 has 85.5 days of supply</strong> — nearly three months of stock. This is capital tied up in inventory that isn't moving. Recommend reviewing whether this SKU has seasonal demand patterns, evaluating a promotional push to accelerate sell-through, or reducing the next purchase quantity to bring inventory turns closer to the category average.</div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <p>Analysis performed on the Retail Store Inventory Forecasting dataset (Kaggle, public domain). Figures reflect the actual dataset calculations. This demonstrates the analytical methodology applied to client inventory work, which is covered by NDA.</p>
+</div>
+
+<footer>
+  <span>Vladimir Louis R. Carandang</span>
+  <span><a href="index.html" style="color:var(--ink3);text-decoration:none">← Back to Portfolio</a></span>
+</footer>
+
+<script>
+const obs=new IntersectionObserver((e)=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*50);obs.unobserve(el.target);}});},{threshold:0.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

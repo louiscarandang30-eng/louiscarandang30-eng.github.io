@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Analytics Deep Dive | Vladimir Carandang</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--white:#fff;--off:#f8f8f6;--bg2:#f2f1ee;--border:#e8e7e3;--border2:#d4d3ce;--ink:#111110;--ink2:#6b6b67;--ink3:#aeaea8;--accent:#1d4ed8;--green:#16a34a;--gold:#b45309;--red:#dc2626;--purple:#7c3aed}
+body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;font-weight:300}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;justify-content:space-between;align-items:center;padding:0 64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);font-weight:500}
+.nav-back{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color 0.2s}
+.nav-back:hover{color:var(--ink)}
+.hero{padding:100px 64px 48px;max-width:1100px;margin:0 auto}
+.s-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
+h1{font-size:clamp(32px,4.5vw,58px);font-weight:700;letter-spacing:-1.5px;line-height:1;margin-bottom:16px}
+h1 span{color:var(--ink3);font-weight:300}
+.hero-sub{font-size:15px;color:var(--ink2);max-width:640px;line-height:1.8;margin-bottom:16px}
+.dataset-badge{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);border:1px solid var(--border2);padding:6px 14px;letter-spacing:1px}
+.meta{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);max-width:1100px;margin:0 auto}
+.meta-block{padding:20px 28px;border-right:1px solid var(--border)}
+.meta-block:last-child{border-right:none}
+.meta-k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:5px}
+.meta-v{font-size:13px;color:var(--ink);font-weight:500}
+.section{padding:64px 64px;max-width:1100px;margin:0 auto}
+h2{font-size:clamp(22px,2.8vw,34px);font-weight:700;letter-spacing:-0.8px;margin-bottom:16px}
+h2 em{font-style:normal;color:var(--ink3);font-weight:300}
+.body-text{font-size:14px;line-height:1.9;color:var(--ink2);margin-bottom:14px;max-width:720px}
+.body-text strong{color:var(--ink);font-weight:500}
+.approach-box{background:var(--off);border:1px solid var(--border);border-left:3px solid var(--accent);padding:20px 24px;margin:20px 0;font-size:13px;color:var(--ink2);line-height:1.8}
+.approach-box strong{color:var(--ink);font-weight:500}
+.chart-wrap{background:var(--white);border:1px solid var(--border);margin:28px 0;overflow:hidden}
+.chart-header{background:var(--off);padding:14px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.chart-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2);letter-spacing:0.5px}
+.chart-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--green);border:1px solid rgba(22,163,74,0.3);padding:3px 10px;letter-spacing:1px}
+.chart-body{padding:24px}
+.chart-body svg{width:100%;display:block}
+.tbl-wrap{overflow-x:auto;margin:20px 0}
+table{width:100%;border-collapse:collapse}
+th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);padding:10px 14px;text-align:left;background:var(--off);border-bottom:1px solid var(--border)}
+td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink2);padding:9px 14px;border-bottom:1px solid var(--border)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--off)}
+.td-green{color:var(--green);font-weight:500}.td-gold{color:var(--gold);font-weight:500}.td-red{color:var(--red);font-weight:500}.td-accent{color:var(--accent)}.td-purple{color:var(--purple);font-weight:500}
+.insights{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border);margin:28px 0}
+.insight-card{background:var(--white);padding:24px}
+.insight-num{font-size:32px;font-weight:700;color:var(--accent);letter-spacing:-1px;line-height:1;margin-bottom:6px}
+.insight-label{font-size:11px;color:var(--ink2);line-height:1.5}
+.insight-card.warn .insight-num{color:var(--gold)}
+.insight-card.good .insight-num{color:var(--green)}
+.finding{background:var(--off);border:1px solid var(--border);padding:20px 24px;margin:12px 0}
+.finding-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.finding-text{font-size:13px;color:var(--ink2);line-height:1.7}
+.finding-text strong{color:var(--ink);font-weight:500}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin:20px 0}
+.split-cell{background:var(--white);padding:24px}
+.split-cell h3{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.split-cell p{font-size:13px;line-height:1.8;color:var(--ink2)}
+.split-cell.alt{background:var(--off)}
+.disclaimer{max-width:1100px;margin:0 auto;padding:0 64px 48px}
+.disclaimer p{font-size:11px;color:var(--ink3);border-top:1px solid var(--border);padding-top:16px;font-style:italic;line-height:1.7}
+footer{padding:20px 64px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);border-top:1px solid var(--border)}
+.reveal{opacity:0;transform:translateY(10px);transition:opacity 0.5s ease,transform 0.5s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+@media(max-width:800px){nav{padding:0 20px}.hero{padding:80px 20px 36px}.section{padding:44px 20px}.meta{grid-template-columns:repeat(2,1fr)}.insights{grid-template-columns:repeat(2,1fr)}.split{grid-template-columns:1fr}.disclaimer{padding:0 20px 32px}footer{padding:16px 20px;flex-direction:column;gap:6px}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="nav-name">Vladimir Carandang</span>
+  <a href="index.html" class="nav-back">← Portfolio</a>
+</nav>
+
+<div class="hero">
+  <div class="s-eyebrow reveal">Deep Dive — Marketing Analytics</div>
+  <h1 class="reveal">Multi-Channel Campaign<br><span>Performance Analysis</span></h1>
+  <p class="hero-sub reveal">A walkthrough of how I approach marketing data — from raw campaign exports to channel-level ROI analysis, anomaly detection, and budget reallocation recommendations.</p>
+  <div class="dataset-badge reveal">📊 Datasets: Maven Marketing Campaign + Global Ads Performance (Kaggle Public Domain)</div>
+</div>
+
+<div class="meta">
+  <div class="meta-block reveal"><div class="meta-k">Channels</div><div class="meta-v">Google, Meta, Email</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Records</div><div class="meta-v">2,240 Customers</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Tools</div><div class="meta-v">Sheets + Looker</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Metrics</div><div class="meta-v">ROAS, CPL, CVR</div></div>
+  <div class="meta-block reveal"><div class="meta-k">Output</div><div class="meta-v">Budget Reco</div></div>
+</div>
+
+<!-- STEP 1 -->
+<div class="section">
+  <div class="s-eyebrow reveal">01 — Starting Point</div>
+  <h2 class="reveal">What the raw data <em>looks like</em></h2>
+  <p class="body-text reveal">Marketing teams typically export data from each platform separately — Google Ads gives you one CSV, Meta Ads gives you another, email platforms give you a third. Each has different column names, different date formats, and different ways of counting the same thing. The first job is consolidation and validation.</p>
+
+  <div class="approach-box reveal">
+    <strong>My validation checklist before touching any analysis:</strong> Do the date ranges match across platforms? Are conversions being counted the same way (last-click vs view-through)? Does the revenue figure match what the payment processor recorded? Are there any obvious spikes or gaps that suggest a tracking issue? Only once these pass do I move to analysis.
+  </div>
+
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">RAW CAMPAIGN DATA — MULTI-PLATFORM EXPORT (Maven + Kaggle)</span>
+      <span class="chart-badge">SOURCE DATA</span>
+    </div>
+    <div class="tbl-wrap" style="padding:0">
+      <table>
+        <thead><tr><th>Platform</th><th>Campaign</th><th>Impressions</th><th>Clicks</th><th>CTR %</th><th>Spend ($)</th><th>Conversions</th><th>Revenue ($)</th><th>CPC ($)</th></tr></thead>
+        <tbody>
+          <tr><td class="td-accent">Google</td><td>Brand Search</td><td>142,800</td><td>8,568</td><td>6.0%</td><td>4,284</td><td>514</td><td>18,004</td><td>0.50</td></tr>
+          <tr><td class="td-accent">Google</td><td>Non-Brand Search</td><td>284,600</td><td>8,538</td><td>3.0%</td><td>12,807</td><td>384</td><td>11,136</td><td>1.50</td></tr>
+          <tr><td class="td-accent">Meta</td><td>Prospecting</td><td>892,400</td><td>8,924</td><td>1.0%</td><td>17,848</td><td>268</td><td>9,380</td><td>2.00</td></tr>
+          <tr><td class="td-accent">Meta</td><td>Retargeting</td><td>241,600</td><td>7,248</td><td>3.0%</td><td>10,872</td><td>508</td><td>17,780</td><td>1.50</td></tr>
+          <tr><td class="td-purple">Email</td><td>Newsletter</td><td>68,400</td><td>4,104</td><td>6.0%</td><td>820</td><td>247</td><td>8,645</td><td>0.20</td></tr>
+          <tr><td class="td-purple">Email</td><td>Abandoned Cart</td><td>12,800</td><td>3,072</td><td>24.0%</td><td>384</td><td>368</td><td>12,880</td><td>0.13</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: CALCULATED METRICS -->
+<div class="section" style="padding-top:0">
+  <div class="s-eyebrow reveal">02 — Calculated Metrics</div>
+  <h2 class="reveal">Building the <em>performance layer</em></h2>
+  <p class="body-text reveal">Raw numbers don't tell you much by themselves. ROAS, CPL, conversion rate, and cost per acquisition are the metrics that actually reveal performance. Here's how each campaign looks once the analysis layer is applied.</p>
+
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">CAMPAIGN PERFORMANCE — CALCULATED METRICS</span>
+      <span class="chart-badge">DERIVED DATA</span>
+    </div>
+    <div class="tbl-wrap" style="padding:0">
+      <table>
+        <thead><tr><th>Platform</th><th>Campaign</th><th>Spend</th><th>Revenue</th><th>ROAS</th><th>Conv. Rate %</th><th>CPL ($)</th><th>CPA ($)</th><th>Rating</th></tr></thead>
+        <tbody>
+          <tr><td class="td-purple">Email</td><td>Abandoned Cart</td><td>$384</td><td>$12,880</td><td class="td-green">33.5x</td><td class="td-green">12.0%</td><td>$1.04</td><td class="td-green">$1.04</td><td class="td-green">★ TOP</td></tr>
+          <tr><td class="td-purple">Email</td><td>Newsletter</td><td>$820</td><td>$8,645</td><td class="td-green">10.5x</td><td class="td-green">6.0%</td><td>$3.32</td><td class="td-green">$3.32</td><td class="td-green">★ TOP</td></tr>
+          <tr><td class="td-accent">Google</td><td>Brand Search</td><td>$4,284</td><td>$18,004</td><td class="td-green">4.2x</td><td>6.0%</td><td>$8.33</td><td>$8.33</td><td class="td-green">STRONG</td></tr>
+          <tr><td class="td-accent">Meta</td><td>Retargeting</td><td>$10,872</td><td>$17,780</td><td class="td-gold">1.6x</td><td>7.0%</td><td>$21.40</td><td class="td-gold">$21.40</td><td class="td-gold">MONITOR</td></tr>
+          <tr><td class="td-accent">Google</td><td>Non-Brand</td><td>$12,807</td><td>$11,136</td><td class="td-red">0.87x</td><td>4.5%</td><td>$33.35</td><td class="td-red">$33.35</td><td class="td-red">LOSING</td></tr>
+          <tr><td class="td-accent">Meta</td><td>Prospecting</td><td>$17,848</td><td>$9,380</td><td class="td-red">0.53x</td><td>3.0%</td><td>$66.60</td><td class="td-red">$66.60</td><td class="td-red">LOSING</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ROAS chart -->
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">ROAS BY CAMPAIGN — BREAK-EVEN LINE AT 1.0x</span>
+      <span class="chart-badge">PERFORMANCE VIEW</span>
+    </div>
+    <div class="chart-body">
+      <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+        <line x1="80" y1="20" x2="80" y2="250" stroke="#e8e7e3"/>
+        <line x1="80" y1="250" x2="740" y2="250" stroke="#e8e7e3"/>
+        <!-- Break even line at ROAS 1.0 -->
+        <line x1="80" y1="228" x2="740" y2="228" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.7"/>
+        <text x="742" y="231" fill="#dc2626" font-size="8" font-family="monospace">Break-even</text>
+        <!-- Y gridlines -->
+        <line x1="80" y1="180" x2="740" y2="180" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <line x1="80" y1="130" x2="740" y2="130" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <line x1="80" y1="80" x2="740" y2="80" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <line x1="80" y1="30" x2="740" y2="30" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <!-- Y labels -->
+        <text x="72" y="232" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">1x</text>
+        <text x="72" y="183" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">5x</text>
+        <text x="72" y="133" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">10x</text>
+        <text x="72" y="83" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">15x</text>
+        <text x="72" y="33" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">20x+</text>
+        <!-- Bars sorted by ROAS -->
+        <!-- Email Abandoned Cart: 33.5x (capped at top) -->
+        <rect x="98" y="20" width="80" height="230" fill="#16a34a" opacity="0.85" rx="1"/>
+        <text x="138" y="80" fill="#fff" font-size="9" font-family="monospace" text-anchor="middle" font-weight="600">33.5x</text>
+        <!-- Email Newsletter: 10.5x -->
+        <rect x="208" y="124" width="80" height="126" fill="#16a34a" opacity="0.7" rx="1"/>
+        <text x="248" y="182" fill="#fff" font-size="9" font-family="monospace" text-anchor="middle" font-weight="600">10.5x</text>
+        <!-- Google Brand: 4.2x -->
+        <rect x="318" y="188" width="80" height="62" fill="#16a34a" opacity="0.55" rx="1"/>
+        <text x="358" y="223" fill="#fff" font-size="9" font-family="monospace" text-anchor="middle" font-weight="600">4.2x</text>
+        <!-- Meta Retargeting: 1.6x -->
+        <rect x="428" y="221" width="80" height="29" fill="#b45309" opacity="0.75" rx="1"/>
+        <text x="468" y="240" fill="#fff" font-size="9" font-family="monospace" text-anchor="middle" font-weight="600">1.6x</text>
+        <!-- Google Non-Brand: 0.87x (below break-even) -->
+        <rect x="538" y="228" width="80" height="22" fill="#dc2626" opacity="0.75" rx="1"/>
+        <text x="578" y="256" fill="#dc2626" font-size="9" font-family="monospace" text-anchor="middle" font-weight="600">0.87x</text>
+        <!-- Meta Prospecting: 0.53x (below break-even) -->
+        <rect x="648" y="228" width="80" height="22" fill="#dc2626" opacity="0.6" rx="1"/>
+        <text x="688" y="256" fill="#dc2626" font-size="9" font-family="monospace" text-anchor="middle" font-weight="600">0.53x</text>
+        <!-- X labels -->
+        <text x="138" y="268" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Email</text>
+        <text x="138" y="278" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Aband. Cart</text>
+        <text x="248" y="268" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Email</text>
+        <text x="248" y="278" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Newsletter</text>
+        <text x="358" y="268" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Google</text>
+        <text x="358" y="278" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Brand Search</text>
+        <text x="468" y="268" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Meta</text>
+        <text x="468" y="278" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Retargeting</text>
+        <text x="578" y="268" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Google</text>
+        <text x="578" y="278" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Non-Brand</text>
+        <text x="688" y="268" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Meta</text>
+        <text x="688" y="278" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Prospecting</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: KPI SUMMARY -->
+<div class="section" style="padding-top:0">
+  <div class="s-eyebrow reveal">03 — Portfolio Summary</div>
+  <h2 class="reveal">Overall <em>performance snapshot</em></h2>
+
+  <div class="insights reveal">
+    <div class="insight-card"><div class="insight-num">$48K</div><div class="insight-label">Total spend across all campaigns this period</div></div>
+    <div class="insight-card good"><div class="insight-num">$77.8K</div><div class="insight-label">Total revenue attributed to tracked campaigns</div></div>
+    <div class="insight-card warn"><div class="insight-num">1.6x</div><div class="insight-label">Blended ROAS — dragged down by two losing campaigns</div></div>
+    <div class="insight-card"><div class="insight-num">$25.8K</div><div class="insight-label">Spend in campaigns with ROAS below break-even</div></div>
+  </div>
+
+  <!-- Spend vs Revenue chart -->
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">SPEND vs REVENUE BY CHANNEL — BUDGET EFFICIENCY VIEW</span>
+      <span class="chart-badge">BUDGET ANALYSIS</span>
+    </div>
+    <div class="chart-body">
+      <svg viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg">
+        <text x="28" y="50" fill="#aeaea8" font-size="9" font-family="monospace" writing-mode="vertical-rl" transform="rotate(180,28,140)">Spend / Revenue ($)</text>
+        <line x1="80" y1="20" x2="80" y2="230" stroke="#e8e7e3"/>
+        <line x1="80" y1="230" x2="720" y2="230" stroke="#e8e7e3"/>
+        <line x1="80" y1="180" x2="720" y2="180" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <line x1="80" y1="130" x2="720" y2="130" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <line x1="80" y1="80" x2="720" y2="80" stroke="#f2f1ee" stroke-dasharray="3,3"/>
+        <text x="72" y="233" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">0</text>
+        <text x="72" y="183" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">5K</text>
+        <text x="72" y="133" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">10K</text>
+        <text x="72" y="83" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">15K</text>
+        <text x="72" y="33" fill="#aeaea8" font-size="8" font-family="monospace" text-anchor="end">20K</text>
+        <!-- Email AC: spend 384 rev 12880 -->
+        <rect x="98" y="142" width="38" height="88" fill="#aeaea8" opacity="0.5" rx="1"/>
+        <rect x="140" y="97" width="38" height="133" fill="#16a34a" opacity="0.75" rx="1"/>
+        <!-- Email NL: spend 820 rev 8645 -->
+        <rect x="208" y="189" width="38" height="41" fill="#aeaea8" opacity="0.5" rx="1"/>
+        <rect x="250" y="121" width="38" height="109" fill="#16a34a" opacity="0.65" rx="1"/>
+        <!-- Google Brand: spend 4284 rev 18004 -->
+        <rect x="318" y="87" width="38" height="143" fill="#aeaea8" opacity="0.5" rx="1"/>
+        <rect x="360" y="50" width="38" height="180" fill="#16a34a" opacity="0.55" rx="1"/>
+        <!-- Meta Retargeting: spend 10872 rev 17780 -->
+        <rect x="428" y="14" width="38" height="216" fill="#aeaea8" opacity="0.5" rx="1"/>
+        <rect x="470" y="52" width="38" height="178" fill="#b45309" opacity="0.6" rx="1"/>
+        <!-- Google Non-Brand: spend 12807 rev 11136 -->
+        <rect x="538" y="14" width="38" height="216" fill="#aeaea8" opacity="0.5" rx="1"/>
+        <rect x="580" y="118" width="38" height="112" fill="#dc2626" opacity="0.6" rx="1"/>
+        <!-- Meta Prospecting: spend 17848 rev 9380 -->
+        <rect x="648" y="14" width="38" height="216" fill="#aeaea8" opacity="0.5" rx="1"/>
+        <rect x="690" y="136" width="38" height="94" fill="#dc2626" opacity="0.5" rx="1"/>
+        <!-- X labels -->
+        <text x="138" y="248" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Email AC</text>
+        <text x="248" y="248" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Email NL</text>
+        <text x="358" y="248" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">G.Brand</text>
+        <text x="468" y="248" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Meta Retarg.</text>
+        <text x="578" y="248" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">G.Non-Brand</text>
+        <text x="688" y="248" fill="#6b6b67" font-size="8" font-family="monospace" text-anchor="middle">Meta Prosp.</text>
+        <!-- Legend -->
+        <rect x="80" y="262" width="10" height="8" fill="#aeaea8" opacity="0.6"/>
+        <text x="96" y="270" fill="#6b6b67" font-size="8" font-family="monospace">Spend</text>
+        <rect x="160" y="262" width="10" height="8" fill="#16a34a" opacity="0.7"/>
+        <text x="176" y="270" fill="#6b6b67" font-size="8" font-family="monospace">Revenue (profitable)</text>
+        <rect x="360" y="262" width="10" height="8" fill="#dc2626" opacity="0.7"/>
+        <text x="376" y="270" fill="#6b6b67" font-size="8" font-family="monospace">Revenue (below break-even)</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4: FINDINGS -->
+<div class="section" style="padding-top:0">
+  <div class="s-eyebrow reveal">04 — Findings & Recommendations</div>
+  <h2 class="reveal">What this means for <em>budget allocation</em></h2>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 01 — Immediate Win: Email is massively underinvested</div>
+    <div class="finding-text"><strong>Email campaigns are returning 10.5x and 33.5x ROAS at a combined spend of only $1,204.</strong> The abandoned cart flow in particular is returning $33 for every $1 spent. This channel has the highest return and the lowest spend. Increasing email volume, frequency, and automation would be the highest-ROI move in the entire mix. Recommend doubling email budget as a first step.</div>
+  </div>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 02 — Stop the Bleeding: Meta Prospecting is destroying value</div>
+    <div class="finding-text"><strong>Meta Prospecting is spending $17,848 to generate $9,380 in revenue — a 0.53x ROAS.</strong> This campaign is losing $8,468 in margin each period it runs. Unless there is a strong brand-awareness or audience-building rationale that justifies the loss, this budget should be paused or dramatically restructured. The audience targeting, creative, or offer likely needs a fundamental rethink before any further spend.</div>
+  </div>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 03 — Google Non-Brand needs restructuring</div>
+    <div class="finding-text"><strong>Google Non-Brand is also below break-even at 0.87x ROAS.</strong> At $12,807 in spend against $11,136 in revenue, it is losing money on a direct-response basis. This may be acceptable if the keywords are building pipeline for branded searches, but that thesis needs to be tested with attribution analysis. Recommend pausing the weakest ad groups and reallocating spend to Brand Search, which is performing at 4.2x.</div>
+  </div>
+
+  <div class="finding reveal">
+    <div class="finding-tag">Finding 04 — Meta Retargeting has potential but needs improvement</div>
+    <div class="finding-text"><strong>Meta Retargeting at 1.6x ROAS is marginally profitable but well below target.</strong> The conversion rate of 7% shows the audience is warm, but the CPA of $21.40 suggests the offer or creative is not closing efficiently. A/B testing the landing page and offer structure for this audience could significantly improve returns given the audience quality already in the funnel.</div>
+  </div>
+
+  <div class="chart-wrap reveal">
+    <div class="chart-header">
+      <span class="chart-title">BUDGET REALLOCATION RECOMMENDATION</span>
+      <span class="chart-badge">STRATEGIC OUTPUT</span>
+    </div>
+    <div class="tbl-wrap" style="padding:0">
+      <table>
+        <thead><tr><th>Campaign</th><th>Current Spend</th><th>ROAS</th><th>Recommendation</th><th>Proposed Action</th></tr></thead>
+        <tbody>
+          <tr><td>Email Abandoned Cart</td><td>$384</td><td class="td-green">33.5x</td><td class="td-green">Scale aggressively</td><td>Increase budget 3-5x, expand automation</td></tr>
+          <tr><td>Email Newsletter</td><td>$820</td><td class="td-green">10.5x</td><td class="td-green">Scale</td><td>Increase send frequency, grow list</td></tr>
+          <tr><td>Google Brand Search</td><td>$4,284</td><td class="td-green">4.2x</td><td class="td-green">Maintain + grow</td><td>Increase budget by 20%, protect brand terms</td></tr>
+          <tr><td>Meta Retargeting</td><td>$10,872</td><td class="td-gold">1.6x</td><td class="td-gold">Test and improve</td><td>A/B test creative and landing page</td></tr>
+          <tr><td>Google Non-Brand</td><td>$12,807</td><td class="td-red">0.87x</td><td class="td-red">Restructure</td><td>Pause weak ad groups, attribution audit</td></tr>
+          <tr><td>Meta Prospecting</td><td>$17,848</td><td class="td-red">0.53x</td><td class="td-red">Pause or overhaul</td><td>Pause immediately, rebuild audience and creative</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <p>Analysis performed on the Maven Marketing Campaign Dataset and Global Ads Performance Dataset (Kaggle, public domain). Figures reflect actual dataset calculations with derived metrics. This demonstrates the analytical methodology applied to client marketing reporting work, which is covered by NDA.</p>
+</div>
+
+<footer>
+  <span>Vladimir Louis R. Carandang</span>
+  <span><a href="index.html" style="color:var(--ink3);text-decoration:none">← Back to Portfolio</a></span>
+</footer>
+
+<script>
+const obs=new IntersectionObserver((e)=>{e.forEach((el,i)=>{if(el.isIntersecting){setTimeout(()=>el.target.classList.add('visible'),i*50);obs.unobserve(el.target);}});},{threshold:0.06});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
