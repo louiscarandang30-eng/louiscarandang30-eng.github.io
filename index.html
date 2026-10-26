@@ -1,689 +1,148 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Vladimir Carandang — Data & Operations</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --white:#ffffff;
-  --off:#f8f8f6;
-  --bg2:#f2f1ee;
-  --border:#e8e7e3;
-  --border2:#d4d3ce;
-  --ink:#111110;
-  --ink2:#6b6b67;
-  --ink3:#aeaea8;
-  --accent:#1d4ed8;
-  --accent2:#3b82f6;
-  --green:#16a34a;
-  --gold:#b45309;
-  --red:#dc2626;
-}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--white);color:var(--ink);line-height:1.6;font-weight:300;overflow-x:hidden}
-::-webkit-scrollbar{width:2px}::-webkit-scrollbar-thumb{background:var(--border)}
+{\rtf1\ansi\ansicpg1252\cocoartf2868
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww16440\viewh10860\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;justify-content:space-between;align-items:center;padding:0 64px;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.nav-name{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);letter-spacing:0.5px;font-weight:500}
-.nav-links{display:flex;gap:36px;list-style:none}
-.nav-links a{font-size:11px;font-weight:400;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);text-decoration:none;transition:color 0.2s}
-.nav-links a:hover{color:var(--ink)}
-
-/* HERO */
-.hero{min-height:100vh;display:flex;align-items:center;padding:100px 64px 80px;border-bottom:1px solid var(--border)}
-.hero-inner{max-width:1100px;width:100%;display:grid;grid-template-columns:1fr 420px;gap:80px;align-items:center}
-.hero-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.hero-eyebrow::before{content:'';width:20px;height:1px;background:var(--accent)}
-h1{font-size:clamp(44px,5.5vw,76px);font-weight:700;line-height:1;letter-spacing:-2px;margin-bottom:24px;color:var(--ink)}
-.hero-role{font-size:14px;font-weight:400;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:28px}
-.hero-desc{font-size:16px;line-height:1.8;color:var(--ink2);margin-bottom:40px;max-width:520px}
-.hero-links{display:flex;gap:12px;flex-wrap:wrap}
-.btn{font-size:11px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;padding:11px 24px;transition:all 0.2s;display:inline-block}
-.btn-primary{background:var(--accent);color:#fff}
-.btn-primary:hover{background:var(--accent2)}
-.btn-outline{border:1px solid var(--border2);color:var(--ink2)}
-.btn-outline:hover{border-color:var(--accent);color:var(--accent)}
-.hero-status-box{background:var(--off);border:1px solid var(--border);padding:32px}
-.status-live{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
-.status-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.status-rows{display:flex;flex-direction:column}
-.status-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px}
-.status-row:last-child{border-bottom:none}
-.status-k{color:var(--ink3);font-weight:300}
-.status-v{color:var(--ink);font-weight:400}
-.status-v.on{color:var(--green)}
-.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
-.chip{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink2);border:1px solid var(--border);padding:5px 12px;letter-spacing:0.3px}
-
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border)}
-.stat{padding:44px 48px;border-right:1px solid var(--border)}
-.stat:last-child{border-right:none}
-.stat-num{font-size:52px;font-weight:700;color:var(--ink);line-height:1;margin-bottom:8px;letter-spacing:-2px}
-.stat-num span{font-size:24px;color:var(--ink3);font-weight:300}
-.stat-label{font-size:12px;color:var(--ink3);letter-spacing:0.3px;line-height:1.6}
-
-/* SECTIONS */
-.section{padding:96px 64px;max-width:1300px;margin:0 auto}
-.s-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px}
-h2{font-size:clamp(28px,3.5vw,48px);font-weight:700;letter-spacing:-1.5px;line-height:1.05;margin-bottom:16px;color:var(--ink)}
-h2 em{font-style:normal;color:var(--ink3);font-weight:300}
-.section-intro{font-size:15px;color:var(--ink2);margin-bottom:48px;max-width:640px;line-height:1.7}
-
-/* WORK CARDS */
-.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border)}
-.work-card{background:var(--white);display:flex;flex-direction:column;transition:background 0.15s}
-.work-card:hover{background:var(--off)}
-.work-viz{width:100%;aspect-ratio:16/9;overflow:hidden;border-bottom:1px solid var(--border)}
-.work-viz svg{width:100%;height:100%;display:block}
-.work-body{padding:28px 32px 32px;flex:1;display:flex;flex-direction:column}
-.work-tag{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-.work-title{font-size:17px;font-weight:600;color:var(--ink);margin-bottom:4px;letter-spacing:-0.3px}
-.work-sub{font-size:11px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
-.work-rule{width:24px;height:1px;background:var(--border2);margin-bottom:14px}
-.work-desc{font-size:13px;line-height:1.8;color:var(--ink2);flex:1;margin-bottom:18px}
-.work-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--off);border:1px solid var(--border)}
-.work-metric-label{font-size:10px;color:var(--ink3)}
-.work-metric-val{font-family:'JetBrains Mono',monospace;font-size:15px;color:var(--accent);font-weight:500}
-.work-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
-.tool-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink3);border:1px solid var(--border);padding:3px 8px}
-
-/* SQL */
-.sql-block{border:1px solid var(--border);margin-bottom:28px;background:var(--white)}
-.sql-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--off)}
-.sql-title{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink2)}
-.sql-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);border:1px solid var(--border2);padding:3px 10px;letter-spacing:1px}
-.sql-code{padding:20px;background:var(--off);overflow-x:auto}
-.sql-code pre{font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.8;color:var(--ink2)}
-.kw{color:#1d4ed8;font-weight:500}.fn{color:#0891b2}.str{color:#b45309}.cm{color:var(--ink3);font-style:italic}
-.sql-result{overflow-x:auto}
-.sql-result table{width:100%;border-collapse:collapse}
-.sql-result th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);padding:10px 16px;text-align:left;background:var(--off);border-bottom:1px solid var(--border)}
-.sql-result td{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink2);padding:9px 16px;border-bottom:1px solid var(--border)}
-.sql-result tr:last-child td{border-bottom:none}
-.sql-result tr:hover td{background:var(--off)}
-.td-green{color:var(--green)}.td-gold{color:var(--gold)}.td-red{color:var(--red)}.td-accent{color:var(--accent)}
-
-/* AI */
-.ai-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--border)}
-.ai-card{background:var(--white);padding:36px;transition:background 0.15s}
-.ai-card:hover{background:var(--off)}
-.ai-card-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3);letter-spacing:1px;margin-bottom:14px}
-.ai-card-title{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-0.2px}
-.ai-card-desc{font-size:13px;line-height:1.8;color:var(--ink2)}
-.ai-flow{background:var(--off);border:1px solid var(--border);padding:40px;margin-top:2px}
-
-/* SKILLS */
-.skills-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--border)}
-.skill-col{background:var(--white);padding:36px}
-.skill-col-name{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--border)}
-.skill-rows{display:flex;flex-direction:column;gap:14px}
-.sk-top{display:flex;justify-content:space-between;margin-bottom:5px}
-.sk-name{font-size:13px;color:var(--ink);font-weight:400}
-.sk-pct{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3)}
-.sk-bar{height:1px;background:var(--border);position:relative}
-.sk-fill{position:absolute;top:-0.5px;left:0;height:2px;background:var(--accent);transition:width 1.3s cubic-bezier(0.4,0,0.2,1)}
-
-/* EXPERIENCE */
-.exp-item{display:grid;grid-template-columns:190px 1fr;border-top:1px solid var(--border)}
-.exp-item:last-child{border-bottom:1px solid var(--border)}
-.exp-l{padding:32px 24px 32px 0;border-right:1px solid var(--border)}
-.exp-date{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);margin-bottom:6px;letter-spacing:0.5px}
-.exp-co{font-size:13px;font-weight:500;color:var(--accent)}
-.exp-r{padding:32px 0 32px 40px}
-.exp-title{font-size:18px;font-weight:600;color:var(--ink);margin-bottom:14px;letter-spacing:-0.3px}
-.exp-list{list-style:none;display:flex;flex-direction:column;gap:9px}
-.exp-list li{font-size:13px;color:var(--ink2);padding-left:18px;position:relative;line-height:1.7;font-weight:300}
-.exp-list li::before{content:'';position:absolute;left:0;top:11px;width:7px;height:1px;background:var(--border2)}
-.exp-parttime .exp-l,.exp-parttime .exp-r{padding-top:18px;padding-bottom:18px}
-.exp-parttime .exp-title{margin-bottom:0;font-size:15px;font-weight:500;color:var(--ink2)}
-.exp-tag{display:inline-block;margin-left:8px;font-size:10px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink3);border:1px solid var(--border2);border-radius:3px;padding:1px 5px;vertical-align:middle}
-
-/* CONTACT */
-.contact-outer{background:var(--off);border-top:1px solid var(--border);padding:96px 64px}
-.contact-inner{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:96px;align-items:start}
-.c-links{display:flex;flex-direction:column;gap:2px;margin-top:28px}
-.c-link{display:flex;align-items:center;gap:16px;padding:14px 18px;background:var(--white);border:1px solid var(--border);text-decoration:none;transition:border-color 0.2s}
-.c-link:hover{border-color:var(--accent)}
-.c-link-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);width:18px;flex-shrink:0}
-.c-link-text{font-size:13px;color:var(--ink2)}
-.avail-box{background:var(--white);border:1px solid var(--border);padding:36px}
-.avail-live{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:24px}
-.avail-row{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);font-size:13px}
-.avail-row:last-child{border-bottom:none}
-.avail-k{color:var(--ink3);font-weight:300}
-.avail-v{color:var(--ink);font-weight:400}
-.avail-v.on{color:var(--green)}
-
-footer{padding:24px 64px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);letter-spacing:0.5px;border-top:1px solid var(--border)}
-
-.reveal{opacity:0;transform:translateY(12px);transition:opacity 0.55s ease,transform 0.55s ease}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-@media(max-width:960px){
-  nav{padding:0 24px}.hero{padding:90px 24px 60px}
-  .hero-inner{grid-template-columns:1fr;gap:40px}
-  .stats{grid-template-columns:repeat(2,1fr)}.stat{border-bottom:1px solid var(--border)}
-  .section{padding:64px 24px}.work-grid{grid-template-columns:1fr}
-  .ai-grid{grid-template-columns:1fr}.skills-grid{grid-template-columns:repeat(2,1fr)}
-  .exp-item{grid-template-columns:1fr}.exp-l{border-right:none;border-bottom:1px solid var(--border);padding:24px 0 12px}
-  .exp-r{padding:16px 0 28px}.contact-outer{padding:64px 24px}.contact-inner{grid-template-columns:1fr;gap:48px}
-  footer{padding:18px 24px;flex-direction:column;gap:6px}
-}
-</style>
-</head>
-<body>
-
-<nav>
-  <span class="nav-name">Vladimir Carandang</span>
-  <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#sql">SQL</a></li>
-    <li><a href="#ai">AI</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="hero-eyebrow reveal">Data · Operations · AI Automation</div>
-      <h1 class="reveal">Vladimir<br>Carandang</h1>
-      <p class="hero-role reveal">Data & Operations Manager</p>
-      <p class="hero-desc reveal">I build the systems behind the numbers. SQL pipelines, Power BI dashboards, AI automation agents, and the operational infrastructure that turns messy data into decisions leadership can act on.</p>
-      <div class="hero-links reveal">
-        <a href="#work" class="btn btn-primary">View Work</a>
-        <a href="case-study.html" class="btn btn-outline">Case Study</a>
-        <a href="#contact" class="btn btn-outline">Contact</a>
-      </div>
-      <div class="hero-chips reveal">
-        <span class="chip">SQL / BigQuery</span>
-        <span class="chip">Power BI</span>
-        <span class="chip">Looker Studio</span>
-        <span class="chip">Claude Agent Architecture</span>
-        <span class="chip">Make / N8N</span>
-        <span class="chip">Inventory Forecasting</span>
-        <span class="chip">Revenue Operations</span>
-      </div>
-    </div>
-    <div class="hero-status-box reveal">
-      <div class="status-live"><span class="status-dot"></span>Available Now</div>
-      <div class="status-rows">
-        <div class="status-row"><span class="status-k">Status</span><span class="status-v on">Open to Opportunities</span></div>
-        <div class="status-row"><span class="status-k">Type</span><span class="status-v">Full-Time Remote</span></div>
-        <div class="status-row"><span class="status-k">Time Zones</span><span class="status-v">PHT · AEST · EST</span></div>
-        <div class="status-row"><span class="status-k">Location</span><span class="status-v">Davao, Philippines</span></div>
-        <div class="status-row"><span class="status-k">Focus</span><span class="status-v">Data · Ops · AI</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STATS -->
-<div class="stats">
-  <div class="stat reveal"><div class="stat-num">5<span>+</span></div><div class="stat-label">Years across data, operations, and workforce management</div></div>
-  <div class="stat reveal"><div class="stat-num">70<span>%</span></div><div class="stat-label">Manual reporting eliminated through automation</div></div>
-  <div class="stat reveal"><div class="stat-num">150</div><div class="stat-label">Person call center floor managed across 15 teams</div></div>
-  <div class="stat reveal"><div class="stat-num">96<span>%</span></div><div class="stat-label">In-stock rate sustained via inventory forecasting model</div></div>
-</div>
-
-<!-- WORK -->
-<section class="section" id="work">
-  <div class="s-eyebrow reveal">01 — Work</div>
-  <h2 class="reveal">Dashboards & <em>Reporting</em></h2>
-  <p class="section-intro reveal">All visualizations use public datasets (Superstore, Google Analytics, World Bank). Original client work is NDA-protected — these demonstrate the same methodology and toolset applied to open data.</p>
-
-  <div class="work-grid">
-
-    <!-- Power BI Superstore -->
-    <div class="work-card reveal">
-      <div class="work-viz">
-        <svg viewBox="0 0 560 315" style="background:#f8f8f6">
-          <rect x="0" y="0" width="560" height="36" fill="#f2f1ee"/>
-          <text x="16" y="23" fill="#aeaea8" font-size="9" font-family="sans-serif" letter-spacing="1.5">POWER BI  ·  SUPERSTORE SALES DASHBOARD</text>
-          <circle cx="544" cy="18" r="5" fill="#16a34a"/>
-          <rect x="12" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">TOTAL REVENUE</text>
-          <text x="22" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">$2.3M</text>
-          <text x="118" y="94" fill="#16a34a" font-size="9" font-family="sans-serif" text-anchor="end">▲14%</text>
-          <rect x="144" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="154" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">PROFIT MARGIN</text>
-          <text x="154" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">12.4%</text>
-          <rect x="276" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="286" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">ORDERS</text>
-          <text x="286" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">9,994</text>
-          <rect x="408" y="46" width="140" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="418" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">AVG ORDER VALUE</text>
-          <text x="418" y="94" fill="#b45309" font-size="24" font-family="sans-serif" font-weight="600">$230</text>
-          <rect x="12" y="118" width="330" height="110" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">REVENUE BY CATEGORY</text>
-          <text x="22" y="162" fill="#6b6b67" font-size="9" font-family="sans-serif">Technology</text><rect x="110" y="156" width="220" height="8" fill="#f2f1ee"/><rect x="110" y="156" width="220" height="8" fill="#1d4ed8"/>
-          <text x="22" y="184" fill="#6b6b67" font-size="9" font-family="sans-serif">Furniture</text><rect x="110" y="178" width="220" height="8" fill="#f2f1ee"/><rect x="110" y="178" width="162" height="8" fill="#1d4ed8" opacity="0.65"/>
-          <text x="22" y="206" fill="#6b6b67" font-size="9" font-family="sans-serif">Office Sup.</text><rect x="110" y="200" width="220" height="8" fill="#f2f1ee"/><rect x="110" y="200" width="110" height="8" fill="#1d4ed8" opacity="0.4"/>
-          <rect x="350" y="118" width="198" height="110" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="360" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">MONTHLY TREND</text>
-          <polyline points="364,212 384,200 404,204 424,186 444,190 464,168 484,172 504,148 524,144" fill="none" stroke="#1d4ed8" stroke-width="2"/>
-          <path d="M364,212 384,200 404,204 424,186 444,190 464,168 484,172 504,148 524,144 L524,220 L364,220 Z" fill="#1d4ed8" opacity="0.06"/>
-          <rect x="12" y="238" width="536" height="60" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="256" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">PROFIT BY REGION</text>
-          <text x="22" y="278" fill="#6b6b67" font-size="9" font-family="sans-serif">West</text><rect x="70" y="272" width="120" height="6" fill="#f2f1ee"/><rect x="70" y="272" width="120" height="6" fill="#16a34a"/>
-          <text x="210" y="278" fill="#6b6b67" font-size="9" font-family="sans-serif">East</text><rect x="248" y="272" width="100" height="6" fill="#f2f1ee"/><rect x="248" y="272" width="86" height="6" fill="#16a34a" opacity="0.7"/>
-          <text x="360" y="278" fill="#6b6b67" font-size="9" font-family="sans-serif">Central</text><rect x="408" y="272" width="80" height="6" fill="#f2f1ee"/><rect x="408" y="272" width="44" height="6" fill="#16a34a" opacity="0.45"/>
-          <text x="500" y="278" fill="#6b6b67" font-size="9" font-family="sans-serif">South</text><rect x="534" y="272" width="0" height="6" fill="#f2f1ee"/>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-tag">Power BI · Superstore Dataset</div>
-        <div class="work-title">Retail Sales Dashboard</div>
-        <div class="work-sub">Revenue · Margin · Regional Analysis</div>
-        <div class="work-rule"></div>
-        <div class="work-desc">Revenue segmentation by category, regional profit analysis, monthly trend line, and headline KPI layer. Demonstrates the same dashboard architecture applied to client retail and ecommerce reporting.</div>
-        <div class="work-tools"><span class="tool-badge">Power BI</span><span class="tool-badge">DAX</span><span class="tool-badge">Data Modeling</span></div>
-        <div class="work-footer"><span class="work-metric-label">Profit margin tracked</span><span class="work-metric-val">12.4%</span></div>
-      </div>
-    </div>
-
-    <!-- Inventory Model -->
-    <div class="work-card reveal">
-      <div class="work-viz">
-        <svg viewBox="0 0 560 315" style="background:#f8f8f6">
-          <rect x="0" y="0" width="560" height="36" fill="#f2f1ee"/>
-          <text x="16" y="23" fill="#aeaea8" font-size="9" font-family="sans-serif" letter-spacing="1.5">GOOGLE SHEETS  ·  INVENTORY FORECASTING MODEL</text>
-          <rect x="12" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">IN-STOCK RATE</text>
-          <text x="22" y="94" fill="#16a34a" font-size="24" font-family="sans-serif" font-weight="600">96.2%</text>
-          <rect x="144" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="154" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">SKUS TRACKED</text>
-          <text x="154" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">50+</text>
-          <rect x="276" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="286" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">REORDER ALERTS</text>
-          <text x="286" y="94" fill="#b45309" font-size="24" font-family="sans-serif" font-weight="600">7</text>
-          <rect x="408" y="46" width="140" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="418" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">STOCKOUT RISK</text>
-          <text x="418" y="94" fill="#dc2626" font-size="24" font-family="sans-serif" font-weight="600">2</text>
-          <rect x="12" y="118" width="536" height="182" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">SKU RISK MODEL — REORDER POINT ANALYSIS</text>
-          <rect x="12" y="142" width="536" height="18" fill="#f8f8f6"/>
-          <text x="22" y="155" fill="#aeaea8" font-size="8" font-family="sans-serif">SKU</text>
-          <text x="130" y="155" fill="#aeaea8" font-size="8" font-family="sans-serif">STOCK</text>
-          <text x="230" y="155" fill="#aeaea8" font-size="8" font-family="sans-serif">VEL/DAY</text>
-          <text x="330" y="155" fill="#aeaea8" font-size="8" font-family="sans-serif">DAYS LEFT</text>
-          <text x="440" y="155" fill="#aeaea8" font-size="8" font-family="sans-serif">STATUS</text>
-          <text x="22" y="177" fill="#6b6b67" font-size="9" font-family="sans-serif">SKU-0042</text><text x="130" y="177" fill="#6b6b67" font-size="9" font-family="sans-serif">842</text><text x="230" y="177" fill="#6b6b67" font-size="9" font-family="sans-serif">28.4</text><text x="330" y="177" fill="#6b6b67" font-size="9" font-family="sans-serif">29.6</text><text x="440" y="177" fill="#16a34a" font-size="9" font-family="sans-serif">● SAFE</text>
-          <text x="22" y="199" fill="#6b6b67" font-size="9" font-family="sans-serif">SKU-0017</text><text x="130" y="199" fill="#6b6b67" font-size="9" font-family="sans-serif">156</text><text x="230" y="199" fill="#6b6b67" font-size="9" font-family="sans-serif">22.1</text><text x="330" y="199" fill="#6b6b67" font-size="9" font-family="sans-serif">7.1</text><text x="440" y="199" fill="#dc2626" font-size="9" font-family="sans-serif">● CRITICAL</text>
-          <text x="22" y="221" fill="#6b6b67" font-size="9" font-family="sans-serif">SKU-0088</text><text x="130" y="221" fill="#6b6b67" font-size="9" font-family="sans-serif">310</text><text x="230" y="221" fill="#6b6b67" font-size="9" font-family="sans-serif">18.6</text><text x="330" y="221" fill="#6b6b67" font-size="9" font-family="sans-serif">16.7</text><text x="440" y="221" fill="#b45309" font-size="9" font-family="sans-serif">● REORDER</text>
-          <text x="22" y="243" fill="#6b6b67" font-size="9" font-family="sans-serif">SKU-0031</text><text x="130" y="243" fill="#6b6b67" font-size="9" font-family="sans-serif">1,204</text><text x="230" y="243" fill="#6b6b67" font-size="9" font-family="sans-serif">31.2</text><text x="330" y="243" fill="#6b6b67" font-size="9" font-family="sans-serif">38.6</text><text x="440" y="243" fill="#16a34a" font-size="9" font-family="sans-serif">● SAFE</text>
-          <text x="22" y="265" fill="#6b6b67" font-size="9" font-family="sans-serif">SKU-0055</text><text x="130" y="265" fill="#6b6b67" font-size="9" font-family="sans-serif">88</text><text x="230" y="265" fill="#6b6b67" font-size="9" font-family="sans-serif">14.3</text><text x="330" y="265" fill="#6b6b67" font-size="9" font-family="sans-serif">6.2</text><text x="440" y="265" fill="#dc2626" font-size="9" font-family="sans-serif">● CRITICAL</text>
-          <text x="22" y="287" fill="#6b6b67" font-size="9" font-family="sans-serif">SKU-0073</text><text x="130" y="287" fill="#6b6b67" font-size="9" font-family="sans-serif">445</text><text x="230" y="287" fill="#6b6b67" font-size="9" font-family="sans-serif">19.8</text><text x="330" y="287" fill="#6b6b67" font-size="9" font-family="sans-serif">22.5</text><text x="440" y="287" fill="#16a34a" font-size="9" font-family="sans-serif">● SAFE</text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-tag">Google Sheets · Forecasting Model</div>
-        <div class="work-title">Inventory Risk & Reorder Model</div>
-        <div class="work-sub">Demand Planning · SKU Management</div>
-        <div class="work-rule"></div>
-        <div class="work-desc">Velocity-based forecasting and reorder-point logic used to sustain a 96%+ in-stock rate across 50+ SKUs. Calculates days-to-stockout per SKU and auto-flags critical and reorder-threshold items.</div>
-        <div class="work-tools"><span class="tool-badge">Google Sheets</span><span class="tool-badge">Forecasting</span><span class="tool-badge">Apps Script</span></div>
-        <div class="work-footer"><span class="work-metric-label">In-stock rate achieved</span><span class="work-metric-val"><a href="inventory-analysis.html" style="color:var(--accent);text-decoration:none">Deep Dive →</a></span></div>
-      </div>
-    </div>
-
-    <!-- Marketing Dashboard -->
-    <div class="work-card reveal">
-      <div class="work-viz">
-        <svg viewBox="0 0 560 315" style="background:#f8f8f6">
-          <rect x="0" y="0" width="560" height="36" fill="#f2f1ee"/>
-          <text x="16" y="23" fill="#aeaea8" font-size="9" font-family="sans-serif" letter-spacing="1.5">LOOKER STUDIO  ·  MULTI-CHANNEL MARKETING DASHBOARD</text>
-          <rect x="12" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">TOTAL SPEND</text>
-          <text x="22" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">$48.2K</text>
-          <rect x="144" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="154" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">BLENDED ROAS</text>
-          <text x="154" y="94" fill="#16a34a" font-size="24" font-family="sans-serif" font-weight="600">4.1x</text>
-          <rect x="276" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="286" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">TOTAL CPL</text>
-          <text x="286" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">$18.40</text>
-          <rect x="408" y="46" width="140" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="418" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">CONV. RATE</text>
-          <text x="418" y="94" fill="#1d4ed8" font-size="24" font-family="sans-serif" font-weight="600">6.8%</text>
-          <rect x="12" y="118" width="250" height="130" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">SPEND BY CHANNEL</text>
-          <text x="22" y="162" fill="#6b6b67" font-size="9" font-family="sans-serif">Meta Ads</text><rect x="110" y="156" width="140" height="7" fill="#f2f1ee"/><rect x="110" y="156" width="140" height="7" fill="#1d4ed8"/>
-          <text x="22" y="184" fill="#6b6b67" font-size="9" font-family="sans-serif">Google Ads</text><rect x="110" y="178" width="140" height="7" fill="#f2f1ee"/><rect x="110" y="178" width="102" height="7" fill="#1d4ed8" opacity="0.65"/>
-          <text x="22" y="206" fill="#6b6b67" font-size="9" font-family="sans-serif">Email / Klav.</text><rect x="110" y="200" width="140" height="7" fill="#f2f1ee"/><rect x="110" y="200" width="54" height="7" fill="#1d4ed8" opacity="0.45"/>
-          <text x="22" y="228" fill="#6b6b67" font-size="9" font-family="sans-serif">Organic</text><rect x="110" y="222" width="140" height="7" fill="#f2f1ee"/><rect x="110" y="222" width="28" height="7" fill="#1d4ed8" opacity="0.3"/>
-          <rect x="270" y="118" width="278" height="130" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="280" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">WEEKLY ROAS TREND</text>
-          <polyline points="284,232 312,218 340,222 368,202 396,206 424,184 452,188 480,166 508,162 536,144" fill="none" stroke="#1d4ed8" stroke-width="2"/>
-          <path d="M284,232 312,218 340,222 368,202 396,206 424,184 452,188 480,166 508,162 536,144 L536,240 L284,240 Z" fill="#1d4ed8" opacity="0.05"/>
-          <rect x="12" y="258" width="536" height="46" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="276" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">DATA VALIDATION — 10 CONSECUTIVE MONTHS</text>
-          <text x="22" y="294" fill="#16a34a" font-size="11" font-family="sans-serif" font-weight="500">✓ Zero discrepancies  </text>
-          <text x="162" y="294" fill="#6b6b67" font-size="11" font-family="sans-serif">across 8+ client accounts  ·  Sprout + Agency Analytics</text>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-tag">Looker Studio · Marketing Analytics</div>
-        <div class="work-title">Multi-Channel Campaign Dashboard</div>
-        <div class="work-sub">Marketing Data · Attribution · Validation</div>
-        <div class="work-rule"></div>
-        <div class="work-desc">Reporting architecture used across 8+ client accounts at Firebelly Marketing. Consolidates Meta, Google Ads, Klaviyo, and organic data into one validated dashboard — zero discrepancies across 18 consecutive months.</div>
-        <div class="work-tools"><span class="tool-badge">Looker Studio</span><span class="tool-badge">Zapier</span><span class="tool-badge">Meta Ads</span><span class="tool-badge">Klaviyo</span></div>
-        <div class="work-footer"><span class="work-metric-label">Discrepancy record</span><span class="work-metric-val"><a href="marketing-analysis.html" style="color:var(--accent);text-decoration:none">Deep Dive →</a></span></div>
-      </div>
-    </div>
-
-    <!-- Revenue Ops -->
-    <div class="work-card reveal">
-      <div class="work-viz">
-        <svg viewBox="0 0 560 315" style="background:#f8f8f6">
-          <rect x="0" y="0" width="560" height="36" fill="#f2f1ee"/>
-          <text x="16" y="23" fill="#aeaea8" font-size="9" font-family="sans-serif" letter-spacing="1.5">POWER BI  ·  REVENUE OPERATIONS EXECUTIVE VIEW</text>
-          <circle cx="544" cy="18" r="5" fill="#16a34a"/>
-          <rect x="12" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">MRR</text>
-          <text x="22" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">$248K</text>
-          <text x="116" y="94" fill="#16a34a" font-size="9" font-family="sans-serif" text-anchor="end">▲12%</text>
-          <rect x="144" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="154" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">CAC</text>
-          <text x="154" y="94" fill="#111110" font-size="24" font-family="sans-serif" font-weight="600">$312</text>
-          <text x="246" y="94" fill="#16a34a" font-size="9" font-family="sans-serif" text-anchor="end">▼8%</text>
-          <rect x="276" y="46" width="124" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="286" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">LTV:CAC</text>
-          <text x="286" y="94" fill="#1d4ed8" font-size="24" font-family="sans-serif" font-weight="600">4.6x</text>
-          <rect x="408" y="46" width="140" height="62" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="418" y="63" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">CHURN</text>
-          <text x="418" y="94" fill="#b45309" font-size="24" font-family="sans-serif" font-weight="600">2.1%</text>
-          <rect x="12" y="118" width="330" height="120" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">MRR TRAILING 12 MONTHS</text>
-          <path d="M28,226 68,214 108,218 148,198 188,202 228,178 268,182 308,158 328,144 L328,232 L28,232 Z" fill="#1d4ed8" opacity="0.06"/>
-          <polyline points="28,226 68,214 108,218 148,198 188,202 228,178 268,182 308,158 328,144" fill="none" stroke="#1d4ed8" stroke-width="2"/>
-          <circle cx="328" cy="144" r="4" fill="#16a34a"/>
-          <rect x="350" y="118" width="198" height="120" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="360" y="136" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">PIPELINE HEALTH</text>
-          <text x="360" y="162" fill="#6b6b67" font-size="9" font-family="sans-serif">Weighted Value</text><text x="536" y="162" fill="#111110" font-size="9" font-family="sans-serif" text-anchor="end">$1.2M</text>
-          <text x="360" y="184" fill="#6b6b67" font-size="9" font-family="sans-serif">Open Deals</text><text x="536" y="184" fill="#111110" font-size="9" font-family="sans-serif" text-anchor="end">142</text>
-          <text x="360" y="206" fill="#6b6b67" font-size="9" font-family="sans-serif">Win Rate</text><text x="536" y="206" fill="#16a34a" font-size="9" font-family="sans-serif" text-anchor="end">38%</text>
-          <text x="360" y="228" fill="#6b6b67" font-size="9" font-family="sans-serif">Avg Deal Size</text><text x="536" y="228" fill="#111110" font-size="9" font-family="sans-serif" text-anchor="end">$8,450</text>
-          <rect x="12" y="248" width="536" height="52" rx="2" fill="#fff" stroke="#e8e7e3"/>
-          <text x="22" y="266" fill="#aeaea8" font-size="7" font-family="sans-serif" letter-spacing="1">REVENUE BY CHANNEL — THIS QUARTER</text>
-          <text x="22" y="286" fill="#6b6b67" font-size="9" font-family="sans-serif">Paid</text><rect x="60" y="280" width="110" height="6" fill="#f2f1ee"/><rect x="60" y="280" width="110" height="6" fill="#1d4ed8"/>
-          <text x="186" y="286" fill="#6b6b67" font-size="9" font-family="sans-serif">Organic</text><rect x="234" y="280" width="110" height="6" fill="#f2f1ee"/><rect x="234" y="280" width="78" height="6" fill="#1d4ed8" opacity="0.65"/>
-          <text x="358" y="286" fill="#6b6b67" font-size="9" font-family="sans-serif">Referral</text><rect x="406" y="280" width="110" height="6" fill="#f2f1ee"/><rect x="406" y="280" width="46" height="6" fill="#1d4ed8" opacity="0.4"/>
-        </svg>
-      </div>
-      <div class="work-body">
-        <div class="work-tag">Power BI · Revenue Operations</div>
-        <div class="work-title">Revenue Operations Executive View</div>
-        <div class="work-sub">RevOps · Pipeline · Financial KPIs</div>
-        <div class="work-rule"></div>
-        <div class="work-desc">Executive-level dashboard tracking MRR, CAC, LTV:CAC, churn, pipeline health, and channel attribution. Self-refreshing data sources, no manual assembly. Designed for 30-second leadership reads.</div>
-        <div class="work-tools"><span class="tool-badge">Power BI</span><span class="tool-badge">BigQuery</span><span class="tool-badge">DAX</span><span class="tool-badge">CRM Integration</span></div>
-        <div class="work-footer"><span class="work-metric-label">Case study available</span><span class="work-metric-val"><a href="case-study.html" style="color:var(--accent);text-decoration:none">View →</a></span></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- SQL -->
-<div style="background:var(--off);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:96px 64px">
-<div style="max-width:1300px;margin:0 auto" id="sql">
-  <div class="s-eyebrow reveal">02 — SQL Samples</div>
-  <h2 class="reveal">Query <em>Examples</em></h2>
-  <p class="section-intro reveal">BigQuery syntax on public datasets (Google Analytics sample). Demonstrates the analytical SQL approach applied to client reporting work.</p>
-
-  <div class="sql-block reveal">
-    <div class="sql-header">
-      <span class="sql-title">channel_revenue_attribution.sql — GA Sample Dataset (BigQuery Public)</span>
-      <span class="sql-badge">BIGQUERY</span>
-    </div>
-    <div class="sql-code"><pre><span class="cm">-- Channel attribution: revenue and conversion rate by traffic source</span>
-<span class="cm">-- Identifies highest-ROI acquisition channels for budget reallocation</span>
-
-<span class="kw">SELECT</span>
-  trafficSource.source                          <span class="kw">AS</span> channel,
-  trafficSource.medium                          <span class="kw">AS</span> medium,
-  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> fullVisitorId)                 <span class="kw">AS</span> unique_visitors,
-  <span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> visitId)                        <span class="kw">AS</span> sessions,
-  <span class="fn">SUM</span>(totals.transactions)                       <span class="kw">AS</span> total_orders,
-  <span class="fn">ROUND</span>(<span class="fn">SUM</span>(totals.transactionRevenue) / 1e6, 2)  <span class="kw">AS</span> revenue_usd,
-  <span class="fn">ROUND</span>(
-    <span class="fn">SUM</span>(totals.transactions) * 100.0 /
-    <span class="fn">NULLIF</span>(<span class="fn">COUNT</span>(<span class="kw">DISTINCT</span> visitId), 0), 2
-  )                                             <span class="kw">AS</span> conversion_rate_pct
-
-<span class="kw">FROM</span> <span class="str">`bigquery-public-data.google_analytics_sample.ga_sessions_*`</span>
-<span class="kw">WHERE</span> _TABLE_SUFFIX <span class="kw">BETWEEN</span> <span class="str">'20170101'</span> <span class="kw">AND</span> <span class="str">'20170731'</span>
-  <span class="kw">AND</span> totals.transactions <span class="kw">IS NOT NULL</span>
-<span class="kw">GROUP BY</span> channel, medium
-<span class="kw">HAVING</span> total_orders > 10
-<span class="kw">ORDER BY</span> revenue_usd <span class="kw">DESC</span>
-<span class="kw">LIMIT</span> 10;</pre></div>
-    <div class="sql-result">
-      <table>
-        <thead><tr><th>Channel</th><th>Medium</th><th>Unique Visitors</th><th>Orders</th><th>Revenue USD</th><th>Conv. Rate %</th></tr></thead>
-        <tbody>
-          <tr><td class="td-accent">google</td><td>organic</td><td>21,441</td><td>528</td><td class="td-green">$8,240.14</td><td>2.46</td></tr>
-          <tr><td class="td-accent">(direct)</td><td>(none)</td><td>14,208</td><td>381</td><td class="td-green">$5,918.22</td><td>2.68</td></tr>
-          <tr><td class="td-accent">google</td><td>cpc</td><td>8,902</td><td>217</td><td class="td-green">$3,384.09</td><td>2.44</td></tr>
-          <tr><td class="td-accent">youtube.com</td><td>referral</td><td>4,614</td><td>88</td><td class="td-gold">$1,371.44</td><td>1.91</td></tr>
-          <tr><td class="td-accent">mall.googleplex.com</td><td>referral</td><td>2,108</td><td>62</td><td class="td-gold">$963.40</td><td>2.94</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="sql-block reveal">
-    <div class="sql-header">
-      <span class="sql-title">supplier_performance_analysis.sql — Representative Logic</span>
-      <span class="sql-badge">BIGQUERY</span>
-    </div>
-    <div class="sql-code"><pre><span class="cm">-- Supplier fulfillment performance: promised vs actual lead times</span>
-<span class="cm">-- Identifies which suppliers are causing stockout risk through delivery delays</span>
-
-<span class="kw">WITH</span> supplier_metrics <span class="kw">AS</span> (
-  <span class="kw">SELECT</span>
-    supplier_name,
-    <span class="fn">COUNT</span>(*)                                          <span class="kw">AS</span> total_orders,
-    <span class="fn">AVG</span>(promised_lead_days)                            <span class="kw">AS</span> avg_promised_days,
-    <span class="fn">AVG</span>(actual_lead_days)                              <span class="kw">AS</span> avg_actual_days,
-    <span class="fn">AVG</span>(actual_lead_days - promised_lead_days)         <span class="kw">AS</span> avg_delay_days,
-    <span class="fn">COUNTIF</span>(caused_stockout = <span class="kw">TRUE</span>)                   <span class="kw">AS</span> stockout_incidents
-  <span class="kw">FROM</span> purchase_orders
-  <span class="kw">WHERE</span> order_date >= <span class="fn">DATE_SUB</span>(<span class="fn">CURRENT_DATE</span>(), <span class="kw">INTERVAL</span> 12 <span class="kw">MONTH</span>)
-  <span class="kw">GROUP BY</span> supplier_name
-)
-<span class="kw">SELECT</span> *,
-  <span class="kw">CASE</span>
-    <span class="kw">WHEN</span> stockout_incidents > 2 <span class="kw">OR</span> avg_delay_days > 5  <span class="kw">THEN</span> <span class="str">'HIGH RISK'</span>
-    <span class="kw">WHEN</span> avg_delay_days > 2                             <span class="kw">THEN</span> <span class="str">'MONITOR'</span>
-    <span class="kw">ELSE</span>                                                     <span class="str">'RELIABLE'</span>
-  <span class="kw">END</span> <span class="kw">AS</span> risk_rating
-<span class="kw">FROM</span> supplier_metrics
-<span class="kw">ORDER BY</span> stockout_incidents <span class="kw">DESC</span>, avg_delay_days <span class="kw">DESC</span>;</pre></div>
-    <div class="sql-result">
-      <table>
-        <thead><tr><th>Supplier</th><th>Orders</th><th>Promised Days</th><th>Actual Days</th><th>Avg Delay</th><th>Stockouts</th><th>Rating</th></tr></thead>
-        <tbody>
-          <tr><td>Supplier D</td><td>44</td><td>7.0</td><td>13.8</td><td class="td-red">+6.8</td><td class="td-red">4</td><td class="td-red">HIGH RISK</td></tr>
-          <tr><td>Supplier B</td><td>61</td><td>10.0</td><td>13.2</td><td class="td-gold">+3.2</td><td class="td-gold">2</td><td class="td-gold">MONITOR</td></tr>
-          <tr><td>Supplier E</td><td>38</td><td>5.0</td><td>7.1</td><td class="td-gold">+2.1</td><td>0</td><td class="td-gold">MONITOR</td></tr>
-          <tr><td>Supplier A</td><td>88</td><td>8.0</td><td>8.4</td><td>+0.4</td><td>0</td><td class="td-green">RELIABLE</td></tr>
-          <tr><td>Supplier C</td><td>72</td><td>12.0</td><td>11.8</td><td class="td-green">-0.2</td><td>0</td><td class="td-green">RELIABLE</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- AI -->
-<section class="section" id="ai">
-  <div class="s-eyebrow reveal">03 — AI Architecture</div>
-  <h2 class="reveal">AI Automation <em>Systems</em></h2>
-  <div class="ai-grid reveal">
-    <div class="ai-card">
-      <div class="ai-card-num">01</div>
-      <div class="ai-card-title">Claude Agent Architecture</div>
-      <div class="ai-card-desc">Design and deploy Claude agents for business automation — inbox triage, report generation, data classification, and decision logic. Builds structured knowledge bases and system prompts that produce consistent, business-safe outputs at scale.</div>
-    </div>
-    <div class="ai-card">
-      <div class="ai-card-num">02</div>
-      <div class="ai-card-title">Workflow Automation</div>
-      <div class="ai-card-desc">Multi-step automation pipelines in Make and N8N connecting CRMs, ad platforms, databases, and communication tools through APIs and webhooks. Turns manual, repetitive processes into self-running systems.</div>
-    </div>
-    <div class="ai-card">
-      <div class="ai-card-num">03</div>
-      <div class="ai-card-title">AI-Powered Reporting</div>
-      <div class="ai-card-desc">Automated reporting pipelines that pull, clean, and summarize data on a schedule. Claude generates narrative summaries and flags anomalies — delivering insight to leadership without anyone touching a spreadsheet.</div>
-    </div>
-    <div class="ai-card">
-      <div class="ai-card-num">04</div>
-      <div class="ai-card-title">System Integration</div>
-      <div class="ai-card-desc">API and webhook integrations connecting disparate platforms into unified data layers. Covers authentication, error handling, data mapping, and validation — built to be reliable, not just functional.</div>
-    </div>
-  </div>
-  <div class="ai-flow reveal">
-    <svg viewBox="0 0 900 160" xmlns="http://www.w3.org/2000/svg">
-      <text x="450" y="20" fill="#aeaea8" font-size="9" font-family="sans-serif" letter-spacing="2" text-anchor="middle">SAMPLE AUTOMATION PIPELINE — CONTENT ANALYTICS</text>
-      <rect x="20" y="44" width="96" height="28" rx="2" fill="#fff" stroke="#e8e7e3"/><text x="68" y="62" fill="#6b6b67" font-size="9" font-family="sans-serif" text-anchor="middle">YouTube API</text>
-      <rect x="20" y="80" width="96" height="28" rx="2" fill="#fff" stroke="#e8e7e3"/><text x="68" y="98" fill="#6b6b67" font-size="9" font-family="sans-serif" text-anchor="middle">Meta Insights</text>
-      <rect x="20" y="116" width="96" height="28" rx="2" fill="#fff" stroke="#e8e7e3"/><text x="68" y="134" fill="#6b6b67" font-size="9" font-family="sans-serif" text-anchor="middle">GA4 API</text>
-      <line x1="116" y1="58" x2="190" y2="90" stroke="#d4d3ce" stroke-dasharray="3,3"/>
-      <line x1="116" y1="94" x2="190" y2="96" stroke="#d4d3ce" stroke-dasharray="3,3"/>
-      <line x1="116" y1="130" x2="190" y2="104" stroke="#d4d3ce" stroke-dasharray="3,3"/>
-      <rect x="190" y="68" width="106" height="52" rx="2" fill="#fff" stroke="#1d4ed8" stroke-width="1.5"/>
-      <text x="243" y="90" fill="#1d4ed8" font-size="10" font-family="sans-serif" text-anchor="middle" font-weight="600">N8N</text>
-      <text x="243" y="108" fill="#aeaea8" font-size="8" font-family="sans-serif" text-anchor="middle">Fetch + Clean</text>
-      <line x1="296" y1="94" x2="366" y2="94" stroke="#1d4ed8" stroke-width="1.5"/>
-      <polygon points="364,90 372,94 364,98" fill="#1d4ed8"/>
-      <rect x="372" y="68" width="106" height="52" rx="2" fill="#fff" stroke="#0891b2" stroke-width="1.5"/>
-      <text x="425" y="90" fill="#0891b2" font-size="10" font-family="sans-serif" text-anchor="middle" font-weight="600">BigQuery</text>
-      <text x="425" y="108" fill="#aeaea8" font-size="8" font-family="sans-serif" text-anchor="middle">Store + Query</text>
-      <line x1="478" y1="94" x2="548" y2="94" stroke="#0891b2" stroke-width="1.5"/>
-      <polygon points="546,90 554,94 546,98" fill="#0891b2"/>
-      <rect x="554" y="68" width="106" height="52" rx="2" fill="#fff" stroke="#7c3aed" stroke-width="1.5"/>
-      <text x="607" y="90" fill="#7c3aed" font-size="10" font-family="sans-serif" text-anchor="middle" font-weight="600">Claude Agent</text>
-      <text x="607" y="108" fill="#aeaea8" font-size="8" font-family="sans-serif" text-anchor="middle">Analyze + Flag</text>
-      <line x1="660" y1="94" x2="730" y2="94" stroke="#7c3aed" stroke-width="1.5"/>
-      <polygon points="728,90 736,94 728,98" fill="#7c3aed"/>
-      <rect x="736" y="56" width="106" height="28" rx="2" fill="#fff" stroke="#16a34a" stroke-width="1"/>
-      <text x="789" y="74" fill="#16a34a" font-size="9" font-family="sans-serif" text-anchor="middle">Power BI Report</text>
-      <rect x="736" y="92" width="106" height="28" rx="2" fill="#fff" stroke="#16a34a" stroke-width="1"/>
-      <text x="789" y="110" fill="#16a34a" font-size="9" font-family="sans-serif" text-anchor="middle">Slack Summary</text>
-      <line x1="736" y1="70" x2="726" y2="94" stroke="#d4d3ce" stroke-dasharray="3,3"/>
-      <line x1="736" y1="106" x2="726" y2="100" stroke="#d4d3ce" stroke-dasharray="3,3"/>
-    </svg>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<div style="background:var(--off);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:96px 64px">
-<div style="max-width:1300px;margin:0 auto">
-  <div class="s-eyebrow reveal">04 — Skills</div>
-  <h2 class="reveal">Technical <em>Stack</em></h2>
-  <div class="skills-grid reveal" style="margin-top:48px">
-    <div class="skill-col">
-      <div class="skill-col-name">BI & Reporting</div>
-      <div class="skill-rows">
-        <div><div class="sk-top"><span class="sk-name">Looker Studio</span><span class="sk-pct">95</span></div><div class="sk-bar"><div class="sk-fill" style="width:95%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Google Sheets / Excel</span><span class="sk-pct">95</span></div><div class="sk-bar"><div class="sk-fill" style="width:95%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Power BI</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Agency Analytics</span><span class="sk-pct">88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%"></div></div></div>
-      </div>
-    </div>
-    <div class="skill-col">
-      <div class="skill-col-name">Data & Database</div>
-      <div class="skill-rows">
-        <div><div class="sk-top"><span class="sk-name">SQL / BigQuery</span><span class="sk-pct">72</span></div><div class="sk-bar"><div class="sk-fill" style="width:72%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Data Modeling</span><span class="sk-pct">85</span></div><div class="sk-bar"><div class="sk-fill" style="width:85%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Google Apps Script</span><span class="sk-pct">88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Pipeline Architecture</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-      </div>
-    </div>
-    <div class="skill-col">
-      <div class="skill-col-name">AI & Automation</div>
-      <div class="skill-rows">
-        <div><div class="sk-top"><span class="sk-name">Claude Agent Design</span><span class="sk-pct">80</span></div><div class="sk-bar"><div class="sk-fill" style="width:80%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Make / N8N</span><span class="sk-pct">85</span></div><div class="sk-bar"><div class="sk-fill" style="width:85%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Zapier</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Prompt Engineering</span><span class="sk-pct">88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%"></div></div></div>
-      </div>
-    </div>
-    <div class="skill-col">
-      <div class="skill-col-name">Operations & CRM</div>
-      <div class="skill-rows">
-        <div><div class="sk-top"><span class="sk-name">Go High Level</span><span class="sk-pct">85</span></div><div class="sk-bar"><div class="sk-fill" style="width:85%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">HubSpot</span><span class="sk-pct">75</span></div><div class="sk-bar"><div class="sk-fill" style="width:75%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Airtable</span><span class="sk-pct">88</span></div><div class="sk-bar"><div class="sk-fill" style="width:88%"></div></div></div>
-        <div><div class="sk-top"><span class="sk-name">Shopify / Meta Ads</span><span class="sk-pct">82</span></div><div class="sk-bar"><div class="sk-fill" style="width:82%"></div></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- EXPERIENCE -->
-<section class="section" id="experience">
-  <div class="s-eyebrow reveal">05 — Experience</div>
-  <h2 class="reveal">Work <em>History</em></h2>
-  <div class="reveal">
-    <div class="exp-item"><div class="exp-l"><div class="exp-date">Feb 2025 – Aug 2026</div><div class="exp-co">Firebelly Marketing</div></div><div class="exp-r"><div class="exp-title">Marketing Data Specialist</div><ul class="exp-list"><li>Managed end-to-end marketing reporting and analytics across 8+ client accounts in Sprout Social and Agency Analytics — achieved zero data discrepancies across 18 consecutive months.</li><li>Built Power BI dashboards connecting live data sources via Zapier, eliminating manual consolidation and producing executive-ready multi-platform performance reporting.</li><li>Designed validation workflows to detect anomalies before they reached client deliverables, protecting reporting integrity at every stage.</li><li>Developed automated client reporting cadences that reduced turnaround time by 40%, enabling the team to scale without adding headcount.</li><li>Collaborated with account managers to translate raw campaign metrics into clear narrative insights, improving client retention through more actionable reviews.</li><li>Built and maintained structured client databases in Airtable and Google Sheets, ensuring consistent data hygiene and version control across all accounts.</li></ul></div></div>
-    <div class="exp-item"><div class="exp-l"><div class="exp-date">May 2023 – Nov 2024</div><div class="exp-co">FS2 Agency LLC</div></div><div class="exp-r"><div class="exp-title">Data Analyst</div><ul class="exp-list"><li>Automated reporting pipelines using Google Apps Script and Looker Studio, eliminating 70% of manual reporting workload and recovering 15+ hours per week.</li><li>Built a unified data layer consolidating Shopify, Meta Ads, Klaviyo, and payment processor data into a single structured database powering budget forecasting models.</li><li>Designed an inventory risk model across 50+ SKUs that sustained a 96%+ in-stock rate by proactively flagging shortage and overstock scenarios before they materialized.</li><li>Produced weekly and monthly dashboards for leadership, translating multi-source data into summaries with variance commentary and trend flags.</li></ul></div></div>
-    <div class="exp-item"><div class="exp-l"><div class="exp-date">Feb 2022 – Mar 2023</div><div class="exp-co">Solar CEOs</div></div><div class="exp-r"><div class="exp-title">Data Manager</div><ul class="exp-list"><li>Standardized a database of 50,000+ prospect records across paid and organic channels, eliminating duplicates and establishing a single source of truth for the sales organization.</li><li>Engineered automated dashboards cutting reporting turnaround by 50%, delivering live CPL, conversion, and ROI visualizations across 3+ active campaigns simultaneously.</li><li>Maintained data pipeline integrity across multiple lead sources, implementing quality checks that flagged inconsistencies before they impacted sales outreach.</li></ul></div></div>
-    <div class="exp-item"><div class="exp-l"><div class="exp-date">Jul 2020 – Jan 2022</div><div class="exp-co">Awesome CX</div></div><div class="exp-r"><div class="exp-title">Workforce Management Specialist</div><ul class="exp-list"><li>Managed workforce operations for a 150-person call center floor across 15 teams — capacity planning, staffing schedules, and real-time adherence tracking at scale.</li><li>Built performance tracking databases and early-warning systems that flagged at-risk agents before output degraded, enabling proactive coaching that reduced attrition.</li><li>Produced daily and weekly workforce reports for operations leadership covering adherence, occupancy, and shrinkage trends across all active teams.</li></ul></div></div>
-    <div class="exp-item exp-parttime"><div class="exp-l"><div class="exp-date">2026</div><div class="exp-co">VeteranBrothers</div></div><div class="exp-r"><div class="exp-title">Operations Manager <span class="exp-tag">Part-Time</span></div></div></div>
-    <div class="exp-item exp-parttime"><div class="exp-l"><div class="exp-date">2024 – 2025</div><div class="exp-co">Greenbay Remodeling</div></div><div class="exp-r"><div class="exp-title">Marketing Assistant <span class="exp-tag">Part-Time</span></div></div></div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<div class="contact-outer" id="contact">
-  <div class="contact-inner">
-    <div class="reveal">
-      <div class="s-eyebrow">06 — Contact</div>
-      <h2>Let's Work <em>Together</em></h2>
-      <p style="font-size:15px;color:var(--ink2);line-height:1.8;margin-bottom:4px">Open to full-time remote roles in data analytics, revenue operations, AI automation, and operations management. Available AEST, EST, or US hours.</p>
-      <div class="c-links">
-        <a href="mailto:louiscarandang30@gmail.com" class="c-link"><span class="c-link-label">@</span><span class="c-link-text">louiscarandang30@gmail.com</span></a>
-        <a href="tel:+639566653486" class="c-link"><span class="c-link-label">#</span><span class="c-link-text">+63 956 665 3486</span></a>
-        <a href="https://linkedin.com/in/vladimir-louis-c-6b97133b4" target="_blank" class="c-link"><span class="c-link-label">in</span><span class="c-link-text">linkedin.com/in/vladimir-louis-c-6b97133b4</span></a>
-        <a href="case-study.html" class="c-link"><span class="c-link-label">→</span><span class="c-link-text">Revenue Operations Case Study</span></a>
-        <a href="inventory-analysis.html" class="c-link"><span class="c-link-label">→</span><span class="c-link-text">Inventory Forecasting Deep Dive</span></a>
-        <a href="marketing-analysis.html" class="c-link"><span class="c-link-label">→</span><span class="c-link-text">Marketing Analytics Deep Dive</span></a>
-      </div>
-    </div>
-    <div class="avail-box reveal">
-      <div class="avail-live"><span class="status-dot"></span>Currently Available</div>
-      <div class="status-rows">
-        <div class="avail-row"><span class="avail-k">Status</span><span class="avail-v on">Open to Opportunities</span></div>
-        <div class="avail-row"><span class="avail-k">Work Type</span><span class="avail-v">Full-Time Remote</span></div>
-        <div class="avail-row"><span class="avail-k">Time Zones</span><span class="avail-v">PHT · AEST · EST</span></div>
-        <div class="avail-row"><span class="avail-k">Location</span><span class="avail-v">Davao, Philippines</span></div>
-        <div class="avail-row"><span class="avail-k">Focus</span><span class="avail-v">Data · Ops · AI Automation</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<footer>
-  <span>Vladimir Louis R. Carandang</span>
-  <span>Data & Operations Manager · AI Automation · Revenue Operations</span>
-</footer>
-
-<script>
-const obs = new IntersectionObserver((entries) => {
-  entries.forEach((e,i) => { if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*55);obs.unobserve(e.target);} });
-},{threshold:0.07});
-document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-</script>
-</body>
-</html>
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+  <meta charset="UTF-8" />\
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>\
+  <title>Louis Carandang | Systems & Operations</title>\
+\
+  <style>\
+    body \{\
+      margin: 0;\
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;\
+      color: #111;\
+      line-height: 1.6;\
+    \}\
+\
+    section \{\
+      padding: 80px 20px;\
+      max-width: 900px;\
+      margin: auto;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\ri-7416\pardirnatural\partightenfactor0
+\cf0     \}\
+\
+    .hero \{\
+      height: 100vh;\
+      display: flex;\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0       flex-direction: column;\
+      justify-content: center;\
+      text-align: center;\
+    \}\
+\
+    h1 \{\
+      font-size: 48px;\
+      max-width: 800px;\
+      margin: auto;\
+    \}\
+\
+    h2 \{\
+      font-size: 28px;\
+      margin-bottom: 20px;\
+    \}\
+\
+    p \{\
+      opacity: 0.8;\
+      font-size: 18px;\
+    \}\
+\
+    .btn \{\
+      margin-top: 30px;\
+      padding: 12px 24px;\
+      border: 1px solid black;\
+      border-radius: 30px;\
+      text-decoration: none;\
+      color: black;\
+      display: inline-block;\
+      transition: 0.3s;\
+    \}\
+\
+    .btn:hover \{\
+      background: black;\
+      color: white;\
+    \}\
+\
+    .gray \{\
+      background: #f5f5f5;\
+    \}\
+\
+    .list p \{\
+      margin: 10px 0;\
+    \}\
+  </style>\
+</head>\
+\
+<body>\
+\
+  <!-- HERO -->\
+  <section class="hero">\
+    <h1>If your operations feel messy, I build the system that fixes it.</h1>\
+    <p>CRM Operations \'95 Automation \'95 Workflow Optimization</p>\
+    <a href="#contact" class="btn">Book a Systems Audit</a>\
+  </section>\
+\
+  <!-- WHAT I DO -->\
+  <section>\
+    <h2>What I Do</h2>\
+    <p>\
+      I help businesses eliminate operational chaos by building structured systems \
+      behind the scenes \'97 from CRM workflows and reporting automation to SOPs that scale with your team.\
+    </p>\
+  </section>\
+\
+  <!-- RESULTS -->\
+  <section class="gray">\
+    <h2>Results</h2>\
+\
+    <p><strong>Reduced manual reporting by 70%</strong><br>\
+    Built automated dashboards and pipelines that eliminated repetitive tasks.</p>\
+\
+    <p><strong>Improved team efficiency</strong><br>\
+    Designed SOP systems that streamlined workflows and reduced onboarding time.</p>\
+\
+    <p><strong>Optimized multi-platform operations</strong><br>\
+    Structured product and backend processes across multiple marketplaces.</p>\
+  </section>\
+\
+  <!-- WHO I HELP -->\
+  <section>\
+    <h2>Who I Work With</h2>\
+    <div class="list">\
+      <p>\'95 Founders scaling their operations</p>\
+      <p>\'95 Teams overwhelmed with manual processes</p>\
+      <p>\'95 Businesses that need structure, not more hires</p>\
+    </div>\
+  </section>\
+\
+  <!-- PROCESS -->\
+  <section class="gray">\
+    <h2>How I Work</h2>\
+\
+    <p><strong>1. Audit</strong><br>\
+    Identify inefficiencies and bottlenecks in your workflow.</p>\
+\
+    <p><strong>2. Structure</strong><br>\
+    Build systems, SOPs, and automation.</p>\
+\
+    <p><strong>3. Build</strong><br>\
+    Implement workflows and dashboards.</p>\
+\
+    <p><strong>4. Optimize</strong><br>\
+    Refine and scale as you grow.</p>\
+  </section>\
+\
+  <!-- CTA -->\
+  <section id="contact" style="text-align:center;">\
+    <h2>Let\'92s fix your operations.</h2>\
+    <p>If your backend feels messy or inefficient, I can help.</p>\
+    <a href="mailto:your@email.com" class="btn">Start a Conversation</a>\
+  </section>\
+\
+</body>\
+</html>}
