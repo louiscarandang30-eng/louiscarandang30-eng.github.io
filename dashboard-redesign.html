@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Service Revenue Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f5f4f1;
+  --white:#ffffff;
+  --border:#e8e7e3;
+  --ink:#111110;
+  --ink2:#6b6b67;
+  --ink3:#aeaea8;
+  --accent:#c0392b;
+  --accent2:#e74c3c;
+  --accent-light:#fdf2f1;
+  --green:#16a34a;
+  --gold:#b45309;
+  --blue:#1d4ed8;
+  --purple:#7c3aed;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);font-weight:300;min-height:100vh;padding:24px}
+
+/* TOP BAR */
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.dash-title{font-size:15px;font-weight:600;color:var(--ink);letter-spacing:-0.3px}
+.dash-sub{font-size:11px;color:var(--ink3);margin-top:2px;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px}
+.filters{display:flex;gap:10px}
+.filter-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--white);border:1px solid var(--border);font-size:11px;color:var(--ink2);font-family:'Inter',sans-serif;cursor:pointer;letter-spacing:0.3px}
+.filter-btn svg{width:10px;height:10px;opacity:0.5}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.kpi{background:var(--white);border:1px solid var(--border);padding:18px 20px;position:relative;overflow:hidden}
+.kpi-label{font-size:10px;color:var(--ink3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:400}
+.kpi-val{font-size:26px;font-weight:700;color:var(--ink);letter-spacing:-1px;line-height:1}
+.kpi-val.accent{color:var(--accent)}
+.kpi-delta{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11px;font-weight:500}
+.kpi-delta.up{color:var(--green)}
+.kpi-delta.down{color:var(--accent)}
+.kpi-bar{position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);opacity:0.15}
+.kpi-bar-fill{height:100%;background:var(--accent)}
+.kpi.highlight{border-top:3px solid var(--accent)}
+
+/* MAIN GRID */
+.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.full-width{grid-column:1/-1}
+.card{background:var(--white);border:1px solid var(--border);padding:20px}
+.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.card-title{font-size:12px;font-weight:600;color:var(--ink);letter-spacing:0.2px}
+.card-sub{font-size:10px;color:var(--ink3);margin-top:2px}
+.card-badge{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);border:1px solid rgba(192,57,43,0.2);padding:3px 8px;letter-spacing:1px}
+
+/* TREND CHART */
+.chart-area{position:relative;height:180px}
+.chart-area svg{width:100%;height:100%;display:block;overflow:visible}
+
+/* BAR CHART */
+.bar-list{display:flex;flex-direction:column;gap:10px}
+.bar-row{display:flex;align-items:center;gap:10px}
+.bar-label{font-size:11px;color:var(--ink2);width:160px;flex-shrink:0;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar-track{flex:1;height:8px;background:var(--bg);position:relative;border-radius:1px}
+.bar-fill{height:100%;background:var(--accent);border-radius:1px;transition:width 0.8s}
+.bar-fill.dim{background:var(--accent);opacity:0.5}
+.bar-fill.dimmer{background:var(--accent);opacity:0.3}
+.bar-val{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink3);width:50px;flex-shrink:0}
+
+/* TABLE */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink3);padding:8px 12px;text-align:left;border-bottom:2px solid var(--border);background:var(--bg)}
+.data-table td{font-size:12px;color:var(--ink2);padding:8px 12px;border-bottom:1px solid var(--border)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--bg)}
+.td-num{font-family:'JetBrains Mono',monospace;color:var(--ink)}
+.td-rank{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);font-weight:600}
+.td-bar{width:80px}
+.mini-bar{height:4px;background:var(--accent);border-radius:1px}
+
+/* MAP PLACEHOLDER */
+.map-wrap{background:linear-gradient(135deg,#f0ede8 0%,#e8e4dd 100%);border:1px solid var(--border);height:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.map-dots{position:absolute;inset:0}
+.map-dot{position:absolute;border-radius:50%;background:var(--accent);opacity:0.7}
+
+/* BOTTOM ROW */
+.bottom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* JOB TYPE LIST */
+.job-list{display:flex;flex-direction:column;gap:8px}
+.job-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.job-row:last-child{border-bottom:none}
+.job-name{font-size:12px;color:var(--ink2)}
+.job-meta{display:flex;align-items:center;gap:10px}
+.job-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink3)}
+.job-pill{font-size:9px;padding:2px 8px;border-radius:2px;font-weight:500}
+.job-pill.high{background:rgba(192,57,43,0.1);color:var(--accent)}
+.job-pill.mid{background:rgba(180,83,9,0.1);color:var(--gold)}
+.job-pill.low{background:rgba(22,163,74,0.08);color:var(--green)}
+
+/* INSIGHT STRIP */
+.insight-strip{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--accent);padding:12px 16px;margin-bottom:12px;display:flex;gap:32px;align-items:center}
+.insight-item{display:flex;align-items:center;gap:8px}
+.insight-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.insight-dot.gold{background:var(--gold)}
+.insight-dot.green{background:var(--green)}
+.insight-dot.blue{background:var(--blue)}
+.insight-text{font-size:12px;color:var(--ink2)}
+.insight-text strong{color:var(--ink);font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div>
+    <div class="dash-title">Field Service Revenue Dashboard</div>
+    <div class="dash-sub">Feb 2021 — Feb 2024 &nbsp;·&nbsp; All Regions &nbsp;·&nbsp; Last updated today</div>
+  </div>
+  <div class="filters">
+    <button class="filter-btn">Select Date Range <svg viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" fill="none" stroke-width="1.5"/></svg></button>
+    <button class="filter-btn">Location Zip <svg viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" fill="none" stroke-width="1.5"/></svg></button>
+    <button class="filter-btn">Job Type <svg viewBox="0 0 10 10"><path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" fill="none" stroke-width="1.5"/></svg></button>
+  </div>
+</div>
+
+<!-- INSIGHT STRIP -->
+<div class="insight-strip">
+  <div class="insight-item"><div class="insight-dot"></div><div class="insight-text"><strong>Peak month:</strong> Oct 2023 — revenue spiked 68% above prior 6-month average</div></div>
+  <div class="insight-item"><div class="insight-dot gold"></div><div class="insight-text"><strong>Top ZIP 70072</strong> drives 11.9% of total revenue ($1.11M)</div></div>
+  <div class="insight-item"><div class="insight-dot green"></div><div class="insight-text"><strong>Installation/Changeout</strong> is #1 job type at $3M+ — 3x the next category</div></div>
+  <div class="insight-item"><div class="insight-dot blue"></div><div class="insight-text"><strong>21,505 jobs</strong> completed across <strong>3,471 unique customers</strong></div></div>
+</div>
+
+<!-- KPI ROW -->
+<div class="kpi-row">
+  <div class="kpi highlight">
+    <div class="kpi-label">Total Revenue</div>
+    <div class="kpi-val accent">$9.34M</div>
+    <div class="kpi-delta up">↑ 34% vs prior year</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:78%"></div></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Revenue per ZIP</div>
+    <div class="kpi-val">$104.9K</div>
+    <div class="kpi-delta up">↑ 12% vs prior year</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:55%"></div></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Total Jobs</div>
+    <div class="kpi-val">21,505</div>
+    <div class="kpi-delta up">↑ 18% vs prior year</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:62%"></div></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Avg Job Value</div>
+    <div class="kpi-val">$434</div>
+    <div class="kpi-delta up">↑ 7% vs prior year</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:44%"></div></div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Unique Customers</div>
+    <div class="kpi-val">3,471</div>
+    <div class="kpi-delta up">↑ 22% vs prior year</div>
+    <div class="kpi-bar"><div class="kpi-bar-fill" style="width:38%"></div></div>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="main-grid">
+
+  <!-- TREND CHART -->
+  <div class="card" style="grid-column:1/-1">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Monthly Revenue Trend</div>
+        <div class="card-sub">Feb 2021 — Feb 2024 &nbsp;·&nbsp; Shaded area shows rolling 3-month average</div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:center">
+        <div style="display:flex;align-items:center;gap:6px"><div style="width:16px;height:2px;background:var(--accent)"></div><span style="font-size:10px;color:var(--ink3)">Monthly Revenue</span></div>
+        <div style="display:flex;align-items:center;gap:6px"><div style="width:16px;height:8px;background:var(--accent);opacity:0.12;border-radius:1px"></div><span style="font-size:10px;color:var(--ink3)">3-Month Avg</span></div>
+        <div class="card-badge">YoY +34%</div>
+      </div>
+    </div>
+    <div class="chart-area">
+      <svg viewBox="0 0 1100 160" preserveAspectRatio="none">
+        <!-- Y gridlines -->
+        <line x1="0" y1="20" x2="1100" y2="20" stroke="#f0ede8" stroke-width="1"/>
+        <line x1="0" y1="60" x2="1100" y2="60" stroke="#f0ede8" stroke-width="1"/>
+        <line x1="0" y1="100" x2="1100" y2="100" stroke="#f0ede8" stroke-width="1"/>
+        <line x1="0" y1="140" x2="1100" y2="140" stroke="#e8e7e3" stroke-width="1"/>
+        <!-- Y labels -->
+        <text x="4" y="18" fill="#aeaea8" font-size="9" font-family="monospace">800K</text>
+        <text x="4" y="58" fill="#aeaea8" font-size="9" font-family="monospace">600K</text>
+        <text x="4" y="98" fill="#aeaea8" font-size="9" font-family="monospace">400K</text>
+        <text x="4" y="138" fill="#aeaea8" font-size="9" font-family="monospace">200K</text>
+        <!-- Area fill -->
+        <path d="M40,138 60,134 80,130 100,132 120,128 140,124 160,126 180,120 200,118 220,122 240,116 260,112 280,114 300,108 320,104 340,106 360,100 380,96 400,98 420,90 440,86 460,88 480,80 500,76 520,72 540,78 560,70 580,64 600,68 620,58 640,50 660,54 680,44 700,40 720,42 740,34 760,28 780,32 800,22 820,30 840,38 860,30 880,36 900,32 920,38 940,80 960,90 970,140 L40,140 Z" fill="#c0392b" opacity="0.08"/>
+        <!-- 3-month avg area -->
+        <path d="M40,136 60,133 80,131 100,130 120,128 140,126 160,124 180,122 200,120 220,118 240,116 260,113 280,111 300,108 320,106 340,103 360,100 380,97 400,94 420,91 440,88 460,85 480,82 500,78 520,75 540,72 560,69 580,66 600,63 620,59 640,55 660,51 680,47 700,43 720,40 740,36 760,32 780,29 800,27 820,28 840,30 860,30 880,32 900,34 920,48 940,78 960,92 970,140 L40,140 Z" fill="#c0392b" opacity="0.04"/>
+        <!-- Main trend line -->
+        <polyline points="40,138 60,134 80,130 100,132 120,128 140,124 160,126 180,120 200,118 220,122 240,116 260,112 280,114 300,108 320,104 340,106 360,100 380,96 400,98 420,90 440,86 460,88 480,80 500,76 520,72 540,78 560,70 580,64 600,68 620,58 640,50 660,54 680,44 700,40 720,42 740,34 760,28 780,32 800,22 820,30 840,38 860,30 880,36 900,32 920,38 940,80 960,90" fill="none" stroke="#c0392b" stroke-width="2" stroke-linejoin="round"/>
+        <!-- Peak annotation -->
+        <circle cx="800" cy="22" r="4" fill="#c0392b"/>
+        <line x1="800" y1="22" x2="800" y2="10" stroke="#c0392b" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="760" y="8" fill="#c0392b" font-size="9" font-family="monospace" font-weight="500">PEAK $748K</text>
+        <!-- X labels -->
+        <text x="40" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Feb 21</text>
+        <text x="200" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Jun 21</text>
+        <text x="380" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Feb 22</text>
+        <text x="560" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Jun 22</text>
+        <text x="720" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Feb 23</text>
+        <text x="880" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Oct 23</text>
+        <text x="960" y="155" fill="#aeaea8" font-size="9" font-family="monospace" text-anchor="middle">Feb 24</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- JOB TYPE REVENUE -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Revenue by Job Type</div>
+        <div class="card-sub">Top 10 categories ranked by total revenue</div>
+      </div>
+      <div class="card-badge">TOP 10</div>
+    </div>
+    <div class="bar-list">
+      <div class="bar-row"><span class="bar-label">Installation/Changeout</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div><span class="bar-val">$3.01M</span></div>
+      <div class="bar-row"><span class="bar-label">Misc</span><div class="bar-track"><div class="bar-fill dim" style="width:48%"></div></div><span class="bar-val">$1.44M</span></div>
+      <div class="bar-row"><span class="bar-label">Residential Service</span><div class="bar-track"><div class="bar-fill dim" style="width:40%"></div></div><span class="bar-val">$1.20M</span></div>
+      <div class="bar-row"><span class="bar-label">Rough In</span><div class="bar-track"><div class="bar-fill dim" style="width:35%"></div></div><span class="bar-val">$1.05M</span></div>
+      <div class="bar-row"><span class="bar-label">New Construction</span><div class="bar-track"><div class="bar-fill dimmer" style="width:26%"></div></div><span class="bar-val">$780K</span></div>
+      <div class="bar-row"><span class="bar-label">Generator Install</span><div class="bar-track"><div class="bar-fill dimmer" style="width:20%"></div></div><span class="bar-val">$600K</span></div>
+      <div class="bar-row"><span class="bar-label">Trim Out</span><div class="bar-track"><div class="bar-fill dimmer" style="width:14%"></div></div><span class="bar-val">$420K</span></div>
+      <div class="bar-row"><span class="bar-label">AC Maintenance</span><div class="bar-track"><div class="bar-fill dimmer" style="width:10%"></div></div><span class="bar-val">$300K</span></div>
+      <div class="bar-row"><span class="bar-label">Set Condenser</span><div class="bar-track"><div class="bar-fill dimmer" style="width:9%"></div></div><span class="bar-val">$270K</span></div>
+      <div class="bar-row"><span class="bar-label">Equipment Install</span><div class="bar-track"><div class="bar-fill dimmer" style="width:6%"></div></div><span class="bar-val">$180K</span></div>
+    </div>
+  </div>
+
+  <!-- ZIP TABLE -->
+  <div class="card">
+    <div class="card-header">
+      <div>
+        <div class="card-title">Revenue by ZIP Code</div>
+        <div class="card-sub">Top locations ranked by revenue contribution</div>
+      </div>
+      <div class="card-badge">TOP 6</div>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>ZIP</th>
+          <th>Revenue</th>
+          <th>Jobs</th>
+          <th>Avg Value</th>
+          <th>Share</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="td-rank">#1 &nbsp;70072</td>
+          <td class="td-num">$1,112,833</td>
+          <td class="td-num">3,102</td>
+          <td class="td-num">$359</td>
+          <td class="td-num">11.9%</td>
+          <td class="td-bar"><div class="mini-bar" style="width:100%"></div></td>
+        </tr>
+        <tr>
+          <td class="td-rank">#2 &nbsp;70124</td>
+          <td class="td-num">$631,645</td>
+          <td class="td-num">1,071</td>
+          <td class="td-num">$590</td>
+          <td class="td-num">6.8%</td>
+          <td class="td-bar"><div class="mini-bar" style="width:57%"></div></td>
+        </tr>
+        <tr>
+          <td class="td-rank">#3 &nbsp;70058</td>
+          <td class="td-num">$408,082</td>
+          <td class="td-num">1,418</td>
+          <td class="td-num">$288</td>
+          <td class="td-num">4.4%</td>
+          <td class="td-bar"><div class="mini-bar" style="width:37%"></div></td>
+        </tr>
+        <tr>
+          <td class="td-rank">#4 &nbsp;70056</td>
+          <td class="td-num">$294,407</td>
+          <td class="td-num">965</td>
+          <td class="td-num">$305</td>
+          <td class="td-num">3.2%</td>
+          <td class="td-bar"><div class="mini-bar" style="width:26%"></div></td>
+        </tr>
+        <tr>
+          <td class="td-rank">#5 &nbsp;70065</td>
+          <td class="td-num">$241,880</td>
+          <td class="td-num">782</td>
+          <td class="td-num">$309</td>
+          <td class="td-num">2.6%</td>
+          <td class="td-bar"><div class="mini-bar" style="width:22%"></div></td>
+        </tr>
+        <tr>
+          <td class="td-rank">#6 &nbsp;70047</td>
+          <td class="td-num">$198,440</td>
+          <td class="td-num">644</td>
+          <td class="td-num">$308</td>
+          <td class="td-num">2.1%</td>
+          <td class="td-bar"><div class="mini-bar" style="width:18%"></div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- BOTTOM ROW -->
+<div class="bottom-grid">
+
+  <!-- JOB TYPE BREAKDOWN -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Job Type Activity</div>
+      <div class="card-sub">Volume + revenue tier</div>
+    </div>
+    <div class="job-list">
+      <div class="job-row"><span class="job-name">Installation/Changeout</span><div class="job-meta"><span class="job-count">48.9K jobs</span><span class="job-pill high">High Rev</span></div></div>
+      <div class="job-row"><span class="job-name">Rough In</span><div class="job-meta"><span class="job-count">30.6K jobs</span><span class="job-pill high">High Rev</span></div></div>
+      <div class="job-row"><span class="job-name">Misc</span><div class="job-meta"><span class="job-count">29.1K jobs</span><span class="job-pill mid">Mid Rev</span></div></div>
+      <div class="job-row"><span class="job-name">New Construction</span><div class="job-meta"><span class="job-count">21.4K jobs</span><span class="job-pill mid">Mid Rev</span></div></div>
+      <div class="job-row"><span class="job-name">Residential Service</span><div class="job-meta"><span class="job-count">15.7K jobs</span><span class="job-pill mid">Mid Rev</span></div></div>
+      <div class="job-row"><span class="job-name">Generator Install</span><div class="job-meta"><span class="job-count">12K jobs</span><span class="job-pill low">Stable</span></div></div>
+      <div class="job-row"><span class="job-name">AC Maintenance</span><div class="job-meta"><span class="job-count">3.8K jobs</span><span class="job-pill low">Stable</span></div></div>
+    </div>
+  </div>
+
+  <!-- PERFORMANCE METRICS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Performance Metrics</div>
+      <div class="card-sub">Key ratios at a glance</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px;margin-top:4px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--ink2)">Revenue Concentration (Top ZIP)</span>
+          <span style="font-family:monospace;font-size:11px;color:var(--ink)">11.9%</span>
+        </div>
+        <div style="height:6px;background:var(--bg);border-radius:1px"><div style="width:11.9%;height:100%;background:var(--accent);border-radius:1px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--ink2)">Install/Changeout Revenue Share</span>
+          <span style="font-family:monospace;font-size:11px;color:var(--ink)">32.2%</span>
+        </div>
+        <div style="height:6px;background:var(--bg);border-radius:1px"><div style="width:32.2%;height:100%;background:var(--accent);border-radius:1px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--ink2)">YoY Revenue Growth</span>
+          <span style="font-family:monospace;font-size:11px;color:var(--green)">+34%</span>
+        </div>
+        <div style="height:6px;background:var(--bg);border-radius:1px"><div style="width:34%;height:100%;background:var(--green);border-radius:1px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--ink2)">Customer Retention Est.</span>
+          <span style="font-family:monospace;font-size:11px;color:var(--ink)">~62%</span>
+        </div>
+        <div style="height:6px;background:var(--bg);border-radius:1px"><div style="width:62%;height:100%;background:var(--blue);border-radius:1px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:11px;color:var(--ink2)">Jobs per Customer (Avg)</span>
+          <span style="font-family:monospace;font-size:11px;color:var(--ink)">6.2x</span>
+        </div>
+        <div style="height:6px;background:var(--bg);border-radius:1px"><div style="width:62%;height:100%;background:var(--gold);border-radius:1px"></div></div>
+      </div>
+      <div style="background:var(--bg);border:1px solid var(--border);padding:12px;margin-top:4px">
+        <div style="font-size:10px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Attention Needed</div>
+        <div style="font-size:12px;color:var(--ink2)">Revenue dropped sharply after Oct 2023 peak. Investigate whether seasonal, one-time spike, or demand decline.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAP PLACEHOLDER -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Geographic Distribution</div>
+      <div class="card-sub">Revenue concentration by ZIP — Louisiana region</div>
+    </div>
+    <div class="map-wrap" style="height:240px;border:none;background:linear-gradient(160deg,#eef2f7 0%,#e8edf4 100%)">
+      <div class="map-dots">
+        <!-- Simulated ZIP dots sized by revenue -->
+        <div class="map-dot" style="width:32px;height:32px;left:42%;top:48%;opacity:0.85"></div>
+        <div class="map-dot" style="width:22px;height:22px;left:51%;top:42%;opacity:0.65"></div>
+        <div class="map-dot" style="width:18px;height:18px;left:38%;top:55%;opacity:0.55"></div>
+        <div class="map-dot" style="width:14px;height:14px;left:56%;top:52%;opacity:0.45"></div>
+        <div class="map-dot" style="width:12px;height:12px;left:46%;top:36%;opacity:0.4"></div>
+        <div class="map-dot" style="width:10px;height:10px;left:60%;top:44%;opacity:0.35"></div>
+        <div class="map-dot" style="width:8px;height:8px;left:35%;top:62%;opacity:0.3"></div>
+        <div class="map-dot" style="width:7px;height:7px;left:64%;top:38%;opacity:0.25"></div>
+      </div>
+      <div style="position:relative;z-index:2;text-align:center">
+        <div style="font-size:10px;color:var(--ink3);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px">Top ZIP by Revenue</div>
+        <div style="font-size:22px;font-weight:700;color:var(--ink);letter-spacing:-0.5px">70072</div>
+        <div style="font-size:12px;color:var(--ink2);margin-top:2px">Jefferson Parish, LA &nbsp;·&nbsp; $1.11M</div>
+        <div style="font-size:10px;color:var(--ink3);margin-top:8px">3,102 jobs &nbsp;·&nbsp; 55,641 population</div>
+      </div>
+      <div style="position:absolute;bottom:10px;right:12px;font-size:9px;color:var(--ink3);font-family:monospace;letter-spacing:0.5px">CONNECT REAL MAP IN POWER BI</div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:12px;align-items:center">
+      <div style="width:8px;height:8px;border-radius:50%;background:var(--accent)"></div>
+      <span style="font-size:10px;color:var(--ink3)">Dot size = revenue volume &nbsp;·&nbsp; Hover for ZIP details</span>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:12px;display:flex;justify-content:space-between;font-family:monospace;font-size:10px;color:var(--ink3)">
+  <span>Vladimir Louis R. Carandang &nbsp;·&nbsp; Data & Operations Analyst &nbsp;·&nbsp; louiscarandang30-eng.github.io</span>
+  <span>Dashboard redesign mockup — layout guide for Power BI implementation</span>
+</div>
+
+</body>
+</html>
